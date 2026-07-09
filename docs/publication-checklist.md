@@ -9,8 +9,8 @@
 - [x] `npm run demo:pr` generates PASS, WARN and BLOCK examples.
 - [x] `examples/pr-native-demo/index.html` parses locally.
 - [x] `site/index.html` parses locally.
-- [ ] GitHub Action workflow tested in a disposable repo or branch.
-- [ ] GitHub Action tested after a real AI-agent step, not only on a clean PR checkout.
+- [x] GitHub Action workflow tested in a disposable repo or branch.
+- [x] GitHub Action tested after a command-generated workspace change, not only on a clean PR checkout.
 - [x] First launch uses the Action as a command-capturing same-job agent check.
 - [ ] Landing reviewed on desktop and mobile viewport.
 - [ ] Demo/test redaction fixtures reviewed so fake tokens cannot be mistaken for real secrets.

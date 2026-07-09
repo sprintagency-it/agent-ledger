@@ -10,9 +10,9 @@ inputs:
     required: false
     default: "."
   out:
-    description: Agent Ledger output directory.
+    description: Agent Ledger output directory. Defaults outside the repo so the ledger does not capture its own artifacts.
     required: false
-    default: ".agent-ledger"
+    default: "../.agent-ledger"
   name:
     description: Agent Ledger run name.
     required: false

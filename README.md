@@ -96,7 +96,8 @@ jobs:
       # Run your AI coding-agent step here, or run Agent Ledger at the end
       # around a command that simulates or performs the agent work.
 
-      - uses: sprintagency-it/agent-ledger@v0.1.0
+      - id: agent-ledger
+        uses: sprintagency-it/agent-ledger@v0.1.0
         with:
           command: "node scripts/run-ai-agent-task.mjs"
           goal: "Review this AI-generated PR before merge"
@@ -107,12 +108,14 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: agent-ledger
-          path: .agent-ledger/
+          path: ${{ steps.agent-ledger.outputs.session }}/../..
 ```
 
 For local testing inside this repo, use `uses: ./`.
 
 Before making this a required PR check, test it in a disposable repository with the exact agent command you plan to use.
+
+The Action writes its ledger output outside the checkout by default, so it does not accidentally capture its own `.agent-ledger` artifacts as PR changes.
 
 ## Product Positioning
 

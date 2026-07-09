@@ -204,6 +204,7 @@ function expandHome(value) {
 
 function isOutsideDeclaredScope(target, scope) {
   if (!target || !scope) return false;
+  if (target === '.' || target === './') return false;
   if (/^(diff\.patch|files-touched\.csv|preexisting-dirty\.csv|git-status-before\.csv|workspace-|artifacts\/|session\.)/.test(target)) return false;
   if (/^[a-z]+:\/\//i.test(target)) return false;
   const scopes = String(scope)

@@ -16,7 +16,7 @@ Do not trust blindly. Human review required before merge, deploy, send, or hando
 - File/write events: 9
 - Command executions: 0
 - Tool calls: 0
-- Scope drift events: 2
+- Scope drift events: 1
 - Pre-existing dirty paths ignored: 0
 - Redaction patterns triggered: 0
 
@@ -24,14 +24,14 @@ Do not trust blindly. Human review required before merge, deploy, send, or hando
 
 - Critical: 4
 - High: 0
-- Medium: 1
-- Low: 12
+- Medium: 0
+- Low: 13
 
 ## Read This Before Trusting The Run
 
 - Review 4 critical event(s) before trusting this run.
 - Inspect 9 write event(s) against the stated goal and scope.
-- Review 2 event(s) outside the declared scope.
+- Review 1 event(s) outside the declared scope.
 
 ## Top Risk Events
 

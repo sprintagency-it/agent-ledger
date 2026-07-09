@@ -17,14 +17,14 @@ Status: BLOCK
 
 - Critical: 4
 - High: 0
-- Medium: 1
-- Low: 12
+- Medium: 0
+- Low: 13
 
 ## Reviewer Actions
 
 - Review 4 critical event(s) before trusting this run.
 - Inspect 9 write event(s) against the stated goal and scope.
-- Review 2 event(s) outside the declared scope.
+- Review 1 event(s) outside the declared scope.
 
 ## Evidence-Based Findings
 

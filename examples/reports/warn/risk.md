@@ -8,14 +8,13 @@ Goal: Review an AI-generated reporting helper update before merge
 
 - Critical: 0
 - High: 1
-- Medium: 2
-- Low: 11
+- Medium: 1
+- Low: 12
 
 ## What To Review Before Trusting This Run
 
 - Review 1 high-risk event(s), especially sensitive paths and side effects.
 - Inspect 4 write event(s) against the stated goal and scope.
-- Review 1 event(s) outside the declared scope.
 
 ## Baseline Context
 

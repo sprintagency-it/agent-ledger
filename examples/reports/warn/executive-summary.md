@@ -16,7 +16,7 @@ Review high-risk items before trusting this run.
 - File/write events: 4
 - Command executions: 1
 - Tool calls: 0
-- Scope drift events: 1
+- Scope drift events: 0
 - Pre-existing dirty paths ignored: 0
 - Redaction patterns triggered: 0
 
@@ -24,14 +24,13 @@ Review high-risk items before trusting this run.
 
 - Critical: 0
 - High: 1
-- Medium: 2
-- Low: 11
+- Medium: 1
+- Low: 12
 
 ## Read This Before Trusting The Run
 
 - Review 1 high-risk event(s), especially sensitive paths and side effects.
 - Inspect 4 write event(s) against the stated goal and scope.
-- Review 1 event(s) outside the declared scope.
 
 ## Top Risk Events
 

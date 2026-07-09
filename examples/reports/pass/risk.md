@@ -8,13 +8,12 @@ Goal: Review a safe AI-generated docs copy update before merge
 
 - Critical: 0
 - High: 0
-- Medium: 1
-- Low: 13
+- Medium: 0
+- Low: 14
 
 ## What To Review Before Trusting This Run
 
 - Inspect 4 write event(s) against the stated goal and scope.
-- Review 1 event(s) outside the declared scope.
 
 ## Baseline Context
 

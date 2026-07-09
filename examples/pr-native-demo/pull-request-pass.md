@@ -24,13 +24,12 @@ Open the generated PR artifact:
 
 - Critical: 0
 - High: 0
-- Medium: 1
-- Low: 13
+- Medium: 0
+- Low: 14
 
 ## Reviewer Actions
 
 - Inspect 4 write event(s) against the stated goal and scope.
-- Review 1 event(s) outside the declared scope.
 
 ## Evidence-Based Findings
 

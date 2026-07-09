@@ -16,7 +16,7 @@ Low immediate risk detected by V0 rules, but capture is partial.
 - File/write events: 4
 - Command executions: 1
 - Tool calls: 0
-- Scope drift events: 1
+- Scope drift events: 0
 - Pre-existing dirty paths ignored: 0
 - Redaction patterns triggered: 1
 
@@ -24,13 +24,12 @@ Low immediate risk detected by V0 rules, but capture is partial.
 
 - Critical: 0
 - High: 0
-- Medium: 1
-- Low: 13
+- Medium: 0
+- Low: 14
 
 ## Read This Before Trusting The Run
 
 - Inspect 4 write event(s) against the stated goal and scope.
-- Review 1 event(s) outside the declared scope.
 
 ## Top Risk Events
 

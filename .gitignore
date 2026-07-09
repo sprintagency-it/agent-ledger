@@ -1,6 +1,7 @@
 node_modules/
 .DS_Store
 .agent-ledger/
+.wrangler/
 tmp/
 *.log
 examples/pr-native-demo/ledger/current-session.json

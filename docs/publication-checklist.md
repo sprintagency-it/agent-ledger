@@ -12,10 +12,22 @@
 - [x] GitHub Action workflow tested in a disposable repo or branch.
 - [x] GitHub Action tested after a command-generated workspace change, not only on a clean PR checkout.
 - [x] First launch uses the Action as a command-capturing same-job agent check.
-- [ ] Landing reviewed on desktop and mobile viewport.
-- [ ] Demo/test redaction fixtures reviewed so fake tokens cannot be mistaken for real secrets.
-- [ ] No private vault paths appear in public README, examples or landing.
-- [ ] No secrets, client data, billing data or personal data present.
+- [x] Landing reviewed on desktop and mobile viewport.
+- [x] Demo reviewed on desktop and mobile viewport.
+- [x] Demo/test redaction fixtures reviewed so fake tokens cannot be mistaken for real secrets.
+- [x] No private vault paths appear in public README, examples or landing.
+- [x] No secrets, client data, billing data or personal data present.
+
+Browser QA evidence:
+
+- [Browser Visual QA](browser-visual-qa.md) reports zero horizontal overflow, zero clipped text and zero missing local links for landing and demo on desktop/mobile.
+- Screenshot set captured for landing and demo at `1440x900` and `390x844`.
+
+Fixture review:
+
+- `DEMO_TOKEN_VALUE_1234567890` appears only in synthetic tests and transcript fixtures.
+- Public demo config uses `AGENT_LEDGER_DEMO_PLACEHOLDER=replace-me-demo-only`.
+- Generated visible reports redact the synthetic token value.
 
 ## Suggested Launch Order
 

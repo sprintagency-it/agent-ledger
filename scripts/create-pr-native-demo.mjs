@@ -504,7 +504,10 @@ Each folder contains:
 
 function copyStableReport(scenario, fileName, out) {
   const raw = readFileSync(path.join(scenario.sessionDir, fileName), 'utf8');
-  const stable = raw.replaceAll(path.basename(scenario.sessionDir), `demo-${scenario.id}-pr`);
+  const stable = raw
+    .replaceAll(path.basename(scenario.sessionDir), `demo-${scenario.id}-pr`)
+    .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g, '2026-01-01T00:00:00.000Z')
+    .replace(/command-\d+\.log/g, `command-demo-${scenario.id}.log`);
   writeFileSync(path.join(out, fileName), stable);
 }
 
@@ -623,7 +626,7 @@ function writeShowcasePage(generated) {
       margin: 0;
       max-width: 840px;
       font-size: clamp(36px, 6vw, 72px);
-      line-height: 0.98;
+      line-height: 1.04;
       letter-spacing: 0;
     }
     .subhead {

@@ -2,6 +2,8 @@
 
 Goal: update the checkout notes and verify the generated ledger.
 
+Fixture note: `DEMO_TOKEN_VALUE_1234567890` is fake test data used only to verify redaction.
+
 Permission request: agent asked before touching sensitive billing files.
 
 $ npm test

@@ -18,10 +18,10 @@ The agent adds a preview checkout bypass, loosens rate limiting and writes an en
 
 Open the generated PR artifact:
 
-- [PR review record](ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/pr-review.md)
-- [Executive summary](ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/executive-summary.md)
-- [Risk debrief](ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/risk.md)
-- [Replay](ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/replay.html)
+- [PR review record](../reports/block/pr-review.md)
+- [Executive summary](../reports/block/executive-summary.md)
+- [Risk debrief](../reports/block/risk.md)
+- [Replay](../reports/block/replay.html)
 
 ## Risk Snapshot
 

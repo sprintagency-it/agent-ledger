@@ -6,33 +6,33 @@ Open first:
 
 - [index.html](index.html) - visual product demo.
 - [pull-request.md](pull-request.md) - simulated PR status spectrum.
-- [supervisor-report.md](ledger/supervisor-report.md) - aggregated supervisor report.
+- [../reports/README.md](../reports/README.md) - stable example reports.
 
 ## Scenarios
 
 ### PASS - AI-generated docs copy cleanup
 
 - [Simulated PR](pull-request-pass.md)
-- [PR review record](ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/pr-review.md)
-- [Executive summary](ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/executive-summary.md)
-- [Risk debrief](ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/risk.md)
-- [Replay](ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/replay.html)
+- [PR review record](../reports/pass/pr-review.md)
+- [Executive summary](../reports/pass/executive-summary.md)
+- [Risk debrief](../reports/pass/risk.md)
+- [Replay](../reports/pass/replay.html)
 
 ### WARN - AI-generated report script update
 
 - [Simulated PR](pull-request-warn.md)
-- [PR review record](ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/pr-review.md)
-- [Executive summary](ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/executive-summary.md)
-- [Risk debrief](ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/risk.md)
-- [Replay](ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/replay.html)
+- [PR review record](../reports/warn/pr-review.md)
+- [Executive summary](../reports/warn/executive-summary.md)
+- [Risk debrief](../reports/warn/risk.md)
+- [Replay](../reports/warn/replay.html)
 
 ### BLOCK - AI-generated checkout auth update
 
 - [Simulated PR](pull-request-block.md)
-- [PR review record](ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/pr-review.md)
-- [Executive summary](ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/executive-summary.md)
-- [Risk debrief](ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/risk.md)
-- [Replay](ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/replay.html)
+- [PR review record](../reports/block/pr-review.md)
+- [Executive summary](../reports/block/executive-summary.md)
+- [Risk debrief](../reports/block/risk.md)
+- [Replay](../reports/block/replay.html)
 
 
 ## Why This Matters

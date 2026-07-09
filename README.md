@@ -72,9 +72,9 @@ open "$SESSION/replay.html"
 
 ## GitHub Action
 
-Use the Action after an AI-agent step has changed the workspace, or run the CLI manually inside the same workflow that generated the changes.
+Use the Action to run an AI-agent command under Agent Ledger capture and publish `pr-review.md` to the GitHub Actions job summary.
 
-This is a release-candidate check surface, not a full PR-diff bot yet. In a clean `pull_request` checkout with no agent work in the same job, there may be no local workspace changes to capture.
+This is a release-candidate check surface, not a full PR-diff bot yet. It captures changes made by the command you pass to the Action.
 
 ```yaml
 name: Agent Ledger PR Review
@@ -94,12 +94,13 @@ jobs:
           fetch-depth: 0
 
       # Run your AI coding-agent step here, or run Agent Ledger at the end
-      # of the job that produced the code changes.
+      # around a command that simulates or performs the agent work.
 
       - uses: sprintagency-it/agent-ledger@v0.1.0
         with:
+          command: "node scripts/run-ai-agent-task.mjs"
           goal: "Review this AI-generated PR before merge"
-          scope: "."
+          scope: "src,tests,scripts"
           fail-on-critical: "true"
           fail-on-high: "false"
 
@@ -111,7 +112,7 @@ jobs:
 
 For local testing inside this repo, use `uses: ./`.
 
-Before making this a required PR check, test it in a disposable repository with the exact agent workflow you plan to use.
+Before making this a required PR check, test it in a disposable repository with the exact agent command you plan to use.
 
 ## Product Positioning
 

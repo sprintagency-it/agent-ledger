@@ -1,9 +1,12 @@
 name: Agent Ledger PR Review
-description: Create a PR-native Agent Ledger review record from the current workspace state after an AI-agent run.
+description: Run an AI-agent command under Agent Ledger capture and publish a PR-native review record.
 
 inputs:
+  command:
+    description: Shell command that runs the AI-agent or simulated agent step to capture.
+    required: true
   project:
-    description: Project path to inspect. Run this after the agent has changed the workspace.
+    description: Project path to inspect.
     required: false
     default: "."
   out:
@@ -42,13 +45,18 @@ outputs:
   pr-review:
     description: Generated PR review record path.
     value: ${{ steps.run-ledger.outputs.pr-review }}
+  command-status:
+    description: Exit code returned by the captured command.
+    value: ${{ steps.run-ledger.outputs.command-status }}
 
 runs:
   using: composite
   steps:
-    - name: Create Agent Ledger PR review record
+    - name: Run command under Agent Ledger capture
       id: run-ledger
       shell: bash
+      env:
+        AGENT_LEDGER_COMMAND: ${{ inputs.command }}
       run: |
         node "$GITHUB_ACTION_PATH/src/cli.mjs" init --out "${{ inputs.out }}"
         SESSION="$(node "$GITHUB_ACTION_PATH/src/cli.mjs" start \
@@ -58,10 +66,17 @@ runs:
           --scope "${{ inputs.scope }}" \
           --sensitive "${{ inputs.sensitive }}" \
           --out "${{ inputs.out }}")"
+
+        set +e
+        bash -lc "$AGENT_LEDGER_COMMAND"
+        COMMAND_STATUS="$?"
+        set -e
+
         node "$GITHUB_ACTION_PATH/src/cli.mjs" ingest --type git --session "$SESSION"
         node "$GITHUB_ACTION_PATH/src/cli.mjs" render --session "$SESSION"
         echo "session=$SESSION" >> "$GITHUB_OUTPUT"
         echo "pr-review=$SESSION/pr-review.md" >> "$GITHUB_OUTPUT"
+        echo "command-status=$COMMAND_STATUS" >> "$GITHUB_OUTPUT"
 
     - name: Publish PR review record to job summary
       shell: bash
@@ -84,4 +99,12 @@ runs:
         if [ "${{ inputs.fail-on-high }}" = "true" ] && grep -q "^Status: WARN$" "${{ steps.run-ledger.outputs.pr-review }}"; then
           echo "Agent Ledger warned on this PR review record because high-risk findings were detected."
           exit 1
+        fi
+
+    - name: Enforce captured command status
+      shell: bash
+      run: |
+        if [ "${{ steps.run-ledger.outputs.command-status }}" != "0" ]; then
+          echo "The command captured by Agent Ledger failed with exit code ${{ steps.run-ledger.outputs.command-status }}."
+          exit "${{ steps.run-ledger.outputs.command-status }}"
         fi

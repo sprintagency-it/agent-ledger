@@ -1,6 +1,6 @@
 # Agent Ledger Risk Debrief
 
-Session: 2026-07-09-16-20-06-331-demo-block-pr
+Session: demo-block-pr
 
 Goal: Review AI-generated checkout and auth changes before merge
 

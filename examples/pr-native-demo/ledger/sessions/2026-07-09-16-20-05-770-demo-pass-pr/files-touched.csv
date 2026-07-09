@@ -1,3 +1,0 @@
-status,path,event_type,risk_hint,baseline_status
- M,docs/checkout-copy.md,write,,
- M,tests/docs.test.js,write,,

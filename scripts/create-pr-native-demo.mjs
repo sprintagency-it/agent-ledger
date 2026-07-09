@@ -154,6 +154,7 @@ function generateScenario(definition) {
   run(['render', '--session', sessionDir]);
 
   const sessionRel = path.posix.join('ledger', 'sessions', path.basename(sessionDir));
+  const reportRel = path.posix.join('..', 'reports', definition.id);
   const prReview = readFileSync(path.join(sessionDir, 'pr-review.md'), 'utf8');
   const executiveSummary = readFileSync(path.join(sessionDir, 'executive-summary.md'), 'utf8');
   const riskDebrief = readFileSync(path.join(sessionDir, 'risk.md'), 'utf8');
@@ -178,6 +179,7 @@ function generateScenario(definition) {
     transcriptPath,
     sessionDir,
     sessionRel,
+    reportRel,
     status,
     statusClass: status.toLowerCase(),
     riskCounts: extractRiskCounts(prReview),
@@ -465,10 +467,10 @@ ${generated.map((scenario) => `## ${scenario.status} - ${scenario.title}
 ${scenario.summary}
 
 - [Simulated PR](pull-request-${scenario.id}.md)
-- [PR review record](${scenario.sessionRel}/pr-review.md)
-- [Executive summary](${scenario.sessionRel}/executive-summary.md)
-- [Risk debrief](${scenario.sessionRel}/risk.md)
-- [Replay](${scenario.sessionRel}/replay.html)
+- [PR review record](${scenario.reportRel}/pr-review.md)
+- [Executive summary](${scenario.reportRel}/executive-summary.md)
+- [Risk debrief](${scenario.reportRel}/risk.md)
+- [Replay](${scenario.reportRel}/replay.html)
 `).join('\n')}
 `);
 }
@@ -493,11 +495,17 @@ Each folder contains:
   for (const scenario of generated) {
     const out = path.join(reportsRoot, scenario.id);
     mkdirSync(out, { recursive: true });
-    copyFileSync(path.join(scenario.sessionDir, 'pr-review.md'), path.join(out, 'pr-review.md'));
-    copyFileSync(path.join(scenario.sessionDir, 'executive-summary.md'), path.join(out, 'executive-summary.md'));
-    copyFileSync(path.join(scenario.sessionDir, 'risk.md'), path.join(out, 'risk.md'));
-    copyFileSync(path.join(scenario.sessionDir, 'replay.html'), path.join(out, 'replay.html'));
+    copyStableReport(scenario, 'pr-review.md', out);
+    copyStableReport(scenario, 'executive-summary.md', out);
+    copyStableReport(scenario, 'risk.md', out);
+    copyStableReport(scenario, 'replay.html', out);
   }
+}
+
+function copyStableReport(scenario, fileName, out) {
+  const raw = readFileSync(path.join(scenario.sessionDir, fileName), 'utf8');
+  const stable = raw.replaceAll(path.basename(scenario.sessionDir), `demo-${scenario.id}-pr`);
+  writeFileSync(path.join(out, fileName), stable);
 }
 
 function writePullRequestPage(scenario) {
@@ -517,10 +525,10 @@ ${scenario.files.map(([tag, file, note]) => `- \`${tag}\` \`${file}\` - ${note}.
 
 Open the generated PR artifact:
 
-- [PR review record](${scenario.sessionRel}/pr-review.md)
-- [Executive summary](${scenario.sessionRel}/executive-summary.md)
-- [Risk debrief](${scenario.sessionRel}/risk.md)
-- [Replay](${scenario.sessionRel}/replay.html)
+- [PR review record](${scenario.reportRel}/pr-review.md)
+- [Executive summary](${scenario.reportRel}/executive-summary.md)
+- [Risk debrief](${scenario.reportRel}/risk.md)
+- [Replay](${scenario.reportRel}/replay.html)
 
 ## Risk Snapshot
 
@@ -818,7 +826,7 @@ function writeShowcasePage(generated) {
       <div class="brand"><span class="mark">AL</span><span>Agent Ledger</span></div>
       <div class="links">
         <a href="pull-request.md">PR index</a>
-        <a href="ledger/supervisor-report.md">Supervisor report</a>
+        <a href="../reports/README.md">Reports</a>
         <a href="README.md">Regenerate</a>
       </div>
     </nav>
@@ -828,7 +836,7 @@ function writeShowcasePage(generated) {
       <p class="subhead">This demo shows the full PR-native status spectrum: PASS for routine changes, WARN for review-worthy commands, and BLOCK for sensitive auth or scope drift.</p>
       <div class="actions">
         <a class="button primary" href="pull-request.md">Open PR Status Spectrum</a>
-        <a class="button" href="${generated.find((scenario) => scenario.id === 'block').sessionRel}/pr-review.md">Open BLOCK Review</a>
+        <a class="button" href="../reports/block/pr-review.md">Open BLOCK Review</a>
         <a class="button" href="README.md">Regenerate Demo</a>
       </div>
     </section>
@@ -860,17 +868,17 @@ Open first:
 
 - [index.html](index.html) - visual product demo.
 - [pull-request.md](pull-request.md) - simulated PR status spectrum.
-- [supervisor-report.md](ledger/supervisor-report.md) - aggregated supervisor report.
+- [../reports/README.md](../reports/README.md) - stable example reports.
 
 ## Scenarios
 
 ${generated.map((scenario) => `### ${scenario.status} - ${scenario.title}
 
 - [Simulated PR](pull-request-${scenario.id}.md)
-- [PR review record](${scenario.sessionRel}/pr-review.md)
-- [Executive summary](${scenario.sessionRel}/executive-summary.md)
-- [Risk debrief](${scenario.sessionRel}/risk.md)
-- [Replay](${scenario.sessionRel}/replay.html)
+- [PR review record](${scenario.reportRel}/pr-review.md)
+- [Executive summary](${scenario.reportRel}/executive-summary.md)
+- [Risk debrief](${scenario.reportRel}/risk.md)
+- [Replay](${scenario.reportRel}/replay.html)
 `).join('\n')}
 
 ## Why This Matters
@@ -954,8 +962,8 @@ function scenarioCard(scenario) {
           </div>
           <div class="artifact-list">
             <a href="pull-request-${scenario.id}.md"><strong>Simulated PR</strong><span>scenario</span></a>
-            <a href="${scenario.sessionRel}/pr-review.md"><strong>PR Review Record</strong><span>${escapeHtml(scenario.status)}</span></a>
-            <a href="${scenario.sessionRel}/replay.html"><strong>Replay</strong><span>timeline</span></a>
+            <a href="${scenario.reportRel}/pr-review.md"><strong>PR Review Record</strong><span>${escapeHtml(scenario.status)}</span></a>
+            <a href="${scenario.reportRel}/replay.html"><strong>Replay</strong><span>timeline</span></a>
           </div>
         </div>
       </article>`;

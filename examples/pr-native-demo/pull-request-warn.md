@@ -15,10 +15,10 @@ The agent updates a reporting helper and changes an executable bit. The code is 
 
 Open the generated PR artifact:
 
-- [PR review record](ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/pr-review.md)
-- [Executive summary](ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/executive-summary.md)
-- [Risk debrief](ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/risk.md)
-- [Replay](ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/replay.html)
+- [PR review record](../reports/warn/pr-review.md)
+- [Executive summary](../reports/warn/executive-summary.md)
+- [Risk debrief](../reports/warn/risk.md)
+- [Replay](../reports/warn/replay.html)
 
 ## Risk Snapshot
 

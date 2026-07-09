@@ -30,7 +30,7 @@ Use conservative wording until the Action has been tested in a disposable GitHub
 
 > Agent Ledger can publish a PR review record from the evidence captured during an AI-agent workflow.
 
-Avoid saying that the Action automatically understands every clean `pull_request` checkout. The first public workflow should be described as a same-job agent check or local-first review artifact until PR-diff bot behavior is built and verified.
+Avoid saying that the Action automatically understands every clean `pull_request` checkout. The first public workflow should be described as a command-capturing same-job agent check or local-first review artifact until PR-diff bot behavior is built and verified.
 
 ## CTA Variants
 

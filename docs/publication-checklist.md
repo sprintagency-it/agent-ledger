@@ -11,7 +11,7 @@
 - [x] `site/index.html` parses locally.
 - [ ] GitHub Action workflow tested in a disposable repo or branch.
 - [ ] GitHub Action tested after a real AI-agent step, not only on a clean PR checkout.
-- [ ] Decide whether first launch uses the Action as a same-job agent check, a session renderer, or a later PR-diff bot.
+- [x] First launch uses the Action as a command-capturing same-job agent check.
 - [ ] Landing reviewed on desktop and mobile viewport.
 - [ ] Demo/test redaction fixtures reviewed so fake tokens cannot be mistaken for real secrets.
 - [ ] No private vault paths appear in public README, examples or landing.

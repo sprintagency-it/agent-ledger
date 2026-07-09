@@ -3,3 +3,6 @@ node_modules/
 .agent-ledger/
 tmp/
 *.log
+examples/pr-native-demo/ledger/current-session.json
+examples/pr-native-demo/ledger/supervisor-report.md
+examples/pr-native-demo/ledger/sessions/

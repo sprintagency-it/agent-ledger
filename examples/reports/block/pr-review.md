@@ -8,7 +8,7 @@ Status: BLOCK
 
 ## Run Context
 
-- Session: `2026-07-09-16-20-06-331-demo-block-pr`
+- Session: `demo-block-pr`
 - Goal: Review AI-generated checkout and auth changes before merge
 - Scope: src,tests,.github
 - Project: `$REPO_ROOT/examples/pr-native-demo/scenarios/block/repo`

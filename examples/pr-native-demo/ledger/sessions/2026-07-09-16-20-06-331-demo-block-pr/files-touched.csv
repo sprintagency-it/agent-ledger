@@ -1,7 +1,0 @@
-status,path,event_type,risk_hint,baseline_status
- M,.github/workflows/ci.yml,write,,
- M,src/auth.js,write,sensitive_path,
- M,src/rate-limit.js,write,,
- M,src/routes/checkout.js,write,,
- M,tests/auth.test.js,write,sensitive_path,
-??,.env.example,write,sensitive_path,

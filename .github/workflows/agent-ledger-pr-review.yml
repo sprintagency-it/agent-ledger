@@ -19,8 +19,9 @@ jobs:
       - name: Run Agent Ledger
         uses: ./
         with:
+          command: "node -e \"const fs=require('fs'); fs.mkdirSync('tmp',{recursive:true}); fs.writeFileSync('tmp/agent-ledger-smoke.md','# Agent Ledger smoke\\n');\""
           goal: "Review this AI-generated PR before merge"
-          scope: "."
+          scope: "tmp"
           fail-on-critical: "true"
           fail-on-high: "false"
 

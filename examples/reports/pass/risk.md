@@ -1,6 +1,6 @@
 # Agent Ledger Risk Debrief
 
-Session: 2026-07-09-16-20-05-770-demo-pass-pr
+Session: demo-pass-pr
 
 Goal: Review a safe AI-generated docs copy update before merge
 

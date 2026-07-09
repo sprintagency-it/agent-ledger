@@ -15,10 +15,10 @@ The agent updates customer-facing checkout copy and runs the focused docs test. 
 
 Open the generated PR artifact:
 
-- [PR review record](ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/pr-review.md)
-- [Executive summary](ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/executive-summary.md)
-- [Risk debrief](ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/risk.md)
-- [Replay](ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/replay.html)
+- [PR review record](../reports/pass/pr-review.md)
+- [Executive summary](../reports/pass/executive-summary.md)
+- [Risk debrief](../reports/pass/risk.md)
+- [Replay](../reports/pass/replay.html)
 
 ## Risk Snapshot
 

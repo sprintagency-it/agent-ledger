@@ -8,7 +8,7 @@ Status: WARN
 
 ## Run Context
 
-- Session: `2026-07-09-16-20-06-061-demo-warn-pr`
+- Session: `demo-warn-pr`
 - Goal: Review an AI-generated reporting helper update before merge
 - Scope: docs,scripts,tests
 - Project: `$REPO_ROOT/examples/pr-native-demo/scenarios/warn/repo`

@@ -8,7 +8,7 @@ Status: PASS
 
 ## Run Context
 
-- Session: `2026-07-09-16-20-05-770-demo-pass-pr`
+- Session: `demo-pass-pr`
 - Goal: Review a safe AI-generated docs copy update before merge
 - Scope: docs,tests
 - Project: `$REPO_ROOT/examples/pr-native-demo/scenarios/pass/repo`

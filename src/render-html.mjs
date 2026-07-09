@@ -230,6 +230,7 @@ ${high.map((event) => `- **${event.risk.toUpperCase()}** ${event.event_type} \`$
 }
 
 function renderHtml(meta, events, counts, redactions, policies, reviewItems) {
+  const status = prStatus(counts);
   const rows = events.map((event) => `
     <tr class="risk-${event.risk}">
       <td>${escapeHtml(event.ts)}</td>
@@ -251,42 +252,64 @@ function renderHtml(meta, events, counts, redactions, policies, reviewItems) {
   <style>
     :root {
       color-scheme: light;
-      --bg: #f7f8fa;
-      --panel: #ffffff;
-      --ink: #1b1f24;
-      --muted: #657080;
-      --line: #d8dee8;
-      --low: #edf7ee;
-      --medium: #fff7da;
-      --high: #fff0e8;
-      --critical: #ffe8e8;
-      --accent: #184c78;
+      --bg: #f5f1ea;
+      --panel: #fffdf9;
+      --ink: #1d1a17;
+      --muted: #6f675f;
+      --line: #d9d0c5;
+      --low: #edf6ef;
+      --medium: #fff5d9;
+      --high: #fff0e7;
+      --critical: #fde7e2;
+      --accent: #d97757;
+      --accent-dark: #a84d32;
+      --terminal: #1f1c19;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     main { max-width: 1180px; margin: 0 auto; padding: 28px; }
     h1, h2 { margin: 0 0 12px; line-height: 1.15; }
-    h1 { font-size: 28px; }
-    h2 { font-size: 18px; margin-top: 24px; }
+    h1 { max-width: 900px; font-size: clamp(28px, 4vw, 46px); overflow-wrap: anywhere; }
+    h2 { font-size: 17px; margin-top: 24px; }
     p { margin: 0 0 10px; color: var(--muted); }
     code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; word-break: break-word; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0 18px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 760; }
+    .mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 5px; background: var(--accent); color: var(--ink); font: 800 13px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .state { display: inline-flex; align-items: center; min-height: 30px; padding: 0 10px; border: 1px solid currentColor; border-radius: 4px; font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .state-pass { color: #17664c; background: #edf6ef; }
+    .state-warn { color: #805700; background: #fff5d9; }
+    .state-block { color: #9c3127; background: #fde7e2; }
+    .run-head { padding: 30px 0 10px; }
+    .kicker { margin-bottom: 10px; color: var(--accent-dark); font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-transform: uppercase; }
     .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
-    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
-    .metric { font-size: 24px; font-weight: 700; }
-    .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0; }
-    .pill { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; background: #fff; font-size: 12px; }
-    table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 16px; }
+    .session-card { border-color: #2a2521; box-shadow: 3px 3px 0 var(--accent); }
+    .metric-card { position: relative; overflow: hidden; }
+    .metric-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--line); }
+    .metric-critical::before { background: #9c3127; }
+    .metric-high::before { background: var(--accent); }
+    .metric-medium::before { background: #c58b20; }
+    .metric-low::before { background: #2d7a5d; }
+    .metric { font: 760 28px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .label { margin-top: 7px; color: var(--muted); font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-transform: uppercase; }
+    .pill { display: inline-block; border: 1px solid var(--line); border-radius: 4px; padding: 3px 7px; background: #faf6f0; font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .section-label { display: block; margin-bottom: 12px; color: var(--accent-dark); font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-transform: uppercase; }
+    .table-shell { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+    table { width: 100%; min-width: 920px; border-collapse: collapse; background: var(--panel); }
     th, td { border-bottom: 1px solid var(--line); padding: 9px; text-align: left; vertical-align: top; }
-    th { background: #eef2f6; font-size: 12px; color: #46515f; }
+    th { background: var(--terminal); color: #eee6dd; font: 650 11px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     tr.risk-low { background: var(--low); }
     tr.risk-medium { background: var(--medium); }
     tr.risk-high { background: var(--high); }
     tr.risk-critical { background: var(--critical); }
     ul { margin-top: 6px; padding-left: 20px; }
+    li + li { margin-top: 6px; }
     .muted { color: var(--muted); }
     @media (max-width: 820px) {
       main { padding: 16px; }
       .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .topbar { align-items: flex-start; }
       table { font-size: 12px; }
       th, td { padding: 7px; }
     }
@@ -294,12 +317,19 @@ function renderHtml(meta, events, counts, redactions, policies, reviewItems) {
 </head>
 <body>
 <main>
-  <h1>Agent Ledger</h1>
-  <p>Local accountability record for an AI agent run.</p>
+  <div class="topbar">
+    <div class="brand"><span class="mark" aria-hidden="true">&gt;_</span><span>Agent Ledger</span></div>
+    <span class="state state-${status.kind.toLowerCase()}">${status.kind} / REVIEW RECORD</span>
+  </div>
 
-  <section class="card">
-    <h2>Session</h2>
-    <p><strong>${escapeHtml(meta.name)}</strong></p>
+  <header class="run-head">
+    <p class="kicker">Local-first / agent accountability</p>
+    <h1>${escapeHtml(meta.name)}</h1>
+    <p>${escapeHtml(summaryVerdict(counts))}</p>
+  </header>
+
+  <section class="card session-card">
+    <span class="section-label">01 / Run context</span>
     <p>Goal: ${escapeHtml(meta.goal || 'n/a')}</p>
     <p>Scope: ${escapeHtml(meta.scope || 'n/a')}</p>
     <p>Project: <code>${escapeHtml(meta.project_path)}</code></p>
@@ -313,11 +343,13 @@ function renderHtml(meta, events, counts, redactions, policies, reviewItems) {
   </section>
 
   <section class="card">
+    <span class="section-label">02 / Trust checklist</span>
     <h2>What To Review Before Trusting This Run</h2>
     <ul>${reviewItems.map((item) => `<li>${escapeHtml(item)}</li>`).join('\n') || '<li>No blocking review items generated.</li>'}</ul>
   </section>
 
   <section class="card">
+    <span class="section-label">03 / Human brief</span>
     <h2>Human Brief</h2>
     <p><strong>${escapeHtml(summaryVerdict(counts))}</strong></p>
     <p>${events.length} events captured. ${events.filter((event) => event.event_type === 'write').length} write events, ${events.filter((event) => event.event_type === 'execute').length} commands, ${events.filter((event) => event.event_type === 'tool_call').length} tool calls.</p>
@@ -325,17 +357,20 @@ function renderHtml(meta, events, counts, redactions, policies, reviewItems) {
   </section>
 
   <section class="card">
+    <span class="section-label">04 / Redactions</span>
     <h2>Redaction Summary</h2>
     <ul>${redactions.map((item) => `<li>${escapeHtml(item.pattern)}: ${item.count} (${escapeHtml(item.severity)})</li>`).join('\n') || '<li>No redactions applied.</li>'}</ul>
   </section>
 
   <section class="card">
+    <span class="section-label">05 / Policy</span>
     <h2>Policy Suggestions</h2>
     <ul>${policies.map((item) => `<li><code>${escapeHtml(JSON.stringify(item))}</code></li>`).join('\n') || '<li>No policy suggestions generated.</li>'}</ul>
   </section>
 
+  <span class="section-label">06 / Event stream</span>
   <h2>Timeline</h2>
-  <table>
+  <div class="table-shell"><table>
     <thead>
       <tr>
         <th>Time</th>
@@ -348,7 +383,7 @@ function renderHtml(meta, events, counts, redactions, policies, reviewItems) {
       </tr>
     </thead>
     <tbody>${rows}</tbody>
-  </table>
+  </table></div>
 </main>
 </body>
 </html>`;
@@ -389,7 +424,7 @@ function sumMeta(events, key) {
 }
 
 function metric(label, value) {
-  return `<div class="card"><div class="metric">${value}</div><div class="label">${escapeHtml(label)}</div></div>`;
+  return `<div class="card metric-card metric-${label.toLowerCase()}"><div class="metric">${value}</div><div class="label">${escapeHtml(label)}</div></div>`;
 }
 
 function escapeHtml(value) {

@@ -11,7 +11,7 @@ Status: WARN
 - Session: `demo-warn-pr`
 - Goal: Review an AI-generated reporting helper update before merge
 - Scope: docs,scripts,tests
-- Project: `$REPO_ROOT/examples/pr-native-demo/scenarios/warn/repo`
+- Project: `demo/warn/repo`
 
 ## Risk Snapshot
 

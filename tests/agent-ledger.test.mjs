@@ -282,6 +282,11 @@ test('PR-native demo package is generated as a showable product artifact', () =>
     assert.match(prReview, new RegExp(`Status: ${scenario.status}`));
     assert.match(prReview, /Reviewer Actions/);
     assert.match(prReview, /Evidence-Based Findings/);
+
+    const stableReplay = readFileSync(path.join(result.stableReports, scenario.id, 'replay.html'), 'utf8');
+    assert.match(stableReplay, /--accent: #d97757/);
+    assert.match(stableReplay, /&gt;_/);
+    assert.doesNotMatch(stableReplay, /home_path: [2-9]\d* \(low\)/);
   }
 
   const demoReadme = readFileSync(result.readme, 'utf8');

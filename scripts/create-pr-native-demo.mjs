@@ -507,7 +507,12 @@ function copyStableReport(scenario, fileName, out) {
   const stable = raw
     .replaceAll(path.basename(scenario.sessionDir), `demo-${scenario.id}-pr`)
     .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g, '2026-01-01T00:00:00.000Z')
-    .replace(/command-\d+\.log/g, `command-demo-${scenario.id}.log`);
+    .replace(/command-\d+\.log/g, `command-demo-${scenario.id}.log`)
+    .replace(/home_path: \d+ \(low\)/g, 'home_path: 1 (low)')
+    .replace(/Redaction patterns triggered: \d+/g, 'Redaction patterns triggered: normalized for demo')
+    .replace(/- Project: `[^`]+`/g, `- Project: \`demo/${scenario.id}/repo\``)
+    .replace(/<p>Project: <code>.*?<\/code><\/p>/g, `<p>Project: <code>demo/${scenario.id}/repo</code></p>`)
+    .replace(/<h2>Redaction Summary<\/h2>\s*<ul>[\s\S]*?<\/ul>/g, '<h2>Redaction Summary</h2>\n    <ul><li>Demo path handling normalized.</li></ul>');
   writeFileSync(path.join(out, fileName), stable);
 }
 
@@ -560,12 +565,13 @@ function writeShowcasePage(generated) {
   <style>
     :root {
       color-scheme: light;
-      --bg: #f4f6f8;
-      --panel: #ffffff;
-      --ink: #17202a;
-      --muted: #5c6672;
-      --line: #d9e0e8;
-      --accent: #166b5d;
+      --bg: #f5f1ea;
+      --panel: #fffdf9;
+      --ink: #1d1a17;
+      --muted: #6f675f;
+      --line: #d9d0c5;
+      --accent: #d97757;
+      --accent-dark: #a84d32;
       --pass: #17664c;
       --warn: #8a5b00;
       --block: #9c3127;
@@ -608,16 +614,19 @@ function writeShowcasePage(generated) {
       place-items: center;
       width: 34px;
       height: 34px;
-      border-radius: 8px;
+      border-radius: 5px;
       background: var(--accent);
-      color: white;
+      color: var(--ink);
       font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
     }
     .links {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
       font-size: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
     .hero {
       padding: 30px 0 22px;
@@ -625,7 +634,7 @@ function writeShowcasePage(generated) {
     h1 {
       margin: 0;
       max-width: 840px;
-      font-size: clamp(36px, 6vw, 72px);
+      font-size: clamp(36px, 5vw, 60px);
       line-height: 1.04;
       letter-spacing: 0;
     }
@@ -647,21 +656,22 @@ function writeShowcasePage(generated) {
       min-height: 42px;
       padding: 0 14px;
       border: 1px solid var(--line);
-      border-radius: 8px;
-      background: white;
+      border-radius: 5px;
+      background: var(--panel);
       color: var(--ink);
       font-weight: 650;
     }
     .button.primary {
       background: var(--accent);
       border-color: var(--accent);
-      color: white;
+      color: var(--ink);
     }
+    .button.primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: white; text-decoration: none; }
     .panel {
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 8px;
-      box-shadow: 0 1px 2px rgba(22, 32, 42, 0.04);
+      border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(29, 26, 23, 0.05);
     }
     .scenario-grid {
       display: grid;
@@ -682,7 +692,8 @@ function writeShowcasePage(generated) {
       gap: 12px;
       padding: 18px;
       border-bottom: 1px solid var(--line);
-      background: #fbfcfd;
+      background: #211e1a;
+      color: #f7f1e8;
     }
     .scenario-title {
       margin: 0;
@@ -697,8 +708,8 @@ function writeShowcasePage(generated) {
       min-width: 74px;
       height: 32px;
       padding: 0 10px;
-      border-radius: 999px;
-      font-size: 12px;
+      border-radius: 4px;
+      font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-weight: 820;
     }
     .status-pass { color: var(--pass); background: var(--pass-bg); border: 1px solid #c8ded7; }
@@ -724,8 +735,8 @@ function writeShowcasePage(generated) {
     .risk {
       padding: 10px;
       border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfcfd;
+      border-radius: 5px;
+      background: #faf6f0;
     }
     .risk span {
       display: block;
@@ -756,9 +767,9 @@ function writeShowcasePage(generated) {
       justify-content: center;
       width: 24px;
       height: 24px;
-      border-radius: 6px;
-      background: #edf5f3;
-      color: var(--accent);
+      border-radius: 4px;
+      background: #f7e9df;
+      color: var(--accent-dark);
       font-weight: 760;
     }
     code {
@@ -776,8 +787,8 @@ function writeShowcasePage(generated) {
       gap: 10px;
       padding: 9px 10px;
       border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfcfd;
+      border-radius: 5px;
+      background: #faf6f0;
       color: var(--ink);
       font-size: 13px;
     }
@@ -826,7 +837,7 @@ function writeShowcasePage(generated) {
 <body>
   <main class="shell">
     <nav class="topbar">
-      <div class="brand"><span class="mark">AL</span><span>Agent Ledger</span></div>
+      <div class="brand"><span class="mark" aria-hidden="true">&gt;_</span><span>Agent Ledger</span></div>
       <div class="links">
         <a href="pull-request.md">PR index</a>
         <a href="../reports/README.md">Reports</a>

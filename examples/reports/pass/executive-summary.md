@@ -18,7 +18,7 @@ Low immediate risk detected by V0 rules, but capture is partial.
 - Tool calls: 0
 - Scope drift events: 0
 - Pre-existing dirty paths ignored: 0
-- Redaction patterns triggered: 1
+- Redaction patterns triggered: normalized for demo
 
 ## Risk Snapshot
 

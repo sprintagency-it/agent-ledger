@@ -11,7 +11,7 @@ Status: PASS
 - Session: `demo-pass-pr`
 - Goal: Review a safe AI-generated docs copy update before merge
 - Scope: docs,tests
-- Project: `$REPO_ROOT/examples/pr-native-demo/scenarios/pass/repo`
+- Project: `demo/pass/repo`
 
 ## Risk Snapshot
 

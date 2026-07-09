@@ -7,13 +7,14 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #f4f6f8;
-      --panel: #ffffff;
-      --ink: #151b22;
-      --muted: #5c6672;
-      --line: #d8e0e7;
-      --soft: #eef5f3;
-      --accent: #146b5d;
+      --bg: #f5f1ea;
+      --panel: #fffdf9;
+      --ink: #1d1a17;
+      --muted: #6f675f;
+      --line: #d9d0c5;
+      --soft: #f7e9df;
+      --accent: #d97757;
+      --accent-dark: #a84d32;
       --accent-ink: #ffffff;
       --pass: #17664c;
       --warn: #8a5b00;
@@ -21,7 +22,7 @@
       --pass-bg: #edf7f1;
       --warn-bg: #fff6df;
       --block-bg: #fff0ed;
-      --code-bg: #111820;
+      --code-bg: #191714;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -39,7 +40,7 @@
     }
     header {
       border-bottom: 1px solid var(--line);
-      background: rgba(244, 246, 248, 0.96);
+      background: rgba(245, 241, 234, 0.96);
     }
     .nav {
       display: flex;
@@ -60,10 +61,12 @@
       place-items: center;
       width: 34px;
       height: 34px;
-      border-radius: 8px;
+      border-radius: 5px;
       background: var(--accent);
-      color: white;
+      color: var(--ink);
       font-weight: 820;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
     }
     .navlinks {
       display: flex;
@@ -84,18 +87,18 @@
       align-items: center;
       min-height: 28px;
       padding: 0 10px;
-      border: 1px solid #c8ded7;
-      border-radius: 999px;
+      border: 1px solid #e2b8a5;
+      border-radius: 4px;
       background: var(--soft);
       color: var(--accent);
-      font-size: 13px;
+      font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-weight: 740;
       margin-bottom: 16px;
     }
     h1 {
       margin: 0;
       max-width: 760px;
-      font-size: clamp(40px, 6vw, 76px);
+      font-size: clamp(40px, 5vw, 62px);
       line-height: 1.04;
       letter-spacing: 0;
     }
@@ -118,7 +121,7 @@
       min-height: 44px;
       padding: 0 15px;
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: 5px;
       background: var(--panel);
       font-weight: 690;
     }
@@ -127,14 +130,22 @@
       color: var(--accent-ink);
       border-color: var(--accent);
     }
+    .btn.primary:hover {
+      background: var(--accent-dark);
+      border-color: var(--accent-dark);
+      color: #fff;
+      text-decoration: none;
+    }
     .panel {
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 8px;
-      box-shadow: 0 1px 2px rgba(20, 32, 44, 0.04);
+      border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(29, 26, 23, 0.05);
     }
     .report {
       overflow: hidden;
+      border-color: #2a2521;
+      box-shadow: 4px 4px 0 var(--accent);
     }
     .report-head {
       display: flex;
@@ -143,7 +154,8 @@
       gap: 14px;
       padding: 16px 18px;
       border-bottom: 1px solid var(--line);
-      background: #fbfcfd;
+      background: #211e1a;
+      color: #f7f1e8;
     }
     .dots {
       display: flex;
@@ -153,15 +165,21 @@
       width: 10px;
       height: 10px;
       border-radius: 999px;
-      background: #c8d2dc;
+      background: #81776c;
+    }
+    .dot:first-child { background: var(--accent); }
+    .window-label {
+      margin-right: auto;
+      color: #b9afa4;
+      font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
     .status {
       display: inline-flex;
       align-items: center;
       min-height: 30px;
       padding: 0 10px;
-      border-radius: 999px;
-      font-size: 12px;
+      border-radius: 4px;
+      font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-weight: 820;
       color: var(--block);
       background: var(--block-bg);
@@ -200,7 +218,7 @@
       padding: 12px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: #fbfcfd;
+      background: #faf6f0;
     }
     .risk span {
       display: block;
@@ -217,8 +235,8 @@
     .finding {
       padding: 14px;
       border: 1px solid #efc4bc;
-      border-radius: 8px;
-      background: #fff8f6;
+      border-radius: 5px;
+      background: #fff4ee;
     }
     .finding strong {
       color: var(--block);
@@ -282,8 +300,8 @@
       align-items: center;
       min-height: 28px;
       padding: 0 10px;
-      border-radius: 999px;
-      font-size: 12px;
+      border-radius: 4px;
+      font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-weight: 820;
     }
     .badge.pass { color: var(--pass); background: var(--pass-bg); border: 1px solid #c8ded7; }
@@ -292,8 +310,8 @@
     .code-panel {
       padding: 18px;
       background: var(--code-bg);
-      color: #e9f0f5;
-      border-color: #25313d;
+      color: #f5efe7;
+      border-color: #2d2924;
       overflow: auto;
     }
     .code-panel pre {
@@ -303,7 +321,7 @@
       white-space: pre-wrap;
     }
     .code-panel span {
-      color: #8bc4b7;
+      color: #e99a79;
     }
     .split {
       display: grid;
@@ -358,7 +376,7 @@
   <header>
     <div class="wrap nav">
       <a class="brand" href="#">
-        <span class="mark">AL</span>
+        <span class="mark" aria-hidden="true">&gt;_</span>
         <span>Agent Ledger</span>
       </a>
       <nav class="navlinks" aria-label="Primary">
@@ -384,6 +402,7 @@
       <article class="panel report" aria-label="Agent Ledger PR review preview">
         <div class="report-head">
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <span class="window-label">agent-ledger / pr-review.md</span>
           <span class="status">Status: BLOCK</span>
         </div>
         <div class="report-body">

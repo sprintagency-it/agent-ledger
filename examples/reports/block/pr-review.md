@@ -11,7 +11,7 @@ Status: BLOCK
 - Session: `demo-block-pr`
 - Goal: Review AI-generated checkout and auth changes before merge
 - Scope: src,tests,.github
-- Project: `$REPO_ROOT/examples/pr-native-demo/scenarios/block/repo`
+- Project: `demo/block/repo`
 
 ## Risk Snapshot
 

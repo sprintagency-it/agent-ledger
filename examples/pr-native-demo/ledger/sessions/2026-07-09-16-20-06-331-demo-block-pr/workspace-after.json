@@ -1,0 +1,63 @@
+{
+  "stage": "after",
+  "created_at": "2026-07-09T16:20:06.398Z",
+  "project_path": "$REPO_ROOT/examples/pr-native-demo/scenarios/block/repo",
+  "files": [
+    {
+      "path": ".env.example",
+      "size": 83,
+      "mtime": "2026-07-09T16:20:06.369Z",
+      "hash": "0c7da3b65efae25a9af6d45ed4968bea626df143498a9198ddcc1b6457f1298a",
+      "skipped_hash": false
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "size": 240,
+      "mtime": "2026-07-09T16:20:06.368Z",
+      "hash": "5fd1e3a6005a0cd92db0076983b54d5f52f893621dba7a3c1add8f90ff721129",
+      "skipped_hash": false
+    },
+    {
+      "path": "package.json",
+      "size": 161,
+      "mtime": "2026-07-09T16:20:06.252Z",
+      "hash": "dea70fe914d07a22ba6ca1271bf0f36e9a2046a4c56d034f6948b07ed6187e68",
+      "skipped_hash": false
+    },
+    {
+      "path": "README.md",
+      "size": 98,
+      "mtime": "2026-07-09T16:20:06.252Z",
+      "hash": "9c1d9528dffc80e82104e8d470cb1be3904a48ae64167eb51725d16fd45b3d03",
+      "skipped_hash": false
+    },
+    {
+      "path": "src/auth.js",
+      "size": 477,
+      "mtime": "2026-07-09T16:20:06.368Z",
+      "hash": "846bd9b8add7d14308c53eefba772803bdb412ad273b8823f6aa27ff06c19e67",
+      "skipped_hash": false
+    },
+    {
+      "path": "src/rate-limit.js",
+      "size": 89,
+      "mtime": "2026-07-09T16:20:06.368Z",
+      "hash": "54e0b55a61c98df2b9438e98ea01b897c7100c057758c79a98a6ca120d0a1048",
+      "skipped_hash": false
+    },
+    {
+      "path": "src/routes/checkout.js",
+      "size": 380,
+      "mtime": "2026-07-09T16:20:06.368Z",
+      "hash": "bd91e1f6701955120501dec6e8c19f826ebfe16585382c5356ebb818fe825a76",
+      "skipped_hash": false
+    },
+    {
+      "path": "tests/auth.test.js",
+      "size": 475,
+      "mtime": "2026-07-09T16:20:06.368Z",
+      "hash": "3f3180a03133bc00b9c1955ea52251be3760bc4be33202a589b444b766adbb69",
+      "skipped_hash": false
+    }
+  ]
+}

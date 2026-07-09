@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-07-09T16:20:05.973Z",
+  "redactions": [
+    {
+      "pattern": "home_path",
+      "severity": "low",
+      "count": 3
+    }
+  ]
+}

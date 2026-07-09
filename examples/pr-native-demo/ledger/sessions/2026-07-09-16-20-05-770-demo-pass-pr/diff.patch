@@ -1,0 +1,20 @@
+diff --git a/docs/checkout-copy.md b/docs/checkout-copy.md
+index 5815421..7357c14 100644
+--- a/docs/checkout-copy.md
++++ b/docs/checkout-copy.md
+@@ -1,3 +1,3 @@
+ # Checkout Copy
+ 
+-Current copy: Your order is ready for review.
++Current copy: Review your order before payment.
+diff --git a/tests/docs.test.js b/tests/docs.test.js
+index 9778baa..ab651f4 100644
+--- a/tests/docs.test.js
++++ b/tests/docs.test.js
+@@ -4,5 +4,5 @@ import { readFileSync } from 'node:fs';
+ 
+ test('checkout copy includes review wording', () => {
+   const copy = readFileSync('docs/checkout-copy.md', 'utf8');
+-  assert.match(copy, /ready for review/);
++  assert.match(copy, /Review your order before payment/);
+ });

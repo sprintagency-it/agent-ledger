@@ -1,0 +1,28 @@
+{
+  "stage": "after",
+  "created_at": "2026-07-09T16:20:05.881Z",
+  "project_path": "$REPO_ROOT/examples/pr-native-demo/scenarios/pass/repo",
+  "files": [
+    {
+      "path": "docs/checkout-copy.md",
+      "size": 65,
+      "mtime": "2026-07-09T16:20:05.805Z",
+      "hash": "36f1905c030b0af6a2c87fcd9cd74c79d40cb4128e40f5e36b85efcc5d5633d4",
+      "skipped_hash": false
+    },
+    {
+      "path": "package.json",
+      "size": 158,
+      "mtime": "2026-07-09T16:20:05.694Z",
+      "hash": "1243d7265fdd4238b9d9ec8807dacc7f5e2755fd57106d6205cee36058052d01",
+      "skipped_hash": false
+    },
+    {
+      "path": "tests/docs.test.js",
+      "size": 290,
+      "mtime": "2026-07-09T16:20:05.805Z",
+      "hash": "95e82bcadad19fed2cabd08c262a2015255cc36fd8de468f8b76d71d3f31cbb0",
+      "skipped_hash": false
+    }
+  ]
+}

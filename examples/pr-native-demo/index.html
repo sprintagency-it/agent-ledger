@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Ledger PR-Native Demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f8;
+      --panel: #ffffff;
+      --ink: #17202a;
+      --muted: #5c6672;
+      --line: #d9e0e8;
+      --accent: #166b5d;
+      --pass: #17664c;
+      --warn: #8a5b00;
+      --block: #9c3127;
+      --pass-bg: #edf7f1;
+      --warn-bg: #fff6df;
+      --block-bg: #fff0ed;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 760;
+      letter-spacing: 0;
+    }
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-weight: 800;
+    }
+    .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+    .hero {
+      padding: 30px 0 22px;
+    }
+    h1 {
+      margin: 0;
+      max-width: 840px;
+      font-size: clamp(36px, 6vw, 72px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+    .subhead {
+      max-width: 760px;
+      margin: 18px 0 0;
+      font-size: 18px;
+      color: var(--muted);
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      font-weight: 650;
+    }
+    .button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(22, 32, 42, 0.04);
+    }
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .scenario {
+      display: flex;
+      flex-direction: column;
+      min-height: 360px;
+      overflow: hidden;
+    }
+    .scenario-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+    .scenario-title {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+    .status {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 74px;
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 820;
+    }
+    .status-pass { color: var(--pass); background: var(--pass-bg); border: 1px solid #c8ded7; }
+    .status-warn { color: var(--warn); background: var(--warn-bg); border: 1px solid #edd49b; }
+    .status-block { color: var(--block); background: var(--block-bg); border: 1px solid #f0c5be; }
+    .scenario-body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+    }
+    .scenario-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .risk-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .risk {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+    .risk span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+    .risk strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 22px;
+      line-height: 1;
+    }
+    .file-list {
+      display: grid;
+      gap: 7px;
+      font-size: 13px;
+    }
+    .file-row {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #edf5f3;
+      color: var(--accent);
+      font-weight: 760;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+    }
+    .artifact-list {
+      display: grid;
+      gap: 8px;
+      margin-top: auto;
+    }
+    .artifact-list a {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .compare {
+      margin-top: 18px;
+      padding: 18px;
+    }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 10px 16px;
+      font-size: 14px;
+    }
+    .compare-grid strong {
+      color: var(--ink);
+    }
+    .compare-grid span {
+      color: var(--muted);
+    }
+    @media (max-width: 960px) {
+      .scenario-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 560px) {
+      .shell {
+        width: min(100% - 20px, 1180px);
+        padding-top: 16px;
+      }
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      h1 {
+        font-size: 36px;
+      }
+      .risk-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="topbar">
+      <div class="brand"><span class="mark">AL</span><span>Agent Ledger</span></div>
+      <div class="links">
+        <a href="pull-request.md">PR index</a>
+        <a href="ledger/supervisor-report.md">Supervisor report</a>
+        <a href="README.md">Regenerate</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <h1>Review AI-generated code changes before they merge.</h1>
+      <p class="subhead">This demo shows the full PR-native status spectrum: PASS for routine changes, WARN for review-worthy commands, and BLOCK for sensitive auth or scope drift.</p>
+      <div class="actions">
+        <a class="button primary" href="pull-request.md">Open PR Status Spectrum</a>
+        <a class="button" href="ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/pr-review.md">Open BLOCK Review</a>
+        <a class="button" href="README.md">Regenerate Demo</a>
+      </div>
+    </section>
+
+    <section class="scenario-grid" aria-label="Agent Ledger status spectrum">
+      <article class="panel scenario">
+        <div class="scenario-head">
+          <div>
+            <p class="scenario-title">AI-generated docs copy cleanup</p>
+            <small>Simulated PR #41 · Low-risk docs change with verification evidence.</small>
+          </div>
+          <span class="status status-pass">PASS</span>
+        </div>
+        <div class="scenario-body">
+          <p>The agent updates customer-facing checkout copy and runs the focused docs test. No sensitive files, auth paths or external side effects are touched.</p>
+          <div class="risk-row">
+            <div class="risk"><span>Critical</span><strong>0</strong></div>
+            <div class="risk"><span>High</span><strong>0</strong></div>
+            <div class="risk"><span>Medium</span><strong>1</strong></div>
+            <div class="risk"><span>Low</span><strong>13</strong></div>
+          </div>
+          <div class="file-list">
+            <div class="file-row"><span class="tag">M</span><span><code>docs/checkout-copy.md</code><br>clarifies checkout wording</span></div>
+<div class="file-row"><span class="tag">M</span><span><code>tests/docs.test.js</code><br>updates copy assertion</span></div>
+          </div>
+          <div class="artifact-list">
+            <a href="pull-request-pass.md"><strong>Simulated PR</strong><span>scenario</span></a>
+            <a href="ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/pr-review.md"><strong>PR Review Record</strong><span>PASS</span></a>
+            <a href="ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr/replay.html"><strong>Replay</strong><span>timeline</span></a>
+          </div>
+        </div>
+      </article>
+<article class="panel scenario">
+        <div class="scenario-head">
+          <div>
+            <p class="scenario-title">AI-generated report script update</p>
+            <small>Simulated PR #42 · Useful change with a command-level review warning.</small>
+          </div>
+          <span class="status status-warn">WARN</span>
+        </div>
+        <div class="scenario-body">
+          <p>The agent updates a reporting helper and changes an executable bit. The code is not blocked, but the command deserves reviewer attention.</p>
+          <div class="risk-row">
+            <div class="risk"><span>Critical</span><strong>0</strong></div>
+            <div class="risk"><span>High</span><strong>1</strong></div>
+            <div class="risk"><span>Medium</span><strong>2</strong></div>
+            <div class="risk"><span>Low</span><strong>11</strong></div>
+          </div>
+          <div class="file-list">
+            <div class="file-row"><span class="tag">M</span><span><code>docs/reporting.md</code><br>adds generated report note</span></div>
+<div class="file-row"><span class="tag">M</span><span><code>scripts/check-report.js</code><br>mode changed by chmod</span></div>
+          </div>
+          <div class="artifact-list">
+            <a href="pull-request-warn.md"><strong>Simulated PR</strong><span>scenario</span></a>
+            <a href="ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/pr-review.md"><strong>PR Review Record</strong><span>WARN</span></a>
+            <a href="ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr/replay.html"><strong>Replay</strong><span>timeline</span></a>
+          </div>
+        </div>
+      </article>
+<article class="panel scenario">
+        <div class="scenario-head">
+          <div>
+            <p class="scenario-title">AI-generated checkout auth update</p>
+            <small>Simulated PR #43 · Small-looking PR that touches auth and drifts outside scope.</small>
+          </div>
+          <span class="status status-block">BLOCK</span>
+        </div>
+        <div class="scenario-body">
+          <p>The agent adds a preview checkout bypass, loosens rate limiting and writes an environment example file outside the declared scope.</p>
+          <div class="risk-row">
+            <div class="risk"><span>Critical</span><strong>4</strong></div>
+            <div class="risk"><span>High</span><strong>0</strong></div>
+            <div class="risk"><span>Medium</span><strong>1</strong></div>
+            <div class="risk"><span>Low</span><strong>12</strong></div>
+          </div>
+          <div class="file-list">
+            <div class="file-row"><span class="tag">M</span><span><code>src/auth.js</code><br>preview bypass branch added</span></div>
+<div class="file-row"><span class="tag">M</span><span><code>src/rate-limit.js</code><br>attempt limit and key changed</span></div>
+<div class="file-row"><span class="tag">M</span><span><code>src/routes/checkout.js</code><br>preview checkout response added</span></div>
+<div class="file-row"><span class="tag">M</span><span><code>tests/auth.test.js</code><br>new positive bypass test</span></div>
+<div class="file-row"><span class="tag">A</span><span><code>.env.example</code><br>demo placeholder config</span></div>
+          </div>
+          <div class="artifact-list">
+            <a href="pull-request-block.md"><strong>Simulated PR</strong><span>scenario</span></a>
+            <a href="ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/pr-review.md"><strong>PR Review Record</strong><span>BLOCK</span></a>
+            <a href="ledger/sessions/2026-07-09-16-20-06-331-demo-block-pr/replay.html"><strong>Replay</strong><span>timeline</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel compare">
+      <h2>What The Spectrum Proves</h2>
+      <div class="compare-grid">
+        <strong>PASS</strong><span>Agent work is visible, verified and low risk. Normal review can proceed.</span>
+        <strong>WARN</strong><span>The change may be fine, but the command history or evidence deserves human attention.</span>
+        <strong>BLOCK</strong><span>The run touched sensitive behavior or drifted outside scope. Human review is required before merge.</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

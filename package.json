@@ -1,0 +1,27 @@
+{
+  "name": "agent-ledger",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "PR-native review records for AI-generated code changes.",
+  "bin": {
+    "agent-ledger": "./src/cli.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "demo": "node scripts/create-demo.mjs",
+    "demo:pr": "node scripts/create-pr-native-demo.mjs"
+  },
+  "keywords": [
+    "ai",
+    "code-review",
+    "github-actions",
+    "developer-tools",
+    "agentic-coding",
+    "pull-request"
+  ],
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

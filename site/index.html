@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Ledger - PR review records for AI-generated code</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f8;
+      --panel: #ffffff;
+      --ink: #151b22;
+      --muted: #5c6672;
+      --line: #d8e0e7;
+      --soft: #eef5f3;
+      --accent: #146b5d;
+      --accent-ink: #ffffff;
+      --pass: #17664c;
+      --warn: #8a5b00;
+      --block: #9c3127;
+      --pass-bg: #edf7f1;
+      --warn-bg: #fff6df;
+      --block-bg: #fff0ed;
+      --code-bg: #111820;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(244, 246, 248, 0.96);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 68px;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 780;
+      letter-spacing: 0;
+    }
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-weight: 820;
+    }
+    .navlinks {
+      display: flex;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+      gap: 24px;
+      align-items: center;
+      padding: 46px 0 28px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border: 1px solid #c8ded7;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 740;
+      margin-bottom: 16px;
+    }
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(40px, 6vw, 76px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+    .sub {
+      max-width: 720px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 19px;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      font-weight: 690;
+    }
+    .btn.primary {
+      background: var(--accent);
+      color: var(--accent-ink);
+      border-color: var(--accent);
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(20, 32, 44, 0.04);
+    }
+    .report {
+      overflow: hidden;
+    }
+    .report-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #c8d2dc;
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 820;
+      color: var(--block);
+      background: var(--block-bg);
+      border: 1px solid #efc4bc;
+    }
+    .report-body {
+      padding: 18px;
+    }
+    .report-title {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+    .meta {
+      display: grid;
+      gap: 8px;
+      margin: 14px 0;
+    }
+    .meta-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 10px;
+      font-size: 14px;
+    }
+    .meta-row span {
+      color: var(--muted);
+    }
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin: 16px 0;
+    }
+    .risk {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+    .risk span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .risk strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 24px;
+      line-height: 1;
+    }
+    .finding {
+      padding: 14px;
+      border: 1px solid #efc4bc;
+      border-radius: 8px;
+      background: #fff8f6;
+    }
+    .finding strong {
+      color: var(--block);
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+    }
+    section {
+      padding: 24px 0;
+    }
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    h2 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+    .section-head p {
+      margin: 0;
+      max-width: 560px;
+      color: var(--muted);
+    }
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .card {
+      padding: 18px;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .spectrum {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .spectrum-card {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+    .badge {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 820;
+    }
+    .badge.pass { color: var(--pass); background: var(--pass-bg); border: 1px solid #c8ded7; }
+    .badge.warn { color: var(--warn); background: var(--warn-bg); border: 1px solid #edd49b; }
+    .badge.block { color: var(--block); background: var(--block-bg); border: 1px solid #efc4bc; }
+    .code-panel {
+      padding: 18px;
+      background: var(--code-bg);
+      color: #e9f0f5;
+      border-color: #25313d;
+      overflow: auto;
+    }
+    .code-panel pre {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .code-panel span {
+      color: #8bc4b7;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1.15fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+    .fine-print {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    @media (max-width: 960px) {
+      .hero,
+      .grid3,
+      .spectrum,
+      .split {
+        grid-template-columns: 1fr;
+      }
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+    @media (max-width: 560px) {
+      .wrap {
+        width: min(100% - 20px, 1180px);
+      }
+      h1 {
+        font-size: 38px;
+      }
+      .risk-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .meta-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#">
+        <span class="mark">AL</span>
+        <span>Agent Ledger</span>
+      </a>
+      <nav class="navlinks" aria-label="Primary">
+        <a href="../README.md">GitHub README</a>
+        <a href="../examples/pr-native-demo/index.html">Demo</a>
+        <a href="../docs/design-partner-brief.md">Design Partners</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero wrap">
+      <div>
+        <span class="eyebrow">Local-first PR review record</span>
+        <h1>Review AI-generated code changes before they merge.</h1>
+        <p class="sub">Agent Ledger turns AI coding-agent work into a PR-native record: files changed, verification evidence, risk signals and reviewer actions in one artifact.</p>
+        <div class="actions">
+          <a class="btn primary" href="../examples/pr-native-demo/index.html">Try it on one AI-generated PR</a>
+          <a class="btn" href="../docs/design-partner-brief.md">Become a design partner</a>
+        </div>
+      </div>
+
+      <article class="panel report" aria-label="Agent Ledger PR review preview">
+        <div class="report-head">
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <span class="status">Status: BLOCK</span>
+        </div>
+        <div class="report-body">
+          <h2 class="report-title">Agent Ledger PR Review Record</h2>
+          <div class="meta">
+            <div class="meta-row"><span>Goal</span><strong>Review AI-generated checkout and auth changes before merge</strong></div>
+            <div class="meta-row"><span>Scope</span><code>src, tests, .github</code></div>
+            <div class="meta-row"><span>Project</span><code>checkout-service-demo</code></div>
+          </div>
+          <div class="risk-grid">
+            <div class="risk"><span>Critical</span><strong>4</strong></div>
+            <div class="risk"><span>High</span><strong>0</strong></div>
+            <div class="risk"><span>Medium</span><strong>0</strong></div>
+            <div class="risk"><span>Low</span><strong>13</strong></div>
+          </div>
+          <div class="finding">
+            <strong>Reviewer action:</strong> inspect the auth bypass, test change and environment example before merge. Require a fix or explicit acceptance if the risk is real.
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="wrap">
+      <div class="section-head">
+        <h2>The required moment is the PR.</h2>
+        <p>Agent Ledger is not a dashboard-first product and not an agency. It creates a review artifact where developers already decide what gets merged.</p>
+      </div>
+      <div class="grid3">
+        <article class="panel card">
+          <h3>1. AI changes code</h3>
+          <p>The agent writes, edits or deletes files in a real repo.</p>
+        </article>
+        <article class="panel card">
+          <h3>2. Ledger renders evidence</h3>
+          <p>Git, transcript and command signals become reviewable artifacts.</p>
+        </article>
+        <article class="panel card">
+          <h3>3. Reviewer sees an action</h3>
+          <p>The PR gets a concrete PASS, WARN or BLOCK before merge.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="section-head">
+        <h2>Not every AI PR should be blocked.</h2>
+        <p>The demo includes three generated scenarios so teams can see the difference between routine work, review-worthy risk and a merge blocker.</p>
+      </div>
+      <div class="spectrum">
+        <article class="panel spectrum-card">
+          <span class="badge pass">PASS</span>
+          <h3>Docs copy cleanup</h3>
+          <p>Routine change with verification evidence. Normal review can continue.</p>
+          <a href="../examples/reports/pass/pr-review.md">Open PASS report</a>
+        </article>
+        <article class="panel spectrum-card">
+          <span class="badge warn">WARN</span>
+          <h3>Report script update</h3>
+          <p>Useful change with a command-level signal the reviewer should inspect.</p>
+          <a href="../examples/reports/warn/pr-review.md">Open WARN report</a>
+        </article>
+        <article class="panel spectrum-card">
+          <span class="badge block">BLOCK</span>
+          <h3>Checkout auth update</h3>
+          <p>Auth and environment-scope changes require human review before merge.</p>
+          <a href="../examples/reports/block/pr-review.md">Open BLOCK report</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="split">
+        <article class="panel card">
+          <h2>Design partner ask</h2>
+          <p>Try Agent Ledger on three real AI-generated PRs. Share which findings changed reviewer behavior, which were noisy and whether this should become a required PR check.</p>
+          <div class="actions">
+            <a class="btn primary" href="../docs/design-partner-brief.md">Read the design partner brief</a>
+          </div>
+        </article>
+        <article class="panel code-panel" aria-label="Quick start">
+<pre><span># Generate the demo</span>
+npm run demo:pr
+
+<span># Open the product surface</span>
+open examples/pr-native-demo/index.html
+
+<span># Review the PR artifact</span>
+open examples/reports/block/pr-review.md</pre>
+        </article>
+      </div>
+      <p class="fine-print">Early local-first release. Agent Ledger supports review; it does not replace tests, security review or human judgment.</p>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    Agent Ledger creates PR-native review records for AI-generated code changes.
+  </footer>
+</body>
+</html>

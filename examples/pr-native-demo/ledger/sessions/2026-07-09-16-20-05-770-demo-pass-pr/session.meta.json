@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1",
+  "session_id": "246bb7eb-ff92-4c9a-844e-20930da061ba",
+  "name": "2026-07-09-16-20-05-770-demo-pass-pr",
+  "goal": "Review a safe AI-generated docs copy update before merge",
+  "scope": "docs,tests",
+  "sensitive_paths": [
+    ".env",
+    "secrets",
+    "credentials",
+    "billing",
+    "finance",
+    "auth",
+    "token"
+  ],
+  "created_at": "2026-07-09T16:20:05.771Z",
+  "project_path": "$REPO_ROOT/examples/pr-native-demo/scenarios/pass/repo",
+  "output_root": "$REPO_ROOT/examples/pr-native-demo/ledger",
+  "session_dir": "$REPO_ROOT/examples/pr-native-demo/ledger/sessions/2026-07-09-16-20-05-770-demo-pass-pr",
+  "capture_limitations": [
+    "V0 captures git state, transcript input, wrapper commands and manual events.",
+    "It does not claim complete capture of every agent action.",
+    "Codex/Claude hooks are planned adapters, not required for this V0."
+  ]
+}

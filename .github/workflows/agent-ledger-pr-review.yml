@@ -1,0 +1,31 @@
+name: Agent Ledger PR Review Smoke Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  agent-ledger:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # In a real setup, run the AI coding-agent step before Agent Ledger,
+      # or call Agent Ledger inside the same job that produced the changes.
+      - name: Run Agent Ledger
+        uses: ./
+        with:
+          goal: "Review this AI-generated PR before merge"
+          scope: "."
+          fail-on-critical: "true"
+          fail-on-high: "false"
+
+      - name: Upload Agent Ledger artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-ledger
+          path: .agent-ledger/

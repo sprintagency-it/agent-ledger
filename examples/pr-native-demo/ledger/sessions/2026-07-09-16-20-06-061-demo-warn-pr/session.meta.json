@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1",
+  "session_id": "b1346e23-6644-4347-9772-03d400df6e48",
+  "name": "2026-07-09-16-20-06-061-demo-warn-pr",
+  "goal": "Review an AI-generated reporting helper update before merge",
+  "scope": "docs,scripts,tests",
+  "sensitive_paths": [
+    ".env",
+    "secrets",
+    "credentials",
+    "billing",
+    "finance",
+    "auth",
+    "token"
+  ],
+  "created_at": "2026-07-09T16:20:06.062Z",
+  "project_path": "$REPO_ROOT/examples/pr-native-demo/scenarios/warn/repo",
+  "output_root": "$REPO_ROOT/examples/pr-native-demo/ledger",
+  "session_dir": "$REPO_ROOT/examples/pr-native-demo/ledger/sessions/2026-07-09-16-20-06-061-demo-warn-pr",
+  "capture_limitations": [
+    "V0 captures git state, transcript input, wrapper commands and manual events.",
+    "It does not claim complete capture of every agent action.",
+    "Codex/Claude hooks are planned adapters, not required for this V0."
+  ]
+}

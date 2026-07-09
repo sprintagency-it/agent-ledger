@@ -2,6 +2,8 @@
 
 An accountable self-review loop for AI coding agents.
 
+[Website](https://agent-ledger.pages.dev) | [Live demo](https://agent-ledger.pages.dev/demo) | [Documentation](https://agent-ledger.pages.dev/docs)
+
 Agent Ledger makes a coding agent declare scope before editing, capture what it changes, run verification, inspect its own findings, correct eligible issues, and leave a reviewable record for the human.
 
 > The report is the evidence. The product is the better execution loop that creates it.

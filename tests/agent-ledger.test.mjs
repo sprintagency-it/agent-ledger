@@ -243,6 +243,7 @@ test('GitHub Action publishes the PR review artifact and can enforce status', ()
   const workflow = readFileSync(path.join(ROOT, '.github', 'workflows', 'agent-ledger-pr-review.yml'), 'utf8');
   assert.match(action, /Agent Ledger PR Review/);
   assert.match(action, /start/);
+  assert.match(action, /run \\\s+--session/);
   assert.match(action, /ingest --type git/);
   assert.match(action, /render --session/);
   assert.match(action, /pr-review\.md/);

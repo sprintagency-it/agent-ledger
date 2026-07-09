@@ -104,7 +104,7 @@ jobs:
       # Existing changes are baseline and are not attributed to this run.
 
       - id: agent-ledger
-        uses: sprintagency-it/agent-ledger@v0.1.1
+        uses: sprintagency-it/agent-ledger@v0.1.2
         with:
           command: "node scripts/run-ai-agent-task.mjs"
           goal: "Review this AI-generated PR before merge"

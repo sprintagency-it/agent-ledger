@@ -65,7 +65,7 @@ Use the Action only when the AI-agent command itself can run inside the same Git
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.1.1
+  uses: sprintagency-it/agent-ledger@v0.1.2
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"

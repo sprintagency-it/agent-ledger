@@ -48,6 +48,9 @@ outputs:
   command-status:
     description: Exit code returned by the captured command.
     value: ${{ steps.run-ledger.outputs.command-status }}
+  out:
+    description: Absolute Agent Ledger output directory.
+    value: ${{ steps.run-ledger.outputs.out }}
 
 runs:
   using: composite
@@ -58,14 +61,17 @@ runs:
       env:
         AGENT_LEDGER_COMMAND: ${{ inputs.command }}
       run: |
-        node "$GITHUB_ACTION_PATH/src/cli.mjs" init --out "${{ inputs.out }}"
+        mkdir -p "${{ inputs.out }}"
+        OUT="$(cd "${{ inputs.out }}" && pwd)"
+
+        node "$GITHUB_ACTION_PATH/src/cli.mjs" init --out "$OUT"
         SESSION="$(node "$GITHUB_ACTION_PATH/src/cli.mjs" start \
           --project "${{ inputs.project }}" \
           --name "${{ inputs.name }}" \
           --goal "${{ inputs.goal }}" \
           --scope "${{ inputs.scope }}" \
           --sensitive "${{ inputs.sensitive }}" \
-          --out "${{ inputs.out }}")"
+          --out "$OUT")"
 
         set +e
         bash -lc "$AGENT_LEDGER_COMMAND"
@@ -77,6 +83,7 @@ runs:
         echo "session=$SESSION" >> "$GITHUB_OUTPUT"
         echo "pr-review=$SESSION/pr-review.md" >> "$GITHUB_OUTPUT"
         echo "command-status=$COMMAND_STATUS" >> "$GITHUB_OUTPUT"
+        echo "out=$OUT" >> "$GITHUB_OUTPUT"
 
     - name: Publish PR review record to job summary
       shell: bash

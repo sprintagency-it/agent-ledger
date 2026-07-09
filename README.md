@@ -108,7 +108,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: agent-ledger
-          path: ${{ steps.agent-ledger.outputs.session }}/../..
+          path: ${{ steps.agent-ledger.outputs.out }}
 ```
 
 For local testing inside this repo, use `uses: ./`.

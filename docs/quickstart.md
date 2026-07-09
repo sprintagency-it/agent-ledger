@@ -1,71 +1,81 @@
 # Agent Ledger Quickstart
 
-Agent Ledger currently has two usable paths: a local CLI and a command-capturing GitHub Action.
+Agent Ledger has three usable paths. Start with the Codex skill unless you need lower-level control or CI capture.
 
-It is not yet a universal agent skill. Capture must begin before the agent changes the repository.
+## Path 1 - Make A Codex Task Self-Reviewing
 
-## Path 1 - See The Product
+Requirements: Git, Node 20+, and Codex.
 
-Requirements: Git and Node 20+.
+From the root of your project:
 
 ```bash
-git clone https://github.com/sprintagency-it/agent-ledger.git
-cd agent-ledger
-npm test
-npm run demo:pr
+npx --yes github:sprintagency-it/agent-ledger#v0.2.0 setup --project .
 ```
 
-Open `examples/pr-native-demo/index.html` and compare the PASS, WARN and BLOCK review records.
+The setup command installs a repository-scoped skill and local runtime. It also adds `.agent-ledger/` to `.gitignore`.
 
-## Path 2 - Review One Real Local Agent Run
-
-Clone Agent Ledger next to the repository you want to review:
+Restart Codex only if the new skill does not appear, then prompt it with a concrete task:
 
 ```text
-workspace/
-  agent-ledger/
-  your-project/
+Use $agent-ledger to fix the checkout validation bug, stay within src/checkout and tests, and run the relevant tests.
 ```
 
-From `agent-ledger/`, start the ledger before asking Codex, Claude Code or another agent to edit `your-project/`:
+The skill will:
+
+1. define goal, scope, acceptance checks, and boundaries before edits;
+2. start local capture;
+3. execute the task and record practical verification commands;
+4. render `review.json`, `fix-brief.md`, and human reports;
+5. classify critical/high findings;
+6. fix only safe true positives inside scope;
+7. rerun checks and refresh the final review once.
+
+Read the final output in this order:
+
+1. `executive-summary.md` - concise human handoff;
+2. `review.json` - machine-readable status and findings;
+3. `fix-brief.md` - correction decisions and boundaries;
+4. `replay.html` - visual timeline.
+
+## Path 2 - Run The CLI Directly
+
+The runtime installed by setup lives at `.agent-ledger/runtime/src/cli.mjs`:
 
 ```bash
-node src/cli.mjs init --out ../your-project/.agent-ledger
+LEDGER=".agent-ledger/runtime/src/cli.mjs"
+OUT=".agent-ledger/runs/first-real-run"
 
-SESSION="$(node src/cli.mjs start \
-  --project ../your-project \
+SESSION="$(node "$LEDGER" start \
+  --project . \
   --name "first-real-run" \
-  --goal "Describe the agent task" \
+  --goal "Describe the concrete agent task" \
   --scope "src,tests" \
-  --sensitive ".env,secrets,credentials,auth,billing" \
-  --out ../your-project/.agent-ledger)"
+  --sensitive ".env,secrets,credentials,tokens,auth,billing,deploy" \
+  --out "$OUT")"
 ```
 
-Now let the agent perform the task. When it finishes:
+Start this before the agent changes files. Run deterministic checks through the wrapper when they do not require shell pipes or redirects:
 
 ```bash
-node src/cli.mjs ingest --type git --session "$SESSION"
-node src/cli.mjs render --session "$SESSION"
+node "$LEDGER" run --session "$SESSION" -- npm test
 ```
 
-Read in this order:
+Render the final review:
 
-1. `pr-review.md` - merge-facing PASS, WARN or BLOCK record.
-2. `executive-summary.md` - concise human or supervisor view.
-3. `replay.html` - visual event timeline.
-4. `risk.md` - detailed critical/high review queue.
+```bash
+node "$LEDGER" ingest --type git --session "$SESSION"
+node "$LEDGER" render --session "$SESSION"
+```
 
-Use `share/` when you intentionally attach a redacted bundle to a PR or send it to another reviewer.
-
-Keep the session root local unless you have manually reviewed it. It can contain raw diffs, file inventories, transcripts and command output.
+After a safe correction, rerun checks and call `ingest` plus `render` again. Git evidence is refreshed, so the final report reflects the corrected repository state without duplicate write events.
 
 ## Path 3 - Capture An Agent Command In GitHub Actions
 
-Use the Action only when the AI-agent command itself can run inside the same GitHub Actions job:
+Use the Action when the AI-agent command can run inside the same job:
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.1.3
+  uses: sprintagency-it/agent-ledger@v0.2.0
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"
@@ -78,16 +88,24 @@ Use the Action only when the AI-agent command itself can run inside the same Git
     path: ${{ steps.agent-ledger.outputs.share }}
 ```
 
-Changes already present when the Action starts are treated as baseline. Reviewing an arbitrary existing PR diff is a separate future integration.
+Changes already present when the Action starts are baseline. Reviewing an arbitrary existing PR diff is a separate future integration.
 
-Keep `if: always()` on the upload step so the review bundle is retained even when Agent Ledger blocks the change or the captured command fails.
+Keep `if: always()` so the review bundle remains available even when the captured command fails or Agent Ledger blocks the change.
 
-## What Success Looks Like
+## Privacy Boundary
 
-The first run is useful when a reviewer can answer, without reopening the original agent chat:
+- Agent Ledger does not upload run data to a hosted service.
+- The session root can contain raw diffs, snapshots, transcripts, and command logs.
+- `share/` excludes raw evidence and applies best-effort redaction.
+- Review `share/` before attaching it to a PR or sending it elsewhere.
 
-- what changed;
-- what was verified;
-- which evidence is incomplete;
-- what needs human inspection;
+## A Useful First Run
+
+The run is useful when the agent and reviewer can answer without reopening the original chat:
+
+- what outcome was attempted;
+- which files were inside scope;
+- what changed and what was verified;
+- which findings were fixed or dismissed with evidence;
+- what remains unresolved for a human;
 - whether normal review can proceed, needs a warning, or should stop.

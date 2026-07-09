@@ -48,7 +48,7 @@ Headline:
 
 One-liner:
 
-> Agent Ledger creates PR-native review records for AI coding-agent work: files changed, verification, risk, and reviewer actions in one local-first artifact.
+> Agent Ledger gives AI coding agents a bounded self-review loop for scope, verification, finding review, safe correction, and evidence-based human handoff.
 
 Primary CTA:
 

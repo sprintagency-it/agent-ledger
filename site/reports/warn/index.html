@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Agent Ledger - demo-block-pr</title>
+  <title>Agent Ledger - demo-warn-pr</title>
   <style>
     :root {
       color-scheme: light;
@@ -74,42 +74,41 @@
 <main>
   <div class="topbar">
     <div class="brand"><span class="mark" aria-hidden="true">&gt;_</span><span>Agent Ledger</span></div>
-    <span class="state state-block">BLOCK / REVIEW RECORD</span>
+    <span class="state state-warn">WARN / REVIEW RECORD</span>
   </div>
 
   <header class="run-head">
     <p class="kicker">Local-first / agent accountability</p>
-    <h1>demo-block-pr</h1>
-    <p>Human review required before trusting this run.</p>
+    <h1>demo-warn-pr</h1>
+    <p>Review high-risk items before trusting this run.</p>
   </header>
 
   <section class="card session-card">
     <span class="section-label">01 / Run context</span>
-    <p>Goal: Review AI-generated checkout and auth changes before merge</p>
-    <p>Scope: src,tests,.github</p>
-    <p>Project: <code>demo/block/repo</code></p>
+    <p>Goal: Review an AI-generated reporting helper update before merge</p>
+    <p>Scope: docs,scripts,tests</p>
+    <p>Project: <code>demo/warn/repo</code></p>
   </section>
 
   <section class="grid">
-    <div class="card metric-card metric-critical"><div class="metric">4</div><div class="label">Critical</div></div>
-    <div class="card metric-card metric-high"><div class="metric">0</div><div class="label">High</div></div>
-    <div class="card metric-card metric-medium"><div class="metric">0</div><div class="label">Medium</div></div>
-    <div class="card metric-card metric-low"><div class="metric">13</div><div class="label">Low</div></div>
+    <div class="card metric-card metric-critical"><div class="metric">0</div><div class="label">Critical</div></div>
+    <div class="card metric-card metric-high"><div class="metric">1</div><div class="label">High</div></div>
+    <div class="card metric-card metric-medium"><div class="metric">1</div><div class="label">Medium</div></div>
+    <div class="card metric-card metric-low"><div class="metric">12</div><div class="label">Low</div></div>
   </section>
 
   <section class="card">
     <span class="section-label">02 / Trust checklist</span>
     <h2>What To Review Before Trusting This Run</h2>
-    <ul><li>Review 4 critical event(s) before trusting this run.</li>
-<li>Inspect 9 write event(s) against the stated goal and scope.</li>
-<li>Review 1 event(s) outside the declared scope.</li></ul>
+    <ul><li>Review 1 high-risk event(s), especially sensitive paths and side effects.</li>
+<li>Inspect 4 write event(s) against the stated goal and scope.</li></ul>
   </section>
 
   <section class="card">
     <span class="section-label">03 / Human brief</span>
     <h2>Human Brief</h2>
-    <p><strong>Human review required before trusting this run.</strong></p>
-    <p>17 events captured. 9 write events, 0 commands, 0 tool calls.</p>
+    <p><strong>Review high-risk items before trusting this run.</strong></p>
+    <p>14 events captured. 4 write events, 1 commands, 0 tool calls.</p>
     <p>For a manager-level view, open <code>executive-summary.md</code>.</p>
   </section>
 
@@ -122,10 +121,7 @@
   <section class="card">
     <span class="section-label">05 / Policy</span>
     <h2>Policy Suggestions</h2>
-    <ul><li><code>{&quot;match&quot;:&quot;src/auth.js&quot;,&quot;action&quot;:&quot;ask&quot;,&quot;reason&quot;:&quot;Sensitive path or scope touched by agent run.&quot;}</code></li>
-<li><code>{&quot;match&quot;:&quot;tests/auth.test.js&quot;,&quot;action&quot;:&quot;ask&quot;,&quot;reason&quot;:&quot;Sensitive path or scope touched by agent run.&quot;}</code></li>
-<li><code>{&quot;match&quot;:&quot;.env.example&quot;,&quot;action&quot;:&quot;ask&quot;,&quot;reason&quot;:&quot;Sensitive path or scope touched by agent run.&quot;}</code></li>
-<li><code>{&quot;match&quot;:&quot;src/auth.js to allow a preview bypass header.&quot;,&quot;action&quot;:&quot;ask&quot;,&quot;reason&quot;:&quot;Sensitive path or scope touched by agent run.&quot;}</code></li></ul>
+    <ul><li>No policy suggestions generated.</li></ul>
   </section>
 
   <span class="section-label">06 / Event stream</span>
@@ -150,7 +146,7 @@
       <td>note</td>
       <td><strong>low</strong><br><small></small></td>
       <td><code>.</code></td>
-      <td>Session started: demo-block-pr</td>
+      <td>Session started: demo-warn-pr</td>
     </tr>
   
 
@@ -161,7 +157,7 @@
       <td>artifact</td>
       <td><strong>low</strong><br><small></small></td>
       <td><code>workspace-before.json</code></td>
-      <td>Workspace before snapshot captured (7 files).</td>
+      <td>Workspace before snapshot captured (4 files).</td>
     </tr>
   
 
@@ -176,6 +172,28 @@
     </tr>
   
 
+    <tr class="risk-high">
+      <td>2026-01-01T00:00:00.000Z</td>
+      <td><span class="pill">agent</span></td>
+      <td>wrapper</td>
+      <td>execute</td>
+      <td><strong>high</strong><br><small>execute, command_risk</small></td>
+      <td><code>chmod +x scripts/check-report.js</code></td>
+      <td>Command started: chmod +x scripts/check-report.js<br><small>Command execution | High-risk command pattern</small></td>
+    </tr>
+  
+
+    <tr class="risk-medium">
+      <td>2026-01-01T00:00:00.000Z</td>
+      <td><span class="pill">system</span></td>
+      <td>wrapper</td>
+      <td>artifact</td>
+      <td><strong>medium</strong><br><small>command_risk</small></td>
+      <td><code>artifacts/command-demo-warn.log</code></td>
+      <td>Command finished with exit code 0: chmod +x scripts/check-report.js<br><small>High-risk command pattern</small></td>
+    </tr>
+  
+
     <tr class="risk-low">
       <td>2026-01-01T00:00:00.000Z</td>
       <td><span class="pill">system</span></td>
@@ -183,7 +201,7 @@
       <td>artifact</td>
       <td><strong>low</strong><br><small></small></td>
       <td><code>workspace-after.json</code></td>
-      <td>Workspace after snapshot captured (8 files).</td>
+      <td>Workspace after snapshot captured (4 files).</td>
     </tr>
   
 
@@ -194,7 +212,7 @@
       <td>diff</td>
       <td><strong>low</strong><br><small></small></td>
       <td><code>diff.patch</code></td>
-      <td>Git diff captured (2182 chars).</td>
+      <td>Git diff captured (535 chars).</td>
     </tr>
   
 
@@ -205,7 +223,7 @@
       <td>artifact</td>
       <td><strong>low</strong><br><small></small></td>
       <td><code>files-touched.csv</code></td>
-      <td>Git status captured (6 run-touched paths; 0 pre-existing unchanged dirty paths ignored).</td>
+      <td>Git status captured (2 run-touched paths; 0 pre-existing unchanged dirty paths ignored).</td>
     </tr>
   
 
@@ -226,19 +244,8 @@
       <td>git</td>
       <td>write</td>
       <td><strong>low</strong><br><small>write</small></td>
-      <td><code>.github/workflows/ci.yml</code></td>
-      <td>Git status M for .github/workflows/ci.yml<br><small>Write event</small></td>
-    </tr>
-  
-
-    <tr class="risk-critical">
-      <td>2026-01-01T00:00:00.000Z</td>
-      <td><span class="pill">agent</span></td>
-      <td>git</td>
-      <td>write</td>
-      <td><strong>critical</strong><br><small>write, sensitive_path, sensitive_scope</small></td>
-      <td><code>src/auth.js</code></td>
-      <td>Git status M for src/auth.js<br><small>Write event | Sensitive path | Matches sensitive scope: auth</small></td>
+      <td><code>docs/reporting.md</code></td>
+      <td>Git status M for docs/reporting.md<br><small>Write event</small></td>
     </tr>
   
 
@@ -248,41 +255,8 @@
       <td>git</td>
       <td>write</td>
       <td><strong>low</strong><br><small>write</small></td>
-      <td><code>src/rate-limit.js</code></td>
-      <td>Git status M for src/rate-limit.js<br><small>Write event</small></td>
-    </tr>
-  
-
-    <tr class="risk-low">
-      <td>2026-01-01T00:00:00.000Z</td>
-      <td><span class="pill">agent</span></td>
-      <td>git</td>
-      <td>write</td>
-      <td><strong>low</strong><br><small>write</small></td>
-      <td><code>src/routes/checkout.js</code></td>
-      <td>Git status M for src/routes/checkout.js<br><small>Write event</small></td>
-    </tr>
-  
-
-    <tr class="risk-critical">
-      <td>2026-01-01T00:00:00.000Z</td>
-      <td><span class="pill">agent</span></td>
-      <td>git</td>
-      <td>write</td>
-      <td><strong>critical</strong><br><small>write, sensitive_path, sensitive_scope</small></td>
-      <td><code>tests/auth.test.js</code></td>
-      <td>Git status M for tests/auth.test.js<br><small>Write event | Sensitive path | Matches sensitive scope: auth</small></td>
-    </tr>
-  
-
-    <tr class="risk-critical">
-      <td>2026-01-01T00:00:00.000Z</td>
-      <td><span class="pill">agent</span></td>
-      <td>git</td>
-      <td>write</td>
-      <td><strong>critical</strong><br><small>write, sensitive_path, sensitive_scope, scope_drift</small></td>
-      <td><code>.env.example</code></td>
-      <td>Git status ?? for .env.example<br><small>Write event | Sensitive path | Matches sensitive scope: .env | Target is outside declared scope: src,tests,.github</small></td>
+      <td><code>scripts/check-report.js</code></td>
+      <td>Git status M for scripts/check-report.js<br><small>Write event</small></td>
     </tr>
   
 
@@ -297,14 +271,14 @@
     </tr>
   
 
-    <tr class="risk-critical">
+    <tr class="risk-low">
       <td>2026-01-01T00:00:00.000Z</td>
       <td><span class="pill">agent</span></td>
       <td>transcript</td>
       <td>write</td>
-      <td><strong>critical</strong><br><small>write, sensitive_path, sensitive_scope</small></td>
-      <td><code>src/auth.js to allow a preview bypass header.</code></td>
-      <td>- Edited src/auth.js to allow a preview bypass header.<br><small>Write event | Sensitive path | Matches sensitive scope: auth</small></td>
+      <td><strong>low</strong><br><small>write</small></td>
+      <td><code>docs/reporting.md.</code></td>
+      <td>- Edited docs/reporting.md.<br><small>Write event</small></td>
     </tr>
   
 
@@ -314,19 +288,8 @@
       <td>transcript</td>
       <td>write</td>
       <td><strong>low</strong><br><small>write</small></td>
-      <td><code>src/routes/checkout.js to return a preview checkout id.</code></td>
-      <td>- Edited src/routes/checkout.js to return a preview checkout id.<br><small>Write event</small></td>
-    </tr>
-  
-
-    <tr class="risk-low">
-      <td>2026-01-01T00:00:00.000Z</td>
-      <td><span class="pill">agent</span></td>
-      <td>transcript</td>
-      <td>write</td>
-      <td><strong>low</strong><br><small>write</small></td>
-      <td><code>CI reporter output.</code></td>
-      <td>- Updated CI reporter output.<br><small>Write event</small></td>
+      <td><code>scripts/check-report.js.</code></td>
+      <td>- Edited scripts/check-report.js.<br><small>Write event</small></td>
     </tr>
   </tbody>
   </table></div>

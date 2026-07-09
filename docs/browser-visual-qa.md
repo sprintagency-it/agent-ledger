@@ -2,23 +2,24 @@
 
 Date: 2026-07-09
 
-Agent Ledger landing and PR-native demo were reviewed in Chromium with desktop and mobile viewports before the public V0 release.
+Agent Ledger landing, demo, documentation, and report replay were reviewed in a real browser after the v0.2.0 agent-native onboarding pass.
 
-## Result
+## Results
 
-| Surface | Viewport | Horizontal overflow | Clipped text | Missing local links |
+| Surface | Viewport | Horizontal overflow | Truncated controls | Broken primary navigation |
 |---|---:|---:|---:|---:|
-| Landing | 1440x900 | 0 | 0 | 0 |
+| Landing | 1280x720 | 0 | 0 | 0 |
 | Landing | 390x844 | 0 | 0 | 0 |
-| PR-native demo | 1440x900 | 0 | 0 | 0 |
-| PR-native demo | 390x844 | 0 | 0 | 0 |
-| Replay report | 1440x900 | 0 | 0 | n/a |
-| Replay report | 390x844 | 0 | 0 | n/a |
+| Demo | 390x844 | 0 | 0 | 0 |
+| Documentation | 390x844 | 0 | 0 | 0 |
+| WARN replay | default desktop | 0 | 0 | 0 |
 
-## Notes
+## Verified
 
-- The hero headline line-height was increased from `0.98` to `1.04` to avoid tight font-metric clipping on small screens.
-- The demo status spectrum remained visible and readable across PASS, WARN and BLOCK cards.
-- The human-facing surfaces now share a warm developer-tool palette, monospace metadata, compact corners and the `>_` product mark.
-- Replay reports expose the PASS/WARN/BLOCK state in the first viewport and keep the event timeline horizontally contained on mobile.
-- Local links from the landing and demo resolved successfully.
+- The first viewport identifies Agent Ledger, states the self-review promise, and exposes the install command.
+- The landing loads a real Agent Ledger replay screenshot.
+- Demo and Docs menu items open styled HTML pages rather than raw Markdown.
+- PASS, WARN, and BLOCK cards point to generated HTML replays.
+- No public site link ends in `.md`.
+- Mobile layouts keep buttons, headings, navigation, code, and tables inside the viewport.
+- Landing navigation clicks reached `demo.html` and `docs.html` with the expected page titles.

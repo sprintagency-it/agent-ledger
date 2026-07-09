@@ -1,0 +1,7 @@
+interface:
+  display_name: "Agent Ledger"
+  short_description: "Make agent tasks scoped, verified, and reviewable"
+  brand_color: "#D97757"
+  default_prompt: "Use $agent-ledger to execute this task with scoped capture, verification, and a correction loop."
+policy:
+  allow_implicit_invocation: true

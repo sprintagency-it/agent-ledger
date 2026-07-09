@@ -41,27 +41,27 @@ Open the generated PR artifact:
 ### AL-001 - CRITICAL write
 
 - Evidence: `src/auth.js`
-- Why it matters: Write event; Sensitive path or topic; Matches sensitive scope: auth
+- Why it matters: Write event; Sensitive path; Matches sensitive scope: auth
 - Reviewer action: inspect this change before merge and require a fix or explicit acceptance if the risk is real.
 - Summary: Git status M for src/auth.js
 
 ### AL-002 - CRITICAL write
 
 - Evidence: `tests/auth.test.js`
-- Why it matters: Write event; Sensitive path or topic; Matches sensitive scope: auth
+- Why it matters: Write event; Sensitive path; Matches sensitive scope: auth
 - Reviewer action: inspect this change before merge and require a fix or explicit acceptance if the risk is real.
 - Summary: Git status M for tests/auth.test.js
 
 ### AL-003 - CRITICAL write
 
 - Evidence: `.env.example`
-- Why it matters: Write event; Sensitive path or topic; Matches sensitive scope: .env; Target is outside declared scope: src,tests,.github
+- Why it matters: Write event; Sensitive path; Matches sensitive scope: .env; Target is outside declared scope: src,tests,.github
 - Reviewer action: inspect this change before merge and require a fix or explicit acceptance if the risk is real.
 - Summary: Git status ?? for .env.example
 
 ### AL-004 - CRITICAL write
 
 - Evidence: `src/auth.js to allow a preview bypass header.`
-- Why it matters: Write event; Sensitive path or topic; Matches sensitive scope: auth
+- Why it matters: Write event; Sensitive path; Matches sensitive scope: auth
 - Reviewer action: inspect this change before merge and require a fix or explicit acceptance if the risk is real.
 - Summary: - Edited src/auth.js to allow a preview bypass header.

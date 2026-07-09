@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { realpathSync } from 'node:fs';
 import path from 'node:path';
-import { appendJsonl, readJson, writeJson, writeText } from './fs-utils.mjs';
+import { appendJsonl, readJson, readJsonl, writeJson, writeText } from './fs-utils.mjs';
 import { createEvent } from './events.mjs';
 import { sessionFile, writeSnapshot } from './session.mjs';
 
@@ -53,6 +53,8 @@ export function ingestGit(session) {
   if (!isGitRepo(session.meta.project_path)) {
     throw new Error(`Project is not a git repository: ${session.meta.project_path}`);
   }
+
+  removePreviousGitIngestEvents(session);
 
   const beforeSnapshot = readJson(sessionFile(session.dir, 'workspace-before.json'), { files: [] });
   const afterSnapshot = writeSnapshot(session, 'after');
@@ -109,6 +111,16 @@ export function ingestGit(session) {
 
   appendJsonl(sessionFile(session.dir, 'session.jsonl'), events);
   return { patch, statusRows: runRows, preexistingRows, events };
+}
+
+function removePreviousGitIngestEvents(session) {
+  const eventFile = sessionFile(session.dir, 'session.jsonl');
+  const events = readJsonl(eventFile);
+  const retained = events.filter((event) => {
+    if (event.source !== 'git') return true;
+    return Object.hasOwn(event.meta || {}, 'preexisting_dirty_count');
+  });
+  writeText(eventFile, retained.map((event) => JSON.stringify(event)).join('\n') + (retained.length ? '\n' : ''));
 }
 
 export function parseStatus(raw) {

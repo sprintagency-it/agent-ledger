@@ -7,6 +7,8 @@ import { sessionFile } from './session.mjs';
 const SHARE_FILES = [
   'pr-review.md',
   'executive-summary.md',
+  'fix-brief.md',
+  'review.json',
   'risk.md',
   'replay.html',
   'session.redacted.jsonl',
@@ -29,17 +31,100 @@ export function renderSession(session) {
   const counts = summarizeRisks(redacted);
   const policies = policySuggestions(redacted);
   const reviewItems = trustChecklist(redacted);
+  const status = prStatus(counts);
+  const review = buildMachineReview(publicMeta, redacted, counts, reviewItems, status);
 
   writeText(sessionFile(session.dir, 'session.redacted.jsonl'), redacted.map((event) => JSON.stringify(event)).join('\n') + '\n');
   writeJson(sessionFile(session.dir, 'redactions.json'), { generated_at: new Date().toISOString(), redactions: stats });
   writeText(sessionFile(session.dir, 'policy-suggestions.yaml'), toYaml({ rules: policies }) + '\n');
   writeText(sessionFile(session.dir, 'risk.md'), renderRiskMarkdown(publicMeta, redacted, counts, reviewItems));
   writeText(sessionFile(session.dir, 'executive-summary.md'), renderExecutiveSummary(publicMeta, redacted, counts, stats, policies, reviewItems));
+  writeText(sessionFile(session.dir, 'fix-brief.md'), renderFixBrief(review));
+  writeJson(sessionFile(session.dir, 'review.json'), review);
   writeText(sessionFile(session.dir, 'pr-review.md'), renderPrReviewMarkdown(publicMeta, redacted, counts, reviewItems));
   writeText(sessionFile(session.dir, 'replay.html'), renderHtml(publicMeta, redacted, counts, stats, policies, reviewItems));
   const shareDir = writeShareBundle(session);
 
-  return { events: redacted, counts, stats, policies, reviewItems, shareDir };
+  return { events: redacted, counts, stats, policies, reviewItems, status, review, shareDir };
+}
+
+function buildMachineReview(meta, events, counts, reviewItems, status) {
+  const findings = events
+    .filter((event) => ['critical', 'high'].includes(event.risk))
+    .slice(0, 20)
+    .map((event, index) => ({
+      id: `AL-${String(index + 1).padStart(3, '0')}`,
+      risk: event.risk,
+      event_type: event.event_type,
+      target: event.target || '',
+      summary: event.summary || '',
+      tags: event.risk_tags || [],
+      reasons: event.risk_reasons || [],
+      classification: 'unresolved'
+    }));
+  const verificationEvents = events.filter((event) => {
+    const text = `${event.summary || ''} ${event.target || ''}`.toLowerCase();
+    return /\b(test|check|lint|verify|validation|smoke)\b/.test(text);
+  });
+
+  return {
+    schema_version: '0.2',
+    generated_at: new Date().toISOString(),
+    status: status.kind,
+    status_label: status.label,
+    status_summary: status.summary,
+    session: {
+      name: meta.name,
+      goal: meta.goal || '',
+      scope: meta.scope || '',
+      project: meta.project_path || ''
+    },
+    risk_counts: counts,
+    evidence: {
+      events: events.length,
+      writes: events.filter((event) => event.event_type === 'write').length,
+      commands: events.filter((event) => event.event_type === 'execute').length,
+      verification_events: verificationEvents.length,
+      git_ingested: events.some((event) => event.source === 'git' && event.event_type === 'diff'),
+      transcript_ingested: events.some((event) => event.source === 'transcript')
+    },
+    review_items: reviewItems,
+    findings,
+    next_action: status.kind === 'PASS'
+      ? 'Complete normal human review and hand off the evidence record.'
+      : 'Classify each finding as true_positive, false_positive, or unresolved before fixing or accepting it.'
+  };
+}
+
+function renderFixBrief(review) {
+  const findings = review.findings.length
+    ? review.findings.map((finding) => `- [ ] **${finding.id} / ${finding.risk.toUpperCase()}** \`${finding.target || 'n/a'}\` - ${finding.summary}\n  - Classification: \`unresolved\`\n  - Evidence: ${finding.reasons.join('; ') || 'Risk rule matched.'}`).join('\n')
+    : '- No critical/high findings. Complete normal review and verify the stated goal.';
+
+  return `# Agent Ledger Fix Brief
+
+Status: ${review.status}
+
+Goal: ${review.session.goal || 'n/a'}
+
+## Correction Queue
+
+${findings}
+
+## Classification Rule
+
+For each finding, choose one classification before acting:
+
+- \`true_positive\`: the run created a real problem or required evidence is missing;
+- \`false_positive\`: harmless context triggered the rule and concrete evidence proves it;
+- \`unresolved\`: evidence is insufficient or human judgment is required.
+
+## Automatic Fix Boundary
+
+The executing agent may fix a true positive automatically only when the change is reversible, inside declared scope, and does not alter auth, secrets, permissions, billing, deployment, external data, or destructive behavior. Those boundaries require human approval.
+
+After eligible fixes, rerun verification, refresh Git ingestion, and render the session again. Stop after one correction pass unless another pass is clearly necessary and safe.
+`;
 }
 
 function writeShareBundle(session) {

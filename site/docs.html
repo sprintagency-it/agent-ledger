@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Install and use the Agent Ledger Codex skill, local CLI, and GitHub Action.">
+  <title>Agent Ledger Documentation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell nav">
+      <a class="brand" href="index.html"><span class="mark">AL</span><span>Agent Ledger</span></a>
+      <nav class="navlinks" aria-label="Primary navigation"><a href="index.html">Home</a><a href="demo.html">Demo</a><a href="https://github.com/sprintagency-it/agent-ledger">GitHub</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero shell"><p class="eyebrow">DOCUMENTATION / V0.2.0</p><h1>Start with the Codex skill.</h1><p>Install once in a repository, invoke <code>$agent-ledger</code> with a concrete task, and let the agent complete a bounded verification and correction pass before handoff.</p></section>
+    <div class="shell docs-layout">
+      <nav class="toc" aria-label="Documentation contents"><strong>On this page</strong><a href="#install">Install</a><a href="#first-task">First task</a><a href="#outputs">Outputs</a><a href="#boundaries">Boundaries</a><a href="#cli">Direct CLI</a><a href="#action">GitHub Action</a></nav>
+      <article class="prose">
+        <section id="install">
+          <p class="section-index">01 / INSTALL</p><h2>Install in one command</h2><p>Requirements: Git, Node 20+, and Codex. Run from the project root:</p>
+          <pre><code>npx --yes github:sprintagency-it/agent-ledger#v0.2.0 setup --project .</code></pre>
+          <p>Setup writes the shareable skill to <code>.agents/skills/agent-ledger/</code>, installs the private runtime under <code>.agent-ledger/runtime/</code>, and ensures <code>.agent-ledger/</code> is ignored. Restart Codex only if the skill does not appear automatically.</p>
+        </section>
+        <section id="first-task">
+          <p class="section-index">02 / FIRST TASK</p><h2>Invoke the skill with a concrete outcome</h2>
+          <pre><code>Use $agent-ledger to fix the signup validation bug, stay within src/signup and tests, and run the relevant tests.</code></pre>
+          <p>The skill defines goal, scope, checks, and approval boundaries before editing. It then captures the task, renders findings, fixes safe true positives, and refreshes the review once.</p>
+          <h3>Good task shape</h3><ul><li>Name the behavior to change.</li><li>Include likely path boundaries when known.</li><li>State the verification you expect.</li><li>Keep auth, secrets, deploys, and destructive actions explicit.</li></ul>
+        </section>
+        <section id="outputs">
+          <p class="section-index">03 / OUTPUTS</p><h2>Two readers, one evidence set</h2>
+          <table class="output-table"><thead><tr><th>File</th><th>Primary reader</th><th>Purpose</th></tr></thead><tbody><tr><td><code>review.json</code></td><td>Agent</td><td>Status, evidence counts, and structured findings.</td></tr><tr><td><code>fix-brief.md</code></td><td>Agent + human</td><td>Classification queue and safe automatic-fix boundary.</td></tr><tr><td><code>executive-summary.md</code></td><td>Human</td><td>Shortest run outcome and unresolved review items.</td></tr><tr><td><code>pr-review.md</code></td><td>Reviewer</td><td>Merge-facing PASS, WARN, or BLOCK record.</td></tr><tr><td><code>replay.html</code></td><td>Human</td><td>Offline visual timeline and risk context.</td></tr><tr><td><code>share/</code></td><td>Handoff</td><td>Smaller redacted bundle for deliberate sharing.</td></tr></tbody></table>
+        </section>
+        <section id="boundaries">
+          <p class="section-index">04 / BOUNDARIES</p><h2>Correction is deliberate, not blind</h2>
+          <p>Every critical or high finding is classified as <code>true_positive</code>, <code>false_positive</code>, or <code>unresolved</code>. The agent may automatically fix a true positive only when it is reversible, inside scope, and does not alter auth, secrets, permissions, billing, deployment, external data, or destructive behavior.</p>
+          <p>Risk rules are deterministic signals. Generic words such as API or credentials do not prove exposure; concrete paths, access behavior, and value-like evidence matter.</p>
+        </section>
+        <section id="cli">
+          <p class="section-index">05 / DIRECT CLI</p><h2>Use the lower-level runtime when needed</h2>
+          <pre><code>LEDGER=".agent-ledger/runtime/src/cli.mjs"
+SESSION="$(node "$LEDGER" start --project . --name "my-run" --goal "Concrete outcome" --scope "src,tests" --out .agent-ledger/runs/my-run)"
+
+# Make changes and run checks.
+node "$LEDGER" ingest --type git --session "$SESSION"
+node "$LEDGER" render --session "$SESSION"</code></pre>
+          <p>Calling Git ingest again refreshes the final file evidence instead of duplicating it. Command evidence remains available across the correction pass.</p>
+        </section>
+        <section id="action">
+          <p class="section-index">06 / GITHUB ACTION</p><h2>Capture an agent command in CI</h2>
+          <pre><code>- id: agent-ledger
+  uses: sprintagency-it/agent-ledger@v0.2.0
+  with:
+    command: "node scripts/run-ai-agent-task.mjs"
+    goal: "Review this AI-generated change before merge"
+    scope: "src,tests"
+    fail-on-critical: "true"</code></pre>
+          <p>The Action attributes only changes created after its command starts. It does not yet review an arbitrary existing PR diff.</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="shell footer-inner"><span>Agent Ledger documentation</span><a href="https://github.com/sprintagency-it/agent-ledger">Full source on GitHub</a></div></footer>
+</body>
+</html>

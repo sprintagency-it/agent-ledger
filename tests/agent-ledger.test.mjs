@@ -59,12 +59,15 @@ test('Agent Ledger V0 creates a reviewable local ledger from git and transcript 
     'preexisting-dirty.csv',
     'risk.md',
     'executive-summary.md',
+    'fix-brief.md',
+    'review.json',
     'pr-review.md',
     'redactions.json',
     'policy-suggestions.yaml',
     'replay.html',
     'share/README.md',
     'share/pr-review.md',
+    'share/review.json',
     'share/replay.html',
     'share/session.redacted.jsonl'
   ];
@@ -97,6 +100,16 @@ test('Agent Ledger V0 creates a reviewable local ledger from git and transcript 
   assert.match(prReview, /Reviewer Actions/);
   assert.match(prReview, /Evidence-Based Findings/);
   assert.match(prReview, /Local Artifacts/);
+
+  const machineReview = JSON.parse(readFileSync(path.join(sessionDir, 'review.json'), 'utf8'));
+  assert.equal(machineReview.schema_version, '0.2');
+  assert.equal(machineReview.status, 'BLOCK');
+  assert.ok(machineReview.findings.length > 0);
+  assert.equal(machineReview.evidence.git_ingested, true);
+
+  const fixBrief = readFileSync(path.join(sessionDir, 'fix-brief.md'), 'utf8');
+  assert.match(fixBrief, /Classification Rule/);
+  assert.match(fixBrief, /Automatic Fix Boundary/);
 
   const replay = readFileSync(path.join(sessionDir, 'replay.html'), 'utf8');
   assert.match(replay, /Agent Ledger/);
@@ -236,6 +249,71 @@ test('project path domain words do not create sensitive-scope false positives', 
   assert.equal(event.risk, 'low');
   assert.ok(!event.risk_tags.includes('sensitive_scope'));
   assert.ok(!event.risk_tags.includes('boundary'));
+});
+
+test('generic security vocabulary does not become a critical finding without exposure evidence', () => {
+  const event = classifyEvent({
+    event_type: 'execute',
+    target: 'node scripts/check-broker-api.mjs',
+    summary: 'Verified broker API credentials are present without printing values'
+  }, {
+    project_path: '/tmp/broker-research',
+    sensitive_paths: ['credentials']
+  });
+
+  assert.equal(event.risk, 'low');
+  assert.ok(event.risk_tags.includes('secret_reference'));
+  assert.ok(!event.risk_tags.includes('secret_possible'));
+  assert.ok(!event.risk_tags.includes('sensitive_path'));
+});
+
+test('repeated git ingest refreshes final state instead of duplicating findings', () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'agent-ledger-v0-refresh-'));
+  const workspace = path.join(tmp, 'workspace');
+  const out = path.join(tmp, 'ledger');
+  mkdirSync(workspace, { recursive: true });
+  writeFileSync(path.join(workspace, 'README.md'), '# Initial\n');
+  git(workspace, ['init']);
+  git(workspace, ['config', 'user.email', 'agent-ledger@example.test']);
+  git(workspace, ['config', 'user.name', 'Agent Ledger Test']);
+  git(workspace, ['add', '.']);
+  git(workspace, ['commit', '-m', 'initial']);
+
+  const sessionDir = run([
+    'start', '--project', workspace, '--name', 'refresh-test',
+    '--goal', 'Refresh final state', '--scope', 'README.md', '--out', out
+  ]).trim();
+  writeFileSync(path.join(workspace, 'README.md'), '# First pass\n');
+  run(['ingest', '--type', 'git', '--session', sessionDir]);
+  writeFileSync(path.join(workspace, 'README.md'), '# Corrected pass\n');
+  run(['ingest', '--type', 'git', '--session', sessionDir]);
+  run(['render', '--session', sessionDir]);
+
+  const events = readFileSync(path.join(sessionDir, 'session.redacted.jsonl'), 'utf8')
+    .trim().split('\n').map((line) => JSON.parse(line));
+  assert.equal(events.filter((event) => event.source === 'git' && event.event_type === 'write').length, 1);
+  assert.match(readFileSync(path.join(sessionDir, 'diff.patch'), 'utf8'), /Corrected pass/);
+  assert.doesNotMatch(readFileSync(path.join(sessionDir, 'diff.patch'), 'utf8'), /First pass/);
+});
+
+test('setup installs the Codex skill and local runtime in one command', () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'agent-ledger-v0-setup-'));
+  const project = path.join(tmp, 'project');
+  mkdirSync(project, { recursive: true });
+  writeFileSync(path.join(project, '.gitignore'), 'node_modules/\n');
+
+  run(['setup', '--project', project]);
+
+  const skill = path.join(project, '.agents', 'skills', 'agent-ledger', 'SKILL.md');
+  const runtime = path.join(project, '.agent-ledger', 'runtime', 'src', 'cli.mjs');
+  assert.ok(existsSync(skill));
+  assert.ok(existsSync(runtime));
+  assert.match(readFileSync(skill, 'utf8'), /accountable self-review loop/);
+  assert.match(readFileSync(path.join(project, '.gitignore'), 'utf8'), /\.agent-ledger\//);
+
+  const help = execFileSync(NODE, [runtime, '--help'], { cwd: project, encoding: 'utf8' });
+  assert.match(help, /setup/);
+  assert.match(help, /Agent Ledger V0/);
 });
 
 test('GitHub Action publishes the PR review artifact and can enforce status', () => {

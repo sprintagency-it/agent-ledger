@@ -2,52 +2,56 @@
 
 ## Positioning
 
-Agent Ledger creates PR-native review records for AI-generated code changes.
+Agent Ledger is an accountable self-review loop for AI coding agents.
+
+The agent scopes the task, verifies its work, reviews findings, corrects eligible issues, and leaves evidence for the human.
 
 ## Primary Claim
 
-Review AI-generated code changes before they merge.
+Make your coding agent check its own work.
 
 ## Short Description
 
-AI agents can ship code faster than teams can review it. Agent Ledger turns an AI coding-agent run into a PR review record: files changed, verification evidence, risk signals and reviewer actions.
+Agent Ledger gives Codex a bounded loop for scope, execution, verification, finding review, and safe correction. Every run ends with machine-readable findings and a human-readable record of what changed, what passed, and what still needs a decision.
 
 ## GitHub README Hook
 
-Your AI agent changed the code. The PR reviewer should not have to reconstruct the run from a chat transcript.
+Your AI agent should not wait for the human to reconstruct every missed check from a chat transcript.
 
-Agent Ledger generates `pr-review.md` for every AI-generated PR so reviewers can see:
+Invoke `$agent-ledger` and the agent will:
 
-- what changed;
-- what was verified;
-- what touched sensitive scope;
-- what should be reviewed before merge;
-- whether the PR is `PASS`, `WARN`, or `BLOCK`.
+- declare outcome and scope before editing;
+- capture practical command and Git evidence;
+- render `PASS`, `WARN`, or `BLOCK` findings;
+- classify findings before fixing or dismissing them;
+- correct safe true positives inside scope;
+- hand off `review.json`, `fix-brief.md`, `executive-summary.md`, and `replay.html`.
 
-## GitHub Action Wording
+## Proof Surface
 
-Use conservative wording until the Action has been tested in a disposable GitHub repo with a real agent-generated change:
+PR-native review records remain the clearest team-facing proof. Use this secondary claim:
 
-> Agent Ledger can publish a PR review record from the evidence captured during an AI-agent workflow.
+> Every AI-generated change should arrive with the evidence needed to review it.
 
-Avoid saying that the Action automatically understands every clean `pull_request` checkout. The first public workflow should be described as a command-capturing same-job agent check or local-first review artifact until PR-diff bot behavior is built and verified.
+The GitHub Action captures changes produced by the command passed to it. Do not imply that it automatically understands every already-open PR or every agent action.
 
 ## CTA Variants
 
-- Try it on one AI-generated PR.
-- Attach a ledger to your next AI PR.
-- Become a design partner.
-- Make AI-generated PRs reviewable.
+- Install Agent Ledger for Codex.
+- Try it on one real agent task.
+- Make your next AI change self-reviewing.
+- Open the PASS / WARN / BLOCK demo.
 
 ## Show HN Candidates
 
-- Show HN: Agent Ledger - PR review records for AI-generated code
-- Show HN: I built a local review record for AI coding-agent PRs
-- Every AI-generated PR should come with a ledger
+- Show HN: Agent Ledger - a self-review loop for AI coding agents
+- Show HN: I made Codex review and correct its own task before handoff
+- Agent Ledger: scoped execution, verification, and evidence for AI coding tasks
 
 ## What Not To Say
 
+- Do not claim that Agent Ledger makes the underlying model intrinsically smarter.
 - Do not call it a generic logger.
+- Do not imply complete observability or security guarantees.
+- Do not promise blind automatic fixes across auth, secrets, permissions, billing, deploys, or destructive behavior.
 - Do not sell manual AI security audits.
-- Do not imply complete observability yet.
-- Do not claim security guarantees from V0 risk rules.

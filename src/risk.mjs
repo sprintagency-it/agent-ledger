@@ -21,7 +21,8 @@ const HIGH_COMMANDS = [
 
 const SENSITIVE_PATH = /(^|\/|\\)(\.env|secrets?|credentials?|tokens?|cookies?|auth|billing|finance|private|client|source_of_truth)(\/|\\|\.|$)/i;
 const MCP_SIDE_EFFECT = /\b(write|delete|send|pay|commit|publish|deploy|archive|trash|mail|calendar)\b/i;
-const SECRET_TEXT = /\b(api[_-]?(?:key|token)|token|secret|password|cookie|bearer|sk-[A-Za-z0-9_-]{8,})\b/i;
+const SECRET_REFERENCE_TEXT = /\b(api[_-]?(?:key|token)|access[_-]?token|token|secret|password|credentials?|cookie|bearer)\b/i;
+const SECRET_VALUE_TEXT = /(?:\bsk-[A-Za-z0-9_-]{12,}\b|\bbearer\s+[A-Za-z0-9._~+\/-]{16,}|\b(?:api[_-]?(?:key|token)|access[_-]?token|secret|password)\s*[=:]\s*["']?[A-Za-z0-9._~+\/-]{12,})/i;
 const SECRET_ACCESS_COMMAND = /\bsecurity\s+find-generic-password\b/i;
 const SAFE_SECRET_PRESENCE_CHECK = /\bsecurity\s+find-generic-password\b[\s\S]*(?:>\s*\/dev\/null|1>\s*\/dev\/null)[\s\S]*(?:2>&1|2>\s*\/dev\/null)[\s\S]*\becho\s+[a-z0-9_-]*(?:present|missing)\b/i;
 
@@ -54,8 +55,12 @@ export function classifyEvent(event, meta = {}) {
       add(9, 'secret_access', 'Command may read secret material');
     }
   }
-  if (SENSITIVE_PATH.test(target) || SENSITIVE_PATH.test(text)) add(7, 'sensitive_path', 'Sensitive path or topic');
-  if (SECRET_TEXT.test(text) && !safeSecretPresenceCheck) add(8, 'secret_possible', 'Possible secret/token material');
+  if (isPathLikeEvent(event) && SENSITIVE_PATH.test(target)) add(7, 'sensitive_path', 'Sensitive path');
+  if (SECRET_VALUE_TEXT.test(text) && !safeSecretPresenceCheck) {
+    add(8, 'secret_possible', 'Possible secret value material');
+  } else if (SECRET_REFERENCE_TEXT.test(text) && !safeSecretPresenceCheck && !secretAccessCommand) {
+    add(1, 'secret_reference', 'Secret-related term without exposed value evidence');
+  }
   if (event.source === 'transcript' && /\bnot verified|unverified|untested|not tested\b/i.test(text)) {
     add(4, 'missing_verification', 'Missing verification note');
   }
@@ -82,6 +87,10 @@ export function classifyEvent(event, meta = {}) {
     tags.add(tag);
     reasons.push(reason);
   }
+}
+
+function isPathLikeEvent(event) {
+  return ['write', 'delete', 'read', 'diff', 'artifact'].includes(event.event_type);
 }
 
 export function classifyEvents(events, meta) {

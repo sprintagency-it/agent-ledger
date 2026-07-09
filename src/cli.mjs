@@ -8,6 +8,7 @@ import { captureGitBaseline, ingestGit } from './git.mjs';
 import { ingestTranscript } from './ingest-transcript.mjs';
 import { renderSession } from './render-html.mjs';
 import { aggregateSessions } from './aggregate.mjs';
+import { setupCodexProject } from './setup.mjs';
 
 async function main() {
   const argv = process.argv.slice(2);
@@ -15,6 +16,7 @@ async function main() {
 
   try {
     if (!command || command === 'help' || command === '--help') return help();
+    if (command === 'setup') return setup(parseOptions(argv));
     if (command === 'init') return init(parseOptions(argv));
     if (command === 'start') return start(parseOptions(argv));
     if (command === 'snapshot') return snapshot(parseOptions(argv));
@@ -34,6 +36,7 @@ function help() {
   console.log(`Agent Ledger V0
 
 Commands:
+  setup [--project ./repo] [--gitignore false]
   init --out .agent-ledger
   start --project ./repo --name "run-name" --goal "..." --scope "..." --out .agent-ledger
   snapshot [--stage before|after] [--out .agent-ledger] [--session path]
@@ -44,6 +47,15 @@ Commands:
   run -- command args...
   demo [--out tmp/demo-ledger]
 `);
+}
+
+function setup(options) {
+  if (String(options.gitignore).toLowerCase() === 'false') options.gitignore = false;
+  const result = setupCodexProject(options);
+  console.log(`Agent Ledger ${result.version} is ready in ${result.project}`);
+  console.log(`Skill: ${result.skill}`);
+  console.log(`Runtime: ${result.runtime}`);
+  console.log('Next: restart Codex if needed, then invoke $agent-ledger with a concrete task.');
 }
 
 function init(options) {
@@ -94,7 +106,7 @@ function ingest(options) {
 function render(options) {
   const session = resolveSession(options);
   const result = renderSession(session);
-  console.log(`Rendered ${sessionFile(session.dir, 'replay.html')} (${result.events.length} events)`);
+  console.log(`Rendered ${sessionFile(session.dir, 'replay.html')} (${result.events.length} events, status ${result.status.kind})`);
 }
 
 function aggregate(options) {

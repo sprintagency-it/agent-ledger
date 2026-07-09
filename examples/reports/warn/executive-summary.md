@@ -18,7 +18,7 @@ Review high-risk items before trusting this run.
 - Tool calls: 0
 - Scope drift events: 0
 - Pre-existing dirty paths ignored: 0
-- Redaction patterns triggered: 1
+- Redaction patterns triggered: 0
 
 ## Risk Snapshot
 

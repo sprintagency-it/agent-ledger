@@ -18,7 +18,7 @@ Do not trust blindly. Human review required before merge, deploy, send, or hando
 - Tool calls: 0
 - Scope drift events: 1
 - Pre-existing dirty paths ignored: 0
-- Redaction patterns triggered: 1
+- Redaction patterns triggered: 0
 
 ## Risk Snapshot
 

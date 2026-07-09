@@ -296,7 +296,7 @@ test('repeated git ingest refreshes final state instead of duplicating findings'
   assert.doesNotMatch(readFileSync(path.join(sessionDir, 'diff.patch'), 'utf8'), /First pass/);
 });
 
-test('setup installs the Codex skill and local runtime in one command', () => {
+test('setup installs Codex and Claude Code skills plus the local runtime in one command', () => {
   const tmp = mkdtempSync(path.join(tmpdir(), 'agent-ledger-v0-setup-'));
   const project = path.join(tmp, 'project');
   mkdirSync(project, { recursive: true });
@@ -304,11 +304,14 @@ test('setup installs the Codex skill and local runtime in one command', () => {
 
   run(['setup', '--project', project]);
 
-  const skill = path.join(project, '.agents', 'skills', 'agent-ledger', 'SKILL.md');
+  const codexSkill = path.join(project, '.agents', 'skills', 'agent-ledger', 'SKILL.md');
+  const claudeSkill = path.join(project, '.claude', 'skills', 'agent-ledger', 'SKILL.md');
   const runtime = path.join(project, '.agent-ledger', 'runtime', 'src', 'cli.mjs');
-  assert.ok(existsSync(skill));
+  assert.ok(existsSync(codexSkill));
+  assert.ok(existsSync(claudeSkill));
   assert.ok(existsSync(runtime));
-  assert.match(readFileSync(skill, 'utf8'), /accountable self-review loop/);
+  assert.equal(readFileSync(codexSkill, 'utf8'), readFileSync(claudeSkill, 'utf8'));
+  assert.match(readFileSync(codexSkill, 'utf8'), /accountable self-review loop/);
   assert.match(readFileSync(path.join(project, '.gitignore'), 'utf8'), /\.agent-ledger\//);
 
   const help = execFileSync(NODE, [runtime, '--help'], { cwd: project, encoding: 'utf8' });

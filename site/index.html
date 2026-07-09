@@ -19,12 +19,12 @@
 
   <main>
     <section class="hero shell">
-      <p class="eyebrow">Local-first / open source / Codex-ready</p>
+      <p class="eyebrow">Local-first / open source / Codex + Claude Code</p>
       <h1>Agent Ledger</h1>
       <p class="hero-statement">Make your coding agent check its own work.</p>
-      <p class="hero-copy">Agent Ledger gives Codex a bounded loop for scope, execution, verification, finding review, and safe correction. You get a more disciplined run and a clear record of what happened.</p>
-      <div class="actions"><a class="button primary" href="#install">Install for Codex</a><a class="button" href="demo.html">Open the live demo</a></div>
-      <div class="install-line" aria-label="Agent Ledger install command"><span class="prompt" aria-hidden="true">$</span><code>npx --yes github:sprintagency-it/agent-ledger#v0.2.0 setup --project .</code></div>
+      <p class="hero-copy">Agent Ledger gives coding agents a bounded loop for scope, execution, verification, finding review, and safe correction. You get a more disciplined run and a clear record of what happened.</p>
+      <div class="actions"><a class="button primary" href="#install">Install</a><a class="button" href="demo.html">Open the live demo</a></div>
+      <div class="install-line" aria-label="Agent Ledger install command"><span class="prompt" aria-hidden="true">$</span><code>npx --yes github:sprintagency-it/agent-ledger#v0.3.0 setup --project .</code></div>
     </section>
 
     <section class="shell product-preview" aria-labelledby="preview-title">
@@ -33,7 +33,7 @@
         <p>The agent reads the same findings before handoff, classifies them, corrects eligible issues, and renders the final state again.</p>
       </div>
       <figure class="product-shot">
-        <img src="assets/agent-ledger-replay.png" alt="Agent Ledger replay showing run context, status, risk counts, and review evidence" width="1440" height="900">
+        <img src="assets/agent-ledger-replay.jpg" alt="Agent Ledger replay showing run context, status, risk counts, and review evidence" width="1265" height="712">
         <figcaption>Offline replay from a generated Agent Ledger run. No hosted account required.</figcaption>
       </figure>
     </section>
@@ -64,21 +64,24 @@
     <section class="band dark" id="install">
       <div class="shell install-layout">
         <div>
-          <p class="section-index light">03 / START</p><h2>Install once. Invoke it like any Codex skill.</h2>
-          <p class="install-copy">Run setup from your repository root. The workflow is checked into `.agents/skills`; private runtime and run evidence stay under ignored `.agent-ledger/`.</p>
+          <p class="section-index light">03 / START</p><h2>Install once. Use it with Codex or Claude Code.</h2>
+          <p class="install-copy">Run setup from your repository root. The workflow is installed for both agents; private runtime and run evidence stay under ignored <code>.agent-ledger/</code>.</p>
           <ol class="plain-steps">
             <li><strong>Run setup</strong><span>Installs the skill and local runtime.</span></li>
-            <li><strong>Restart Codex if needed</strong><span>Codex normally detects new skills automatically.</span></li>
-            <li><strong>Invoke `$agent-ledger`</strong><span>Give it a concrete coding task and expected checks.</span></li>
+            <li><strong>Choose your agent</strong><span>Use the same local workflow in Codex or Claude Code.</span></li>
+            <li><strong>Invoke the skill</strong><span>Give it a concrete coding task and expected checks.</span></li>
           </ol>
         </div>
         <div class="terminal" aria-label="Agent Ledger quickstart commands">
           <div class="terminal-head"><span></span><span></span><span></span><strong>quickstart</strong></div>
           <pre><code><b># 1. Install in the current repository</b>
-npx --yes github:sprintagency-it/agent-ledger#v0.2.0 setup --project .
+npx --yes github:sprintagency-it/agent-ledger#v0.3.0 setup --project .
 
 <b># 2. In Codex</b>
 Use $agent-ledger to fix the signup validation bug and run the relevant tests.
+
+<b># Or in Claude Code</b>
+/agent-ledger Fix the signup validation bug and run the relevant tests.
 
 <b># 3. Receive</b>
 PASS / WARN / BLOCK

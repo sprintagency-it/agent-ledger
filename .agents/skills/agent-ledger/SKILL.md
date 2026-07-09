@@ -14,10 +14,10 @@ Use the repository-local runtime at `.agent-ledger/runtime/src/cli.mjs`.
 If it is missing, tell the user that local setup is required and run this from the repository root after approval for network access:
 
 ```bash
-npx --yes github:sprintagency-it/agent-ledger setup --project .
+npx --yes github:sprintagency-it/agent-ledger#v0.3.0 setup --project .
 ```
 
-Store run output under `.agent-ledger/runs/<run-name>`. This directory is local evidence and should remain ignored by Git. The installed skill under `.agents/skills/agent-ledger` is intended to be committed.
+Store run output under `.agent-ledger/runs/<run-name>`. This directory is local evidence and should remain ignored by Git. The installed skills under `.agents/skills/agent-ledger` (Codex) and `.claude/skills/agent-ledger` (Claude Code) are intended to be committed.
 
 ## Workflow
 

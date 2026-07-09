@@ -44,7 +44,7 @@ export function createSession(options) {
     capture_limitations: [
       'V0 captures git state, transcript input, wrapper commands and manual events.',
       'It does not claim complete capture of every agent action.',
-      'Codex/Claude hooks are planned adapters, not required for this V0.'
+      'Codex and Claude Code use repository skills; capture still begins when this runtime starts.'
     ]
   };
 

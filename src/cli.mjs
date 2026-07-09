@@ -8,7 +8,7 @@ import { captureGitBaseline, ingestGit } from './git.mjs';
 import { ingestTranscript } from './ingest-transcript.mjs';
 import { renderSession } from './render-html.mjs';
 import { aggregateSessions } from './aggregate.mjs';
-import { setupCodexProject } from './setup.mjs';
+import { setupAgentProject } from './setup.mjs';
 
 async function main() {
   const argv = process.argv.slice(2);
@@ -51,11 +51,12 @@ Commands:
 
 function setup(options) {
   if (String(options.gitignore).toLowerCase() === 'false') options.gitignore = false;
-  const result = setupCodexProject(options);
+  const result = setupAgentProject(options);
   console.log(`Agent Ledger ${result.version} is ready in ${result.project}`);
-  console.log(`Skill: ${result.skill}`);
+  console.log(`Codex skill: ${result.skills.codex}`);
+  console.log(`Claude Code skill: ${result.skills.claude}`);
   console.log(`Runtime: ${result.runtime}`);
-  console.log('Next: restart Codex if needed, then invoke $agent-ledger with a concrete task.');
+  console.log('Next: use $agent-ledger in Codex or /agent-ledger in Claude Code with a concrete task.');
 }
 
 function init(options) {

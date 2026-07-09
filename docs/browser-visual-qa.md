@@ -2,13 +2,13 @@
 
 Date: 2026-07-09
 
-Agent Ledger landing, demo, documentation, and report replay were reviewed in a real browser after the v0.2.0 agent-native onboarding pass.
+Agent Ledger landing, demo, documentation, and report replay were reviewed in a real browser after the v0.3.0 Codex and Claude Code onboarding pass.
 
 ## Results
 
 | Surface | Viewport | Horizontal overflow | Truncated controls | Broken primary navigation |
 |---|---:|---:|---:|---:|
-| Landing | 1280x720 | 0 | 0 | 0 |
+| Landing | 1280x900 | 0 | 0 | 0 |
 | Landing | 390x844 | 0 | 0 | 0 |
 | Demo | 390x844 | 0 | 0 | 0 |
 | Documentation | 390x844 | 0 | 0 | 0 |
@@ -18,6 +18,8 @@ Agent Ledger landing, demo, documentation, and report replay were reviewed in a 
 
 - The first viewport identifies Agent Ledger, states the self-review promise, and exposes the install command.
 - The landing loads a real Agent Ledger replay screenshot.
+- The replay image preserves its native 1265x712 ratio on desktop and mobile instead of cropping its sides.
+- The install CTA is agent-neutral, and the quickstart shows both Codex and Claude Code invocations.
 - Demo and Docs menu items open styled HTML pages rather than raw Markdown.
 - PASS, WARN, and BLOCK cards point to generated HTML replays.
 - No public site link ends in `.md`.

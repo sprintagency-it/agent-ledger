@@ -8,27 +8,31 @@ Agent Ledger makes a coding agent declare scope before editing, capture what it 
 
 > The report is the evidence. The product is the better execution loop that creates it.
 
-Agent Ledger is local-first and open source. The current release includes a Codex skill, a Node CLI, and a command-capturing GitHub Action.
+Agent Ledger is local-first and open source. The current release includes project skills for Codex and Claude Code, a Node CLI, and a command-capturing GitHub Action.
 
 ## Install In One Command
 
-Requirements: Git, Node 20+, and Codex.
+Requirements: Git, Node 20+, and Codex or Claude Code.
 
-Run this from the project you want Codex to work on:
+Run this from the project where your coding agent works:
 
 ```bash
-npx --yes github:sprintagency-it/agent-ledger#v0.2.0 setup --project .
+npx --yes github:sprintagency-it/agent-ledger#v0.3.0 setup --project .
 ```
 
-Then invoke the installed repository skill in Codex:
+Then invoke the installed repository skill in Codex or Claude Code:
 
 ```text
 Use $agent-ledger to add input validation to the signup form and verify it with the existing tests.
+
+# Claude Code
+/agent-ledger Add input validation to the signup form and verify it with the existing tests.
 ```
 
-If Codex does not show the skill immediately, restart Codex once. The setup command installs:
+The setup command installs:
 
 - `.agents/skills/agent-ledger/` - the shareable workflow Codex discovers;
+- `.claude/skills/agent-ledger/` - the same workflow for Claude Code;
 - `.agent-ledger/runtime/` - the local CLI runtime;
 - `.agent-ledger/runs/` - private run evidence created during tasks.
 
@@ -77,7 +81,7 @@ Open `examples/pr-native-demo/index.html` to compare:
 
 ## Lower-Level CLI
 
-The Codex skill uses the CLI automatically. You can also run it directly:
+The agent skills use the CLI automatically. You can also run it directly:
 
 ```bash
 LEDGER=".agent-ledger/runtime/src/cli.mjs"
@@ -103,7 +107,7 @@ The Action captures changes produced by the command passed to it and publishes `
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.2.0
+  uses: sprintagency-it/agent-ledger@v0.3.0
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"
@@ -130,7 +134,7 @@ It improves execution discipline and makes the resulting evidence easier for bot
 
 ## Current Limits
 
-- The Codex adapter is the first agent-native workflow; other agents can still use the CLI manually.
+- Codex and Claude Code have first-class repository skills; other agents can still use the CLI manually.
 - Capture is partial when commands bypass the wrapper or no transcript is available.
 - Risk rules are deterministic signals, not semantic proof. Findings must be classified against real context.
 - GitHub App, organization policy, signed reports, and hosted retention remain future team surfaces.

@@ -12,13 +12,13 @@ Make your coding agent check its own work.
 
 ## Short Description
 
-Agent Ledger gives Codex a bounded loop for scope, execution, verification, finding review, and safe correction. Every run ends with machine-readable findings and a human-readable record of what changed, what passed, and what still needs a decision.
+Agent Ledger gives Codex and Claude Code a bounded loop for scope, execution, verification, finding review, and safe correction. Every run ends with machine-readable findings and a human-readable record of what changed, what passed, and what still needs a decision.
 
 ## GitHub README Hook
 
 Your AI agent should not wait for the human to reconstruct every missed check from a chat transcript.
 
-Invoke `$agent-ledger` and the agent will:
+Invoke `$agent-ledger` in Codex or `/agent-ledger` in Claude Code and the agent will:
 
 - declare outcome and scope before editing;
 - capture practical command and Git evidence;
@@ -37,7 +37,7 @@ The GitHub Action captures changes produced by the command passed to it. Do not 
 
 ## CTA Variants
 
-- Install Agent Ledger for Codex.
+- Install Agent Ledger.
 - Try it on one real agent task.
 - Make your next AI change self-reviewing.
 - Open the PASS / WARN / BLOCK demo.
@@ -45,7 +45,7 @@ The GitHub Action captures changes produced by the command passed to it. Do not 
 ## Show HN Candidates
 
 - Show HN: Agent Ledger - a self-review loop for AI coding agents
-- Show HN: I made Codex review and correct its own task before handoff
+- Show HN: I made coding agents review and correct their own work before handoff
 - Agent Ledger: scoped execution, verification, and evidence for AI coding tasks
 
 ## What Not To Say

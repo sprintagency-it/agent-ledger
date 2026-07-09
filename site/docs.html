@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Install and use the Agent Ledger Codex skill, local CLI, and GitHub Action.">
+  <meta name="description" content="Install and use Agent Ledger with Codex, Claude Code, the local CLI, and GitHub Actions.">
   <title>Agent Ledger Documentation</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,18 +15,22 @@
     </div>
   </header>
   <main>
-    <section class="page-hero shell"><p class="eyebrow">DOCUMENTATION / V0.2.0</p><h1>Start with the Codex skill.</h1><p>Install once in a repository, invoke <code>$agent-ledger</code> with a concrete task, and let the agent complete a bounded verification and correction pass before handoff.</p></section>
+    <section class="page-hero shell"><p class="eyebrow">DOCUMENTATION / V0.3.0</p><h1>Install once. Use your agent.</h1><p>Invoke <code>$agent-ledger</code> in Codex or <code>/agent-ledger</code> in Claude Code, then let the agent complete a bounded verification and correction pass before handoff.</p></section>
     <div class="shell docs-layout">
       <nav class="toc" aria-label="Documentation contents"><strong>On this page</strong><a href="#install">Install</a><a href="#first-task">First task</a><a href="#outputs">Outputs</a><a href="#boundaries">Boundaries</a><a href="#cli">Direct CLI</a><a href="#action">GitHub Action</a></nav>
       <article class="prose">
         <section id="install">
-          <p class="section-index">01 / INSTALL</p><h2>Install in one command</h2><p>Requirements: Git, Node 20+, and Codex. Run from the project root:</p>
-          <pre><code>npx --yes github:sprintagency-it/agent-ledger#v0.2.0 setup --project .</code></pre>
-          <p>Setup writes the shareable skill to <code>.agents/skills/agent-ledger/</code>, installs the private runtime under <code>.agent-ledger/runtime/</code>, and ensures <code>.agent-ledger/</code> is ignored. Restart Codex only if the skill does not appear automatically.</p>
+          <p class="section-index">01 / INSTALL</p><h2>Install in one command</h2><p>Requirements: Git, Node 20+, and Codex or Claude Code. Run from the project root:</p>
+          <pre><code>npx --yes github:sprintagency-it/agent-ledger#v0.3.0 setup --project .</code></pre>
+          <p>Setup writes the shareable workflow to <code>.agents/skills/agent-ledger/</code> for Codex and <code>.claude/skills/agent-ledger/</code> for Claude Code, installs the private runtime under <code>.agent-ledger/runtime/</code>, and ensures <code>.agent-ledger/</code> is ignored.</p>
         </section>
         <section id="first-task">
           <p class="section-index">02 / FIRST TASK</p><h2>Invoke the skill with a concrete outcome</h2>
-          <pre><code>Use $agent-ledger to fix the signup validation bug, stay within src/signup and tests, and run the relevant tests.</code></pre>
+          <pre><code># Codex
+Use $agent-ledger to fix the signup validation bug, stay within src/signup and tests, and run the relevant tests.
+
+# Claude Code
+/agent-ledger Fix the signup validation bug, stay within src/signup and tests, and run the relevant tests.</code></pre>
           <p>The skill defines goal, scope, checks, and approval boundaries before editing. It then captures the task, renders findings, fixes safe true positives, and refreshes the review once.</p>
           <h3>Good task shape</h3><ul><li>Name the behavior to change.</li><li>Include likely path boundaries when known.</li><li>State the verification you expect.</li><li>Keep auth, secrets, deploys, and destructive actions explicit.</li></ul>
         </section>
@@ -52,7 +56,7 @@ node "$LEDGER" render --session "$SESSION"</code></pre>
         <section id="action">
           <p class="section-index">06 / GITHUB ACTION</p><h2>Capture an agent command in CI</h2>
           <pre><code>- id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.2.0
+  uses: sprintagency-it/agent-ledger@v0.3.0
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"

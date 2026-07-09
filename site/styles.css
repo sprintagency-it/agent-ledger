@@ -53,7 +53,7 @@ h1 { margin: 0; font-size: 72px; line-height: 0.98; }
 h2 { margin: 0; font-size: 36px; line-height: 1.12; }
 h3 { margin: 0; font-size: 18px; line-height: 1.25; }
 .product-shot { margin: 0; }
-.product-shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border: 1px solid #2b2f2a; border-radius: 6px; box-shadow: 8px 8px 0 var(--accent); background: var(--white); }
+.product-shot img { display: block; width: 100%; height: auto; object-fit: contain; object-position: center top; border: 1px solid #2b2f2a; border-radius: 6px; box-shadow: 8px 8px 0 var(--accent); background: var(--white); }
 .product-shot figcaption { margin-top: 14px; color: var(--muted); font-size: 13px; }
 .band { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--white); padding: 72px 0; }
 .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }

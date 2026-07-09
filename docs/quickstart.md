@@ -1,23 +1,26 @@
 # Agent Ledger Quickstart
 
-Agent Ledger has three usable paths. Start with the Codex skill unless you need lower-level control or CI capture.
+Agent Ledger has three usable paths. Start with the project skill for Codex or Claude Code unless you need lower-level control or CI capture.
 
-## Path 1 - Make A Codex Task Self-Reviewing
+## Path 1 - Make An Agent Task Self-Reviewing
 
-Requirements: Git, Node 20+, and Codex.
+Requirements: Git, Node 20+, and Codex or Claude Code.
 
 From the root of your project:
 
 ```bash
-npx --yes github:sprintagency-it/agent-ledger#v0.2.0 setup --project .
+npx --yes github:sprintagency-it/agent-ledger#v0.3.0 setup --project .
 ```
 
-The setup command installs a repository-scoped skill and local runtime. It also adds `.agent-ledger/` to `.gitignore`.
+The setup command installs repository-scoped skills for both agents and one shared local runtime. It also adds `.agent-ledger/` to `.gitignore`.
 
-Restart Codex only if the new skill does not appear, then prompt it with a concrete task:
+Invoke the skill with a concrete task:
 
 ```text
 Use $agent-ledger to fix the checkout validation bug, stay within src/checkout and tests, and run the relevant tests.
+
+# Claude Code
+/agent-ledger Fix the checkout validation bug, stay within src/checkout and tests, and run the relevant tests.
 ```
 
 The skill will:
@@ -75,7 +78,7 @@ Use the Action when the AI-agent command can run inside the same job:
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.2.0
+  uses: sprintagency-it/agent-ledger@v0.3.0
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"

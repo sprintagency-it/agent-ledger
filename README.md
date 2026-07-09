@@ -96,7 +96,7 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -104,7 +104,7 @@ jobs:
       # Existing changes are baseline and are not attributed to this run.
 
       - id: agent-ledger
-        uses: sprintagency-it/agent-ledger@v0.1.2
+        uses: sprintagency-it/agent-ledger@v0.1.3
         with:
           command: "node scripts/run-ai-agent-task.mjs"
           goal: "Review this AI-generated PR before merge"
@@ -112,7 +112,7 @@ jobs:
           fail-on-critical: "true"
           fail-on-high: "false"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: agent-ledger

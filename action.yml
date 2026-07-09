@@ -49,8 +49,11 @@ outputs:
     description: Exit code returned by the captured command.
     value: ${{ steps.run-ledger.outputs.command-status }}
   out:
-    description: Absolute Agent Ledger output directory.
+    description: Absolute Agent Ledger output directory containing raw local evidence. Do not upload blindly.
     value: ${{ steps.run-ledger.outputs.out }}
+  share:
+    description: Redacted share bundle that excludes raw diffs, transcripts, workspace snapshots and command logs.
+    value: ${{ steps.run-ledger.outputs.share }}
 
 runs:
   using: composite
@@ -84,6 +87,7 @@ runs:
         echo "pr-review=$SESSION/pr-review.md" >> "$GITHUB_OUTPUT"
         echo "command-status=$COMMAND_STATUS" >> "$GITHUB_OUTPUT"
         echo "out=$OUT" >> "$GITHUB_OUTPUT"
+        echo "share=$SESSION/share" >> "$GITHUB_OUTPUT"
 
     - name: Publish PR review record to job summary
       shell: bash

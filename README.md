@@ -6,6 +6,8 @@ Agent Ledger turns an AI coding-agent run into a reviewable artifact for pull re
 
 > Review AI-generated code changes before they merge.
 
+Today Agent Ledger is a local Node CLI plus a command-capturing GitHub Action. It is not a hosted service and it is not a Codex/Claude skill that silently observes any existing agent session.
+
 ## Why This Exists
 
 AI agents can generate useful code quickly, but PR reviewers are often left with only a diff and a vague chat transcript. That is not enough for teams that care about auth changes, sensitive files, tests, deploy risk, or auditability.
@@ -38,7 +40,7 @@ The demo generates three AI-generated PR scenarios:
 - [WARN example](examples/reports/warn/pr-review.md) - reviewer should inspect a specific command-level risk;
 - [BLOCK example](examples/reports/block/pr-review.md) - human review required before merge.
 
-## Install Locally
+## Start Here
 
 Agent Ledger requires Node 20+.
 
@@ -48,6 +50,10 @@ cd agent-ledger
 npm test
 npm run demo:pr
 ```
+
+Then open `examples/pr-native-demo/index.html`.
+
+For a real repository, Agent Ledger must start before the agent changes files. Follow the [local quickstart](docs/quickstart.md) for the exact workflow and privacy boundary.
 
 ## Basic CLI Flow
 
@@ -68,6 +74,7 @@ node src/cli.mjs render --session "$SESSION"
 
 open "$SESSION/pr-review.md"
 open "$SESSION/replay.html"
+open "$SESSION/share"
 ```
 
 ## GitHub Action
@@ -93,11 +100,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Run your AI coding-agent step here, or run Agent Ledger at the end
-      # around a command that simulates or performs the agent work.
+      # The command must create the changes after Agent Ledger starts.
+      # Existing changes are baseline and are not attributed to this run.
 
       - id: agent-ledger
-        uses: sprintagency-it/agent-ledger@v0.1.0
+        uses: sprintagency-it/agent-ledger@v0.1.1
         with:
           command: "node scripts/run-ai-agent-task.mjs"
           goal: "Review this AI-generated PR before merge"
@@ -106,9 +113,10 @@ jobs:
           fail-on-high: "false"
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: agent-ledger
-          path: ${{ steps.agent-ledger.outputs.out }}
+          path: ${{ steps.agent-ledger.outputs.share }}
 ```
 
 For local testing inside this repo, use `uses: ./`.
@@ -116,6 +124,15 @@ For local testing inside this repo, use `uses: ./`.
 Before making this a required PR check, test it in a disposable repository with the exact agent command you plan to use.
 
 The Action writes its ledger output outside the checkout by default, so it does not accidentally capture its own `.agent-ledger` artifacts as PR changes.
+
+The `share` output contains rendered, redacted artifacts only. The `out` output also contains raw local evidence such as diffs, snapshots and command logs and should not be uploaded blindly.
+
+## Privacy Boundary
+
+- Agent Ledger itself does not send run data to a hosted service.
+- Raw evidence stays in the session root: `session.jsonl`, `diff.patch`, workspace snapshots, transcripts and command logs.
+- `render` creates `share/`, a smaller redacted bundle for deliberate upload or handoff.
+- Redaction is best-effort. Review `share/` before publishing it.
 
 ## Product Positioning
 
@@ -141,6 +158,7 @@ This is an early local-first V0.
 
 - It does not claim complete capture of every agent action.
 - It does not upload prompts, diffs or transcripts to a hosted service.
+- The GitHub Action only attributes changes produced by its `command` input after capture starts; it is not yet a generic bot for an already-open PR.
 - It is not a replacement for normal code review, tests, security review, or CI.
 - GitHub App, org-level policy, signed reports and hosted retention are future paid/team surfaces.
 

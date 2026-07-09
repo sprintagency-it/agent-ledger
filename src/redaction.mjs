@@ -41,6 +41,16 @@ export function redactEvents(events) {
   return { redacted, stats: rollup(stats) };
 }
 
+export function redactValue(value) {
+  const stats = [];
+  const redacted = redactJson(value, stats);
+  return { redacted, stats: rollup(stats) };
+}
+
+export function mergeRedactionStats(...groups) {
+  return rollup(groups.flat());
+}
+
 function redactJson(value, stats) {
   if (Array.isArray(value)) return value.map((item) => redactJson(item, stats));
   if (value && typeof value === 'object') {

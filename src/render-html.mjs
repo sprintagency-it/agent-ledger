@@ -1,13 +1,31 @@
 import path from 'node:path';
-import { readJsonl, writeJson, writeText } from './fs-utils.mjs';
+import { readJsonl, readText, writeJson, writeText } from './fs-utils.mjs';
 import { classifyEvents, policySuggestions, summarizeRisks, toYaml } from './risk.mjs';
-import { redactEvents } from './redaction.mjs';
+import { mergeRedactionStats, redactEvents, redactValue } from './redaction.mjs';
 import { sessionFile } from './session.mjs';
+
+const SHARE_FILES = [
+  'pr-review.md',
+  'executive-summary.md',
+  'risk.md',
+  'replay.html',
+  'session.redacted.jsonl',
+  'redactions.json',
+  'policy-suggestions.yaml'
+];
 
 export function renderSession(session) {
   const rawEvents = readJsonl(sessionFile(session.dir, 'session.jsonl'));
   const classified = classifyEvents(rawEvents, session.meta);
-  const { redacted, stats } = redactEvents(classified);
+  const { redacted, stats: eventStats } = redactEvents(classified);
+  const { redacted: redactedMeta, stats: metaStats } = redactValue(session.meta);
+  const publicMeta = {
+    ...redactedMeta,
+    project_path: path.basename(session.meta.project_path || '') || '[LOCAL_PROJECT]',
+    output_root: '[LOCAL_OUTPUT]',
+    session_dir: '[LOCAL_SESSION]'
+  };
+  const stats = mergeRedactionStats(eventStats, metaStats);
   const counts = summarizeRisks(redacted);
   const policies = policySuggestions(redacted);
   const reviewItems = trustChecklist(redacted);
@@ -15,12 +33,29 @@ export function renderSession(session) {
   writeText(sessionFile(session.dir, 'session.redacted.jsonl'), redacted.map((event) => JSON.stringify(event)).join('\n') + '\n');
   writeJson(sessionFile(session.dir, 'redactions.json'), { generated_at: new Date().toISOString(), redactions: stats });
   writeText(sessionFile(session.dir, 'policy-suggestions.yaml'), toYaml({ rules: policies }) + '\n');
-  writeText(sessionFile(session.dir, 'risk.md'), renderRiskMarkdown(session.meta, redacted, counts, reviewItems));
-  writeText(sessionFile(session.dir, 'executive-summary.md'), renderExecutiveSummary(session.meta, redacted, counts, stats, policies, reviewItems));
-  writeText(sessionFile(session.dir, 'pr-review.md'), renderPrReviewMarkdown(session.meta, redacted, counts, reviewItems));
-  writeText(sessionFile(session.dir, 'replay.html'), renderHtml(session.meta, redacted, counts, stats, policies, reviewItems));
+  writeText(sessionFile(session.dir, 'risk.md'), renderRiskMarkdown(publicMeta, redacted, counts, reviewItems));
+  writeText(sessionFile(session.dir, 'executive-summary.md'), renderExecutiveSummary(publicMeta, redacted, counts, stats, policies, reviewItems));
+  writeText(sessionFile(session.dir, 'pr-review.md'), renderPrReviewMarkdown(publicMeta, redacted, counts, reviewItems));
+  writeText(sessionFile(session.dir, 'replay.html'), renderHtml(publicMeta, redacted, counts, stats, policies, reviewItems));
+  const shareDir = writeShareBundle(session);
 
-  return { events: redacted, counts, stats, policies, reviewItems };
+  return { events: redacted, counts, stats, policies, reviewItems, shareDir };
+}
+
+function writeShareBundle(session) {
+  const shareDir = sessionFile(session.dir, 'share');
+  for (const file of SHARE_FILES) {
+    writeText(path.join(shareDir, file), readText(sessionFile(session.dir, file)));
+  }
+  writeText(path.join(shareDir, 'README.md'), `# Agent Ledger Share Bundle
+
+This folder contains the rendered and redacted review record intended for deliberate sharing.
+
+Excluded on purpose: raw \`session.jsonl\`, \`diff.patch\`, workspace snapshots, git baselines, transcripts and command logs.
+
+Redaction is best-effort. Review this folder before uploading it or attaching it to a pull request.
+`);
+  return shareDir;
 }
 
 function renderExecutiveSummary(meta, events, counts, redactions, policies, reviewItems) {
@@ -143,8 +178,8 @@ ${writes.length > 12 ? `\n- ${writes.length - 12} additional write event(s) omit
 - Executive summary: \`executive-summary.md\`
 - Risk debrief: \`risk.md\`
 - Replay: \`replay.html\`
-- Files touched: \`files-touched.csv\`
-- Pre-existing dirty baseline: \`preexisting-dirty.csv\`
+- Share-safe bundle: \`share/\`
+- Full local evidence: \`files-touched.csv\`, \`preexisting-dirty.csv\`, \`diff.patch\`, workspace snapshots and raw artifacts. Review these before sharing.
 
 ## V0 Limit
 

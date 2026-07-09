@@ -45,8 +45,8 @@ Status: PASS
 - Executive summary: `executive-summary.md`
 - Risk debrief: `risk.md`
 - Replay: `replay.html`
-- Files touched: `files-touched.csv`
-- Pre-existing dirty baseline: `preexisting-dirty.csv`
+- Share-safe bundle: `share/`
+- Full local evidence: `files-touched.csv`, `preexisting-dirty.csv`, `diff.patch`, workspace snapshots and raw artifacts. Review these before sharing.
 
 ## V0 Limit
 

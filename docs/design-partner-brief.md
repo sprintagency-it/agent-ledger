@@ -49,6 +49,8 @@ Use Agent Ledger on 3 real AI-generated PRs and share:
 - what should be configurable;
 - whether this should become a required PR check.
 
+Start with the [local quickstart](quickstart.md). For V0, capture begins before the agent edits the repository; the GitHub Action path is only for agent commands that run inside the same CI job.
+
 ## What We Are Not Selling Yet
 
 - No agency review package.

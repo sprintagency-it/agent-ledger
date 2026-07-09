@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, writeFileSync, mkdirSync, existsSync, symlinkSync } from 'node:fs';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { mkdtempSync, readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, symlinkSync } from 'node:fs';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { classifyEvent } from '../src/risk.mjs';
@@ -62,7 +62,11 @@ test('Agent Ledger V0 creates a reviewable local ledger from git and transcript 
     'pr-review.md',
     'redactions.json',
     'policy-suggestions.yaml',
-    'replay.html'
+    'replay.html',
+    'share/README.md',
+    'share/pr-review.md',
+    'share/replay.html',
+    'share/session.redacted.jsonl'
   ];
   for (const file of expectedFiles) {
     assert.ok(existsSync(path.join(sessionDir, file)), `${file} should exist`);
@@ -100,6 +104,13 @@ test('Agent Ledger V0 creates a reviewable local ledger from git and transcript 
   assert.match(replay, /Human Brief/);
   assert.doesNotMatch(replay, /DEMO_TOKEN_VALUE_1234567890/);
   assert.doesNotMatch(replay, /person@example\.com/);
+  assert.doesNotMatch(replay, new RegExp(escapeRegExp(workspace)));
+
+  const shareReadme = readFileSync(path.join(sessionDir, 'share', 'README.md'), 'utf8');
+  assert.match(shareReadme, /Excluded on purpose/);
+  assert.ok(!existsSync(path.join(sessionDir, 'share', 'diff.patch')));
+  assert.ok(!existsSync(path.join(sessionDir, 'share', 'session.jsonl')));
+  assert.ok(!existsSync(path.join(sessionDir, 'share', 'artifacts')));
 
   const policies = readFileSync(path.join(sessionDir, 'policy-suggestions.yaml'), 'utf8');
   assert.match(policies, /action: block|action: ask|action: redact/);
@@ -229,14 +240,50 @@ test('project path domain words do not create sensitive-scope false positives', 
 
 test('GitHub Action publishes the PR review artifact and can enforce status', () => {
   const action = readFileSync(path.join(ROOT, 'action.yml'), 'utf8');
+  const workflow = readFileSync(path.join(ROOT, '.github', 'workflows', 'agent-ledger-pr-review.yml'), 'utf8');
   assert.match(action, /Agent Ledger PR Review/);
   assert.match(action, /start/);
   assert.match(action, /ingest --type git/);
   assert.match(action, /render --session/);
   assert.match(action, /pr-review\.md/);
+  assert.match(action, /share=\$SESSION\/share/);
   assert.match(action, /GITHUB_STEP_SUMMARY/);
   assert.match(action, /Status: BLOCK/);
   assert.doesNotMatch(action, /pr-comment|pr-review-comment/);
+  assert.match(workflow, /if: always\(\)/);
+  assert.match(workflow, /outputs\.share/);
+});
+
+test('run reports a failed command start instead of a false success', () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'agent-ledger-v0-missing-command-'));
+  const workspace = path.join(tmp, 'workspace');
+  const out = path.join(tmp, 'ledger');
+  mkdirSync(workspace, { recursive: true });
+
+  const sessionDir = run([
+    'start',
+    '--project', workspace,
+    '--name', 'missing-command-test',
+    '--goal', 'Do not report missing executables as successful',
+    '--scope', '.',
+    '--out', out
+  ]).trim();
+
+  const result = spawnSync(NODE, [
+    CLI,
+    'run',
+    '--session', sessionDir,
+    '--', 'agent-ledger-command-that-does-not-exist'
+  ], { cwd: ROOT, encoding: 'utf8' });
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /command failed to start/i);
+
+  const artifactName = readdirSync(path.join(sessionDir, 'artifacts'))
+    .find((name) => name.startsWith('command-'));
+  const artifact = readFileSync(path.join(sessionDir, 'artifacts', artifactName), 'utf8');
+  assert.match(artifact, /exit_code=1/);
+  assert.match(artifact, /spawn_error=/);
 });
 
 test('PR-native demo package is generated as a showable product artifact', () => {
@@ -303,4 +350,8 @@ function run(args) {
 
 function git(cwd, args) {
   return execFileSync('git', args, { cwd, encoding: 'utf8' });
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

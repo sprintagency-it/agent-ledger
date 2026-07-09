@@ -14,8 +14,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      # In a real setup, run the AI coding-agent step before Agent Ledger,
-      # or call Agent Ledger inside the same job that produced the changes.
+      # The command must produce the changes after Agent Ledger starts.
+      # Pre-existing changes are treated as baseline, not as this run's work.
       - name: Run Agent Ledger
         id: agent-ledger
         uses: ./
@@ -27,7 +27,8 @@ jobs:
           fail-on-high: "false"
 
       - name: Upload Agent Ledger artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: agent-ledger
-          path: ${{ steps.agent-ledger.outputs.out }}
+          path: ${{ steps.agent-ledger.outputs.share }}

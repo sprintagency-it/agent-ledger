@@ -15,6 +15,7 @@
 - [x] Landing reviewed on desktop and mobile viewport.
 - [x] Demo reviewed on desktop and mobile viewport.
 - [x] Demo/test redaction fixtures reviewed so fake tokens cannot be mistaken for real secrets.
+- [x] GitHub Action uploads the redacted `share` bundle rather than the raw session root.
 - [x] No private vault paths appear in public README, examples or landing.
 - [x] No secrets, client data, billing data or personal data present.
 
@@ -28,6 +29,7 @@ Fixture review:
 - `DEMO_TOKEN_VALUE_1234567890` appears only in synthetic tests and transcript fixtures.
 - Public demo config uses `AGENT_LEDGER_DEMO_PLACEHOLDER=replace-me-demo-only`.
 - Generated visible reports redact the synthetic token value.
+- Raw diffs, transcripts, workspace snapshots and command logs are excluded from `share/` by default.
 
 ## Suggested Launch Order
 

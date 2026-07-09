@@ -130,12 +130,15 @@ function runCommand(argv) {
     shell: false,
     maxBuffer: 10 * 1024 * 1024
   });
+  const commandStatus = Number.isInteger(result.status) ? result.status : 1;
+  const spawnError = result.error?.message || '';
 
   const artifact = `artifacts/command-${Date.now()}.log`;
   writeText(sessionFile(session.dir, artifact), [
     `$ ${commandArgs.join(' ')}`,
     '',
-    `exit_code=${result.status}`,
+    `exit_code=${commandStatus}`,
+    spawnError ? `spawn_error=${spawnError}` : '',
     '',
     '--- stdout ---',
     result.stdout || '',
@@ -149,14 +152,15 @@ function runCommand(argv) {
     source: 'wrapper',
     event_type: 'artifact',
     target: artifact,
-    summary: `Command finished with exit code ${result.status}: ${commandArgs.join(' ')}`,
+    summary: `Command finished with exit code ${commandStatus}: ${commandArgs.join(' ')}`,
     raw_ref: artifact,
-    meta: { exit_code: result.status }
+    meta: { exit_code: commandStatus, spawn_error: spawnError || null }
   }));
 
   process.stdout.write(result.stdout || '');
   process.stderr.write(result.stderr || '');
-  process.exitCode = result.status || 0;
+  if (spawnError) process.stderr.write(`agent-ledger: command failed to start: ${spawnError}\n`);
+  process.exitCode = commandStatus;
 }
 
 function demo(options) {

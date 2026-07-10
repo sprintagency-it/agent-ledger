@@ -25,11 +25,13 @@ The `--allow-git=all` option is required by npm 12 for this one Git package fetc
 Invoke the skill with a concrete task:
 
 ```text
-Use $agent-ledger to fix the checkout validation bug, stay within src/checkout and tests, and run the relevant tests.
+Use $agent-ledger to fix the checkout validation bug.
 
 # Claude Code
-/agent-ledger Fix the checkout validation bug, stay within src/checkout and tests, and run the relevant tests.
+/agent-ledger Fix the checkout validation bug.
 ```
+
+You do not need to write the scope or test command into the prompt. The skill infers both from the task and repository, then asks only if a missing boundary prevents safe execution.
 
 The skill will:
 
@@ -41,7 +43,7 @@ The skill will:
 6. fix only safe true positives inside scope;
 7. rerun checks and refresh the final review once.
 
-Read the final output in this order:
+The agent prints the concise human result in its final chat reply. For deeper evidence, read the saved output in this order:
 
 1. `executive-summary.md` - concise human handoff;
 2. `review.json` - machine-readable status and findings;

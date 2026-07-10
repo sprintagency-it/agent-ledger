@@ -30,15 +30,16 @@
         <section id="first-task">
           <p class="section-index">02 / FIRST TASK</p><h2>Invoke the skill with a concrete outcome</h2>
           <pre><code># Codex
-Use $agent-ledger to fix the signup validation bug, stay within src/signup and tests, and run the relevant tests.
+Use $agent-ledger to fix the signup validation bug.
 
 # Claude Code
-/agent-ledger Fix the signup validation bug, stay within src/signup and tests, and run the relevant tests.</code></pre>
-          <p>The skill defines goal, scope, checks, and approval boundaries before editing. It then captures the task, renders findings, fixes safe true positives, and refreshes the review once.</p>
+/agent-ledger Fix the signup validation bug.</code></pre>
+          <p>That is enough. The skill derives goal, scope, checks, and approval boundaries from the task and repository, and asks only if an ambiguity blocks safe execution.</p>
           <h3>Good task shape</h3><ul><li>Name the behavior to change.</li><li>Include likely path boundaries when known.</li><li>State the verification you expect.</li><li>Keep auth, secrets, deploys, and destructive actions explicit.</li></ul>
         </section>
         <section id="outputs">
-          <p class="section-index">03 / OUTPUTS</p><h2>Two readers, one evidence set</h2>
+          <p class="section-index">03 / OUTPUTS</p><h2>Chat first, evidence when you need it</h2>
+          <p>The final chat reply gives the human the concise result, status, fixes, and unresolved decisions. The saved files provide deeper evidence for people and other agents.</p>
           <table class="output-table"><thead><tr><th>File</th><th>Primary reader</th><th>Purpose</th></tr></thead><tbody><tr><td><code>review.json</code></td><td>Agent</td><td>Status, evidence counts, and structured findings.</td></tr><tr><td><code>fix-brief.md</code></td><td>Agent + human</td><td>Classification queue and safe automatic-fix boundary.</td></tr><tr><td><code>executive-summary.md</code></td><td>Human</td><td>Shortest run outcome and unresolved review items.</td></tr><tr><td><code>pr-review.md</code></td><td>Reviewer</td><td>Merge-facing PASS, WARN, or BLOCK record.</td></tr><tr><td><code>replay.html</code></td><td>Human</td><td>Offline visual timeline and risk context.</td></tr><tr><td><code>share/</code></td><td>Handoff</td><td>Smaller redacted bundle for deliberate sharing.</td></tr></tbody></table>
         </section>
         <section id="boundaries">

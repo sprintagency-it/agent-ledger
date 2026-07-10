@@ -48,17 +48,18 @@
           <h2>Give the agent one concrete outcome.</h2>
           <p>Use a real task, but keep the first run away from deployments, auth, secrets, billing, destructive operations, and sensitive client data.</p>
           <pre><code># Codex
-Use $agent-ledger to make this small change: &lt;task&gt;. Stay within &lt;paths&gt; and run &lt;check&gt; before handoff.
+Use $agent-ledger to &lt;your task&gt;.
 
 # Claude Code
-/agent-ledger Make this small change: &lt;task&gt;. Stay within &lt;paths&gt; and run &lt;check&gt; before handoff.</code></pre>
+/agent-ledger &lt;Your task&gt;.</code></pre>
+          <p>The skill derives scope and relevant checks from the repository and asks only if an ambiguity blocks safe execution.</p>
         </div>
       </article>
 
       <article class="beta-step" id="inspect">
         <div class="beta-step-time"><span>10-13</span><strong>Inspect</strong></div>
         <div class="beta-step-body">
-          <h2>Check whether the record matches reality.</h2>
+          <h2>Read the chat result, then check whether the record matches reality.</h2>
           <div class="beta-checks">
             <div><code>executive-summary.md</code><span>Can you understand the outcome without reopening the chat?</span></div>
             <div><code>review.json</code><span>Are the status, evidence, and findings structured for another agent?</span></div>

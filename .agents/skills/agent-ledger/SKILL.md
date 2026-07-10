@@ -118,7 +118,7 @@ Stop after one correction pass unless another pass is clearly necessary and safe
 
 ## Final Handoff
 
-Report:
+In the final chat reply, print a concise human summary with:
 
 - task outcome and acceptance checks;
 - final Agent Ledger status;
@@ -126,5 +126,7 @@ Report:
 - false positives with evidence;
 - unresolved items requiring human judgment;
 - paths to `executive-summary.md`, `review.json`, and `replay.html`.
+
+Do not make the user open the run folder just to understand whether the task passed, what changed, or what still needs a decision. The saved reports provide deeper evidence; the chat reply remains the default human handoff.
 
 The report supports human judgment; it does not replace code review, security review, or CI.

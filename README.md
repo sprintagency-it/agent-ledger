@@ -32,11 +32,13 @@ The CLI detects the active agent. If needed, add `--agent codex` or `--agent cla
 Then invoke the installed repository skill in Codex or Claude Code:
 
 ```text
-Use $agent-ledger to add input validation to the signup form and verify it with the existing tests.
+Use $agent-ledger to add input validation to the signup form.
 
 # Claude Code
-/agent-ledger Add input validation to the signup form and verify it with the existing tests.
+/agent-ledger Add input validation to the signup form.
 ```
+
+That is enough. The skill derives a practical scope and relevant checks from the repository, and asks only when an ambiguity blocks safe execution.
 
 The official `skills` CLI collects anonymous installation telemetry by default; set `DISABLE_TELEMETRY=1` to opt out. Agent Ledger itself sends no run data anywhere.
 
@@ -64,7 +66,7 @@ Commit the skill if teammates should use the same workflow. Keep `.agent-ledger/
 3. **Verify** - it runs tests, lint, smoke checks, or the closest available evidence.
 4. **Review** - Agent Ledger renders a `PASS`, `WARN`, or `BLOCK` record plus machine-readable findings.
 5. **Correct** - the agent classifies findings and fixes safe true positives inside scope.
-6. **Explain** - the human receives a concise summary, unresolved decisions, and a visual replay.
+6. **Explain** - the final chat reply gives the human a concise result and unresolved decisions, with links to the saved evidence and visual replay.
 
 The correction loop is bounded. Agent Ledger does not blindly change auth, secrets, permissions, billing, deployments, external data, or destructive operations.
 

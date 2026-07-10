@@ -29,21 +29,21 @@ The official `skills` CLI collects anonymous installation telemetry by default. 
 
 ## Minute 2-10 - Run One Real Task
 
-Give your agent a concrete outcome, likely path boundaries, and the check you expect:
+Give your agent one concrete outcome. Agent Ledger derives the practical scope and relevant checks from the repository:
 
 ```text
 # Codex
-Use $agent-ledger to make this small change: <task>. Stay within <paths> and run <check> before handoff.
+Use $agent-ledger to <your task>.
 
 # Claude Code
-/agent-ledger Make this small change: <task>. Stay within <paths> and run <check> before handoff.
+/agent-ledger <Your task>.
 ```
 
-Let the skill complete its bounded review and one safe correction pass. Do not manually manufacture a PASS; a useful WARN or BLOCK is valid beta evidence.
+The skill asks only if an ambiguity blocks safe execution. Let it complete its bounded review and one safe correction pass. Do not manually manufacture a PASS; a useful WARN or BLOCK is valid beta evidence.
 
 ## Minute 10-13 - Inspect The Record
 
-Open the run folder under `.agent-ledger/runs/` and read:
+First read the concise result printed in chat. Then open the run folder under `.agent-ledger/runs/` and inspect:
 
 1. `executive-summary.md` - can you understand the outcome without reopening the chat?
 2. `review.json` - are status, evidence, and findings machine-readable?

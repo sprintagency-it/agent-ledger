@@ -1,13 +1,24 @@
-import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const root = path.resolve(import.meta.dirname, '..');
 const source = path.join(root, 'src');
-const target = path.join(root, '.agents', 'skills', 'agent-ledger', 'runtime', 'src');
+const runtimeRoot = path.join(root, '.agents', 'skills', 'agent-ledger', 'runtime');
+const target = path.join(runtimeRoot, 'src');
+const packageMeta = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
+const runtimeMeta = `${JSON.stringify({
+  name: 'agent-ledger-runtime',
+  version: packageMeta.version,
+  private: true,
+  type: 'module'
+}, null, 2)}\n`;
+const runtimeVersion = `${packageMeta.version}\n`;
 const checkOnly = process.argv.includes('--check');
 
 if (checkOnly) {
   const differences = compareTrees(source, target);
+  if (readText(path.join(runtimeRoot, 'package.json')) !== runtimeMeta) differences.push('runtime/package.json has stale version metadata');
+  if (readText(path.join(runtimeRoot, 'VERSION')) !== runtimeVersion) differences.push('runtime/VERSION has stale version metadata');
   if (differences.length > 0) {
     console.error(`Bundled skill runtime is out of sync:\n- ${differences.join('\n- ')}`);
     process.exitCode = 1;
@@ -17,6 +28,8 @@ if (checkOnly) {
 } else {
   mkdirSync(target, { recursive: true });
   cpSync(source, target, { recursive: true, force: true });
+  writeFileSync(path.join(runtimeRoot, 'package.json'), runtimeMeta);
+  writeFileSync(path.join(runtimeRoot, 'VERSION'), runtimeVersion);
   console.log(`Synced ${source} to ${target}`);
 }
 
@@ -53,4 +66,8 @@ function listFiles(directory, prefix = '') {
     else files.push(relative);
   }
   return files;
+}
+
+function readText(file) {
+  return existsSync(file) ? readFileSync(file, 'utf8') : '';
 }

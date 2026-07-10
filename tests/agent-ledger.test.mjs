@@ -322,6 +322,7 @@ test('setup installs Codex and Claude Code skills plus the local runtime in one 
 test('the directory-installed skill contains a self-contained runtime', () => {
   const bundledCli = path.join(ROOT, '.agents', 'skills', 'agent-ledger', 'runtime', 'src', 'cli.mjs');
   assert.ok(existsSync(bundledCli));
+  assert.equal(readFileSync(path.join(ROOT, '.agents', 'skills', 'agent-ledger', 'runtime', 'VERSION'), 'utf8').trim(), '0.3.3');
 
   const syncCheck = spawnSync(NODE, [
     path.join(ROOT, 'scripts', 'sync-skill-runtime.mjs'),
@@ -341,6 +342,7 @@ test('the directory-installed skill contains a self-contained runtime', () => {
   assert.ok(existsSync(path.join(tmp, '.agent-ledger', 'runtime', 'src', 'cli.mjs')));
   assert.ok(existsSync(path.join(tmp, '.claude', 'skills', 'agent-ledger', 'SKILL.md')));
   assert.match(readFileSync(path.join(tmp, '.gitignore'), 'utf8'), /\.agent-ledger\//);
+  assert.equal(readFileSync(path.join(tmp, '.agent-ledger', 'runtime', 'VERSION'), 'utf8').trim(), '0.3.3');
 });
 
 test('beta release surfaces stay versioned and linked together', () => {
@@ -352,8 +354,8 @@ test('beta release surfaces stay versioned and linked together', () => {
   const feedbackForm = readFileSync(path.join(ROOT, '.github', 'ISSUE_TEMPLATE', 'beta-feedback.yml'), 'utf8');
   const ci = readFileSync(path.join(ROOT, '.github', 'workflows', 'ci.yml'), 'utf8');
 
-  assert.equal(packageMeta.version, '0.3.2');
-  for (const content of [readme, skill, betaGuide, betaPage]) assert.match(content, /v0\.3\.2/);
+  assert.equal(packageMeta.version, '0.3.3');
+  for (const content of [readme, skill, betaGuide, betaPage]) assert.match(content, /v0\.3\.3/);
   assert.match(readme, /npx skills add sprintagency-it\/agent-ledger/);
   assert.match(readme, /--allow-git=all/);
   assert.match(readme, /15-minute beta/i);

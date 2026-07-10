@@ -17,7 +17,7 @@ The CLI detects the active agent. Add `--agent codex` or `--agent claude-code` w
 To prepare Codex and Claude Code together immediately, use the tagged package setup:
 
 ```bash
-npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.2 setup --project .
+npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.3 setup --project .
 ```
 
 The `--allow-git=all` option is required by npm 12 for this one Git package fetch. The `skills` CLI collects anonymous installation telemetry by default; set `DISABLE_TELEMETRY=1` to opt out. Agent Ledger itself does not transmit run data.
@@ -86,7 +86,7 @@ Use the Action when the AI-agent command can run inside the same job:
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.3.2
+  uses: sprintagency-it/agent-ledger@v0.3.3
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"

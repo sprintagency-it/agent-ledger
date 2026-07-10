@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.3 - 2026-07-10
+
+- Preserve version metadata when a directory-installed skill bootstraps its local runtime offline.
+- Add a permanent parity check for bundled runtime source and metadata.
+
 ## v0.3.2 - 2026-07-10
 
 - Make the self-contained skills directory install the primary beta path.

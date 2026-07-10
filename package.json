@@ -1,6 +1,6 @@
 {
   "name": "agent-ledger",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "type": "module",
   "description": "An accountable self-review loop for AI coding agents.",
   "bin": {

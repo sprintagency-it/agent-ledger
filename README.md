@@ -45,7 +45,7 @@ The official `skills` CLI collects anonymous installation telemetry by default; 
 Use the tagged setup command when you want both skill locations prepared immediately:
 
 ```bash
-npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.2 setup --project .
+npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.3 setup --project .
 ```
 
 `--allow-git=all` explicitly permits this one `npx` process to fetch the tagged Git package, which npm 12 blocks by default. The setup command installs:
@@ -100,7 +100,7 @@ Open `examples/pr-native-demo/index.html` to compare:
 
 ## Run The 15-Minute Beta
 
-Use a small, reversible task in a repository you can safely edit. Install v0.3.2, invoke `$agent-ledger` or `/agent-ledger`, then inspect `executive-summary.md` and `replay.html` before submitting the short feedback form.
+Use a small, reversible task in a repository you can safely edit. Install v0.3.3, invoke `$agent-ledger` or `/agent-ledger`, then inspect `executive-summary.md` and `replay.html` before submitting the short feedback form.
 
 [Open the beta protocol](docs/beta-test.md) | [Submit beta feedback](https://github.com/sprintagency-it/agent-ledger/issues/new?template=beta-feedback.yml)
 
@@ -134,7 +134,7 @@ The Action captures changes produced by the command passed to it and publishes `
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.3.2
+  uses: sprintagency-it/agent-ledger@v0.3.3
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"

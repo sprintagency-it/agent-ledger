@@ -29,7 +29,7 @@ This uses only the installed skill files, installs the shared local runtime, pre
 If no runtime exists, tell the user that setup is required and run this from the repository root after approval for network access:
 
 ```bash
-npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.2 setup --project .
+npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.3 setup --project .
 ```
 
 Store run output under `.agent-ledger/runs/<run-name>`. This directory is local evidence and should remain ignored by Git. The installed skills under `.agents/skills/agent-ledger` (Codex) and `.claude/skills/agent-ledger` (Claude Code) are intended to be committed.

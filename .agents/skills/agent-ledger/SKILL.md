@@ -17,10 +17,19 @@ Resolve the runtime in this order:
 
 Set `LEDGER` to the first existing path. The bundled skill runtime is self-contained; run evidence still belongs under `.agent-ledger/runs/` and must remain ignored by Git.
 
+When the repository-local runtime is missing but a bundled skill runtime exists, bootstrap locally before the first session:
+
+```bash
+node "$LEDGER" setup --project .
+LEDGER=".agent-ledger/runtime/src/cli.mjs"
+```
+
+This uses only the installed skill files, installs the shared local runtime, prepares both Codex and Claude Code skill locations, and ensures `.agent-ledger/` is ignored. It does not require network access.
+
 If no runtime exists, tell the user that setup is required and run this from the repository root after approval for network access:
 
 ```bash
-npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .
+npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.2 setup --project .
 ```
 
 Store run output under `.agent-ledger/runs/<run-name>`. This directory is local evidence and should remain ignored by Git. The installed skills under `.agents/skills/agent-ledger` (Codex) and `.claude/skills/agent-ledger` (Claude Code) are intended to be committed.

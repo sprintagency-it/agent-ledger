@@ -2,7 +2,7 @@
 
 Date: 2026-07-10
 
-Agent Ledger landing, beta protocol, demo, documentation, and report replay were reviewed in a real browser after the v0.3.1 beta-readiness pass.
+Agent Ledger landing, beta protocol, demo, documentation, and report replay were reviewed in a real browser after the v0.3.2 beta-readiness pass.
 
 ## Results
 
@@ -23,7 +23,7 @@ Agent Ledger landing, beta protocol, demo, documentation, and report replay were
 ## Verified
 
 - The first viewport identifies Agent Ledger, states the self-review promise, and routes testers to the 15-minute beta.
-- The beta protocol shows one primary path, v0.3.1 commands, explicit timing, privacy boundaries, and a structured feedback CTA.
+- The beta protocol shows one primary path, v0.3.2 commands, explicit timing, privacy boundaries, and a structured feedback CTA.
 - The landing loads a real Agent Ledger replay screenshot.
 - The replay image preserves its native 1265x712 ratio on desktop and mobile instead of cropping its sides.
 - The install CTA is agent-neutral, and the quickstart shows both Codex and Claude Code invocations.

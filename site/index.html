@@ -24,7 +24,7 @@
       <p class="hero-statement">Make your coding agent check its own work.</p>
       <p class="hero-copy">Agent Ledger gives coding agents a bounded loop for scope, execution, verification, finding review, and safe correction. You get a more disciplined run and a clear record of what happened.</p>
       <div class="actions"><a class="button primary" href="beta.html">Run the 15-minute beta</a><a class="button" href="demo.html">Open the live demo</a></div>
-      <div class="install-line" aria-label="Agent Ledger install command"><span class="prompt" aria-hidden="true">$</span><code>npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .</code></div>
+      <div class="install-line" aria-label="Agent Ledger install command"><span class="prompt" aria-hidden="true">$</span><code>npx skills add sprintagency-it/agent-ledger --skill agent-ledger --yes --copy</code></div>
     </section>
 
     <section class="shell product-preview" aria-labelledby="preview-title">
@@ -65,9 +65,9 @@
       <div class="shell install-layout">
         <div>
           <p class="section-index light">03 / START</p><h2>Install once. Use it with Codex or Claude Code.</h2>
-          <p class="install-copy">Run setup from your repository root. The workflow is installed for both agents; private runtime and run evidence stay under ignored <code>.agent-ledger/</code>.</p>
+          <p class="install-copy">Install from the skills directory in your repository root. The skill includes its runtime and prepares the ignored <code>.agent-ledger/</code> workspace on first use.</p>
           <ol class="plain-steps">
-            <li><strong>Run setup</strong><span>Installs the skill and local runtime.</span></li>
+            <li><strong>Install the skill</strong><span>Copies the workflow and bundled local runtime.</span></li>
             <li><strong>Choose your agent</strong><span>Use the same local workflow in Codex or Claude Code.</span></li>
             <li><strong>Invoke the skill</strong><span>Give it a concrete coding task and expected checks.</span></li>
           </ol>
@@ -75,7 +75,7 @@
         <div class="terminal" aria-label="Agent Ledger quickstart commands">
           <div class="terminal-head"><span></span><span></span><span></span><strong>quickstart</strong></div>
           <pre><code><b># 1. Install in the current repository</b>
-npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .
+npx skills add sprintagency-it/agent-ledger --skill agent-ledger --yes --copy
 
 <b># 2. In Codex</b>
 Use $agent-ledger to fix the signup validation bug and run the relevant tests.
@@ -101,7 +101,7 @@ replay.html</code></pre>
       </div>
     </section>
 
-    <section class="closing band"><div class="shell closing-inner"><div><p class="section-index">PUBLIC BETA / V0.3.1</p><h2>Try it on one real agent task.</h2><p>Agent Ledger is free, local-first, and intentionally narrow. The beta asks one question: does the loop catch or clarify something useful before handoff?</p></div><div class="actions"><a class="button primary" href="beta.html">Start the 15-minute test</a><a class="button" href="docs.html">Read the docs</a></div></div></section>
+    <section class="closing band"><div class="shell closing-inner"><div><p class="section-index">PUBLIC BETA / V0.3.2</p><h2>Try it on one real agent task.</h2><p>Agent Ledger is free, local-first, and intentionally narrow. The beta asks one question: does the loop catch or clarify something useful before handoff?</p></div><div class="actions"><a class="button primary" href="beta.html">Start the 15-minute test</a><a class="button" href="docs.html">Read the docs</a></div></div></section>
   </main>
 
   <footer class="site-footer"><div class="shell footer-inner"><span>Agent Ledger</span><span>Apache-2.0 / local-first / no hosted account</span></div></footer>

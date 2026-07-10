@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.2 - 2026-07-10
+
+- Make the self-contained skills directory install the primary beta path.
+- Add an offline first-use bootstrap that prepares the local runtime and ignored evidence directory.
+- Make the tagged `npx` setup compatible with npm 12's explicit Git-fetch policy.
+
 ## v0.3.1 - 2026-07-10
 
 - Bundle the CLI runtime inside the distributable skill so skills directory installs work without a second bootstrap.

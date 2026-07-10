@@ -15,17 +15,17 @@
     </div>
   </header>
   <main>
-    <section class="page-hero shell"><p class="eyebrow">DOCUMENTATION / V0.3.1</p><h1>Install once. Use your agent.</h1><p>Invoke <code>$agent-ledger</code> in Codex or <code>/agent-ledger</code> in Claude Code, then let the agent complete a bounded verification and correction pass before handoff.</p></section>
+    <section class="page-hero shell"><p class="eyebrow">DOCUMENTATION / V0.3.2</p><h1>Install once. Use your agent.</h1><p>Invoke <code>$agent-ledger</code> in Codex or <code>/agent-ledger</code> in Claude Code, then let the agent complete a bounded verification and correction pass before handoff.</p></section>
     <div class="shell docs-layout">
       <nav class="toc" aria-label="Documentation contents"><strong>On this page</strong><a href="#install">Install</a><a href="#first-task">First task</a><a href="#outputs">Outputs</a><a href="#boundaries">Boundaries</a><a href="#cli">Direct CLI</a><a href="#action">GitHub Action</a></nav>
       <article class="prose">
         <section id="install">
           <p class="section-index">01 / INSTALL</p><h2>Install in one command</h2><p>Requirements: Git, Node 20+, and Codex or Claude Code. Run from the project root:</p>
-          <pre><code>npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .</code></pre>
-          <p>Setup writes the shareable workflow to <code>.agents/skills/agent-ledger/</code> for Codex and <code>.claude/skills/agent-ledger/</code> for Claude Code, installs the private runtime under <code>.agent-ledger/runtime/</code>, and ensures <code>.agent-ledger/</code> is ignored.</p>
-          <h3>Skills directory route</h3>
-          <pre><code>npx skills add sprintagency-it/agent-ledger</code></pre>
-          <p>This route installs the skill with its bundled runtime. The official skills CLI records anonymous installation telemetry by default; prefix the command with <code>DISABLE_TELEMETRY=1</code> to opt out. Agent Ledger sends no run data.</p>
+          <pre><code>npx skills add sprintagency-it/agent-ledger --skill agent-ledger --yes --copy</code></pre>
+          <p>The CLI detects the active agent. Add <code>--agent codex</code> or <code>--agent claude-code</code> if needed. The skill bundles its runtime and prepares the ignored local evidence workspace on first use.</p>
+          <h3>Prepare both agents immediately</h3>
+          <pre><code>npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.2 setup --project .</code></pre>
+          <p>npm 12 requires explicit permission for a Git package fetch. The official skills CLI records anonymous installation telemetry by default; prefix the directory command with <code>DISABLE_TELEMETRY=1</code> to opt out. Agent Ledger sends no run data.</p>
         </section>
         <section id="first-task">
           <p class="section-index">02 / FIRST TASK</p><h2>Invoke the skill with a concrete outcome</h2>
@@ -59,7 +59,7 @@ node "$LEDGER" render --session "$SESSION"</code></pre>
         <section id="action">
           <p class="section-index">06 / GITHUB ACTION</p><h2>Capture an agent command in CI</h2>
           <pre><code>- id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.3.1
+  uses: sprintagency-it/agent-ledger@v0.3.2
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"

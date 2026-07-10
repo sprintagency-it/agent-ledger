@@ -6,21 +6,21 @@ Agent Ledger has three usable paths. Start with the project skill for Codex or C
 
 Requirements: Git, Node 20+, and Codex or Claude Code.
 
-From the root of your project:
+From the root of your project, use the skills directory install:
 
 ```bash
-npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .
+npx skills add sprintagency-it/agent-ledger --skill agent-ledger --yes --copy
 ```
 
-The setup command installs repository-scoped skills for both agents and one shared local runtime. It also adds `.agent-ledger/` to `.gitignore`.
+The CLI detects the active agent. Add `--agent codex` or `--agent claude-code` when detection is ambiguous. The skill includes its local runtime and bootstraps the ignored `.agent-ledger/` workspace on first use.
 
-Alternatively, install the self-contained skill and bundled runtime through the skills directory:
+To prepare Codex and Claude Code together immediately, use the tagged package setup:
 
 ```bash
-npx skills add sprintagency-it/agent-ledger
+npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.2 setup --project .
 ```
 
-The `skills` CLI collects anonymous installation telemetry by default. Set `DISABLE_TELEMETRY=1` to opt out; Agent Ledger itself does not transmit run data.
+The `--allow-git=all` option is required by npm 12 for this one Git package fetch. The `skills` CLI collects anonymous installation telemetry by default; set `DISABLE_TELEMETRY=1` to opt out. Agent Ledger itself does not transmit run data.
 
 Invoke the skill with a concrete task:
 
@@ -86,7 +86,7 @@ Use the Action when the AI-agent command can run inside the same job:
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.3.1
+  uses: sprintagency-it/agent-ledger@v0.3.2
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"

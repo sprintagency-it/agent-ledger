@@ -21,11 +21,13 @@ Agent Ledger is local-first and open source. The current release includes projec
 
 Requirements: Git, Node 20+, and Codex or Claude Code.
 
-Run this from the project where your coding agent works:
+Recommended beta install from the skills directory:
 
 ```bash
-npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .
+npx skills add sprintagency-it/agent-ledger --skill agent-ledger --yes --copy
 ```
+
+The CLI detects the active agent. If needed, add `--agent codex` or `--agent claude-code`. The installed skill includes its local runtime and bootstraps the ignored `.agent-ledger/` workspace on first use.
 
 Then invoke the installed repository skill in Codex or Claude Code:
 
@@ -36,7 +38,17 @@ Use $agent-ledger to add input validation to the signup form and verify it with 
 /agent-ledger Add input validation to the signup form and verify it with the existing tests.
 ```
 
-The setup command installs:
+The official `skills` CLI collects anonymous installation telemetry by default; set `DISABLE_TELEMETRY=1` to opt out. Agent Ledger itself sends no run data anywhere.
+
+### Install Codex And Claude Code Together
+
+Use the tagged setup command when you want both skill locations prepared immediately:
+
+```bash
+npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.2 setup --project .
+```
+
+`--allow-git=all` explicitly permits this one `npx` process to fetch the tagged Git package, which npm 12 blocks by default. The setup command installs:
 
 - `.agents/skills/agent-ledger/` - the shareable workflow Codex discovers;
 - `.claude/skills/agent-ledger/` - the same workflow for Claude Code;
@@ -44,16 +56,6 @@ The setup command installs:
 - `.agent-ledger/runs/` - private run evidence created during tasks.
 
 Commit the skill if teammates should use the same workflow. Keep `.agent-ledger/` ignored.
-
-### Install From The Skills Directory
-
-The directory route installs a self-contained skill and bundled local runtime:
-
-```bash
-npx skills add sprintagency-it/agent-ledger
-```
-
-The official `skills` CLI collects anonymous installation telemetry by default; set `DISABLE_TELEMETRY=1` to opt out. Agent Ledger itself sends no run data anywhere.
 
 ## What Happens During A Task
 
@@ -98,7 +100,7 @@ Open `examples/pr-native-demo/index.html` to compare:
 
 ## Run The 15-Minute Beta
 
-Use a small, reversible task in a repository you can safely edit. Install v0.3.1, invoke `$agent-ledger` or `/agent-ledger`, then inspect `executive-summary.md` and `replay.html` before submitting the short feedback form.
+Use a small, reversible task in a repository you can safely edit. Install v0.3.2, invoke `$agent-ledger` or `/agent-ledger`, then inspect `executive-summary.md` and `replay.html` before submitting the short feedback form.
 
 [Open the beta protocol](docs/beta-test.md) | [Submit beta feedback](https://github.com/sprintagency-it/agent-ledger/issues/new?template=beta-feedback.yml)
 
@@ -132,7 +134,7 @@ The Action captures changes produced by the command passed to it and publishes `
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.3.1
+  uses: sprintagency-it/agent-ledger@v0.3.2
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"

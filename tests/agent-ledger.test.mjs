@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, symlinkSync } from 'node:fs';
+import { cpSync, mkdtempSync, readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, symlinkSync } from 'node:fs';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { classifyEvent } from '../src/risk.mjs';
@@ -331,6 +331,16 @@ test('the directory-installed skill contains a self-contained runtime', () => {
 
   const help = execFileSync(NODE, [bundledCli, '--help'], { cwd: ROOT, encoding: 'utf8' });
   assert.match(help, /Agent Ledger V0/);
+
+  const tmp = mkdtempSync(path.join(tmpdir(), 'agent-ledger-v0-directory-bootstrap-'));
+  const installedSkill = path.join(tmp, '.agents', 'skills', 'agent-ledger');
+  mkdirSync(path.dirname(installedSkill), { recursive: true });
+  cpSync(path.join(ROOT, '.agents', 'skills', 'agent-ledger'), installedSkill, { recursive: true });
+  const installedCli = path.join(installedSkill, 'runtime', 'src', 'cli.mjs');
+  execFileSync(NODE, [installedCli, 'setup', '--project', tmp], { cwd: tmp, encoding: 'utf8' });
+  assert.ok(existsSync(path.join(tmp, '.agent-ledger', 'runtime', 'src', 'cli.mjs')));
+  assert.ok(existsSync(path.join(tmp, '.claude', 'skills', 'agent-ledger', 'SKILL.md')));
+  assert.match(readFileSync(path.join(tmp, '.gitignore'), 'utf8'), /\.agent-ledger\//);
 });
 
 test('beta release surfaces stay versioned and linked together', () => {
@@ -342,8 +352,10 @@ test('beta release surfaces stay versioned and linked together', () => {
   const feedbackForm = readFileSync(path.join(ROOT, '.github', 'ISSUE_TEMPLATE', 'beta-feedback.yml'), 'utf8');
   const ci = readFileSync(path.join(ROOT, '.github', 'workflows', 'ci.yml'), 'utf8');
 
-  assert.equal(packageMeta.version, '0.3.1');
-  for (const content of [readme, skill, betaGuide, betaPage]) assert.match(content, /v0\.3\.1/);
+  assert.equal(packageMeta.version, '0.3.2');
+  for (const content of [readme, skill, betaGuide, betaPage]) assert.match(content, /v0\.3\.2/);
+  assert.match(readme, /npx skills add sprintagency-it\/agent-ledger/);
+  assert.match(readme, /--allow-git=all/);
   assert.match(readme, /15-minute beta/i);
   assert.match(betaGuide, /no run data/i);
   assert.match(feedbackForm, /useful/i);

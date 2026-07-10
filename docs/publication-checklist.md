@@ -20,7 +20,7 @@
 - [x] No secrets, client data, billing data or personal data present.
 - [x] Apache-2.0 license is detected by GitHub from `LICENSE`.
 - [x] `SECURITY.md`, `CONTRIBUTING.md`, CI, Discussions and Issue Forms are public.
-- [x] The direct v0.3.1 install works in a clean temporary repository.
+- [x] The direct v0.3.2 install works in a clean temporary repository, including npm 12's Git-fetch policy.
 - [x] The skills directory install includes the bundled runtime and works without a second bootstrap.
 - [x] The 15-minute beta page links to the structured feedback form.
 
@@ -38,7 +38,7 @@ Fixture review:
 
 ## Suggested Launch Order
 
-1. Publish GitHub release v0.3.1 and the beta page.
+1. Publish GitHub release v0.3.2 and the beta page.
 2. Confirm the direct and skills directory installs from clean repositories.
 3. Recruit 5-10 AI-heavy builders for one small real task.
 4. Record activation, completed runs, useful catches, friction, and retained usage.

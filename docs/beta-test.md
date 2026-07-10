@@ -11,21 +11,21 @@ The beta has one question: does Agent Ledger make one real coding-agent task eas
 
 Do not use your first beta run for production deployment, auth changes, secret rotation, billing, destructive operations, or sensitive client data.
 
-## Minute 0-2 - Install v0.3.1
+## Minute 0-2 - Install v0.3.2
 
-Primary setup for Codex and Claude Code:
-
-```bash
-npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .
-```
-
-Directory setup with the self-contained skill runtime:
+Recommended skills directory setup:
 
 ```bash
-npx skills add sprintagency-it/agent-ledger
+npx skills add sprintagency-it/agent-ledger --skill agent-ledger --yes --copy
 ```
 
-The official `skills` CLI collects anonymous installation telemetry by default. Use `DISABLE_TELEMETRY=1 npx skills add sprintagency-it/agent-ledger` to opt out. Agent Ledger receives no install telemetry and sends no run data anywhere.
+The CLI detects the active agent. Add `--agent codex` or `--agent claude-code` if needed. To prepare both agents immediately, use the tagged setup:
+
+```bash
+npx --allow-git=all --yes github:sprintagency-it/agent-ledger#v0.3.2 setup --project .
+```
+
+The official `skills` CLI collects anonymous installation telemetry by default. Prefix the directory command with `DISABLE_TELEMETRY=1` to opt out. Agent Ledger receives no install telemetry and sends no run data anywhere. npm 12 requires the explicit `--allow-git=all` option only for the tagged Git setup.
 
 ## Minute 2-10 - Run One Real Task
 

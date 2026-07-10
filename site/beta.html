@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Test Agent Ledger v0.3.1 on one real coding-agent task in 15 minutes and submit structured beta feedback.">
+  <title>Agent Ledger Beta - One real task in 15 minutes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell nav">
+      <a class="brand" href="index.html" aria-label="Agent Ledger home"><span class="mark" aria-hidden="true">AL</span><span>Agent Ledger</span></a>
+      <nav class="navlinks" aria-label="Primary navigation"><a href="index.html">Home</a><a href="demo.html">Demo</a><a href="docs.html">Docs</a><a href="https://github.com/sprintagency-it/agent-ledger">GitHub</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero beta-hero shell">
+      <p class="eyebrow">PUBLIC BETA / V0.3.1</p>
+      <h1>One real task. Fifteen minutes.</h1>
+      <p>Use Agent Ledger on a small change you would already give to Codex or Claude Code. Inspect the evidence, then tell us whether the loop made the work easier to trust.</p>
+      <div class="actions"><a class="button primary" href="#install">Begin the test</a><a class="button" href="https://github.com/sprintagency-it/agent-ledger/issues/new?template=beta-feedback.yml">Send feedback</a></div>
+    </section>
+
+    <section class="beta-meta band" aria-label="Beta test commitment">
+      <div class="shell beta-facts">
+        <div><strong>15 min</strong><span>Total target time</span></div>
+        <div><strong>1 task</strong><span>Small and reversible</span></div>
+        <div><strong>0 uploads</strong><span>No run data is sent</span></div>
+      </div>
+    </section>
+
+    <section class="shell beta-protocol" aria-label="Beta test steps">
+      <article class="beta-step" id="install">
+        <div class="beta-step-time"><span>00-02</span><strong>Install</strong></div>
+        <div class="beta-step-body">
+          <h2>Set up v0.3.1 in a safe repository.</h2>
+          <p>Requirements: Git, Node 20+, and Codex or Claude Code. Start from a clean branch when practical.</p>
+          <pre><code>npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .</code></pre>
+          <p class="muted-note">Prefer the directory? <code>npx skills add sprintagency-it/agent-ledger</code> installs the self-contained skill runtime. Set <code>DISABLE_TELEMETRY=1</code> to opt out of the skills CLI's anonymous install telemetry.</p>
+        </div>
+      </article>
+
+      <article class="beta-step" id="run">
+        <div class="beta-step-time"><span>02-10</span><strong>Run</strong></div>
+        <div class="beta-step-body">
+          <h2>Give the agent one concrete outcome.</h2>
+          <p>Use a real task, but keep the first run away from deployments, auth, secrets, billing, destructive operations, and sensitive client data.</p>
+          <pre><code># Codex
+Use $agent-ledger to make this small change: &lt;task&gt;. Stay within &lt;paths&gt; and run &lt;check&gt; before handoff.
+
+# Claude Code
+/agent-ledger Make this small change: &lt;task&gt;. Stay within &lt;paths&gt; and run &lt;check&gt; before handoff.</code></pre>
+        </div>
+      </article>
+
+      <article class="beta-step" id="inspect">
+        <div class="beta-step-time"><span>10-13</span><strong>Inspect</strong></div>
+        <div class="beta-step-body">
+          <h2>Check whether the record matches reality.</h2>
+          <div class="beta-checks">
+            <div><code>executive-summary.md</code><span>Can you understand the outcome without reopening the chat?</span></div>
+            <div><code>review.json</code><span>Are the status, evidence, and findings structured for another agent?</span></div>
+            <div><code>fix-brief.md</code><span>Were important signals classified before correction?</span></div>
+            <div><code>replay.html</code><span>Can a human see what happened and what remains unresolved?</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="beta-step" id="feedback">
+        <div class="beta-step-time"><span>13-15</span><strong>Report</strong></div>
+        <div class="beta-step-body">
+          <h2>Tell us what was useful and what slowed you down.</h2>
+          <p>The form asks about completion, useful catches, false positives, added friction, and whether you would use Agent Ledger again. A text-only response is enough.</p>
+          <div class="actions"><a class="button primary" href="https://github.com/sprintagency-it/agent-ledger/issues/new?template=beta-feedback.yml">Submit beta feedback</a><a class="button" href="demo.html">Compare example reports</a></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="privacy-band">
+      <div class="shell privacy-layout">
+        <div><p class="section-index light">PRIVACY BOUNDARY</p><h2>Your run stays local.</h2></div>
+        <div><p>Agent Ledger has no hosted account and sends no run data to the maintainer. Raw diffs, snapshots, transcripts, and command logs remain under the ignored <code>.agent-ledger/</code> directory.</p><p>The smaller <code>share/</code> bundle uses best-effort redaction. Inspect every file before attaching anything; uploads are optional.</p></div>
+      </div>
+    </section>
+
+    <section class="closing band">
+      <div class="shell closing-inner">
+        <div><p class="section-index">COMPLETION RULE</p><h2>An install is not a beta result.</h2><p>A completed run means the task finished, the tester inspected the summary and replay, and structured feedback was submitted. That is the evidence we will use to decide what to build next.</p></div>
+        <div class="actions"><a class="button primary" href="#install">Start now</a><a class="button" href="docs.html">Read full docs</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="shell footer-inner"><span>Agent Ledger v0.3.1 beta</span><span>Apache-2.0 / local-first / no hosted account</span></div></footer>
+</body>
+</html>

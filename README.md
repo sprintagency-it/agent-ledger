@@ -2,7 +2,14 @@
 
 An accountable self-review loop for AI coding agents.
 
-[Website](https://agent-ledger.pages.dev) | [Live demo](https://agent-ledger.pages.dev/demo) | [Documentation](https://agent-ledger.pages.dev/docs)
+[![CI](https://github.com/sprintagency-it/agent-ledger/actions/workflows/ci.yml/badge.svg)](https://github.com/sprintagency-it/agent-ledger/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/sprintagency-it/agent-ledger)](https://github.com/sprintagency-it/agent-ledger/releases/latest)
+[![License](https://img.shields.io/github/license/sprintagency-it/agent-ledger)](LICENSE)
+[![skills.sh](https://skills.sh/b/sprintagency-it/agent-ledger)](https://skills.sh/sprintagency-it/agent-ledger)
+
+[15-minute beta test](https://agent-ledger.pages.dev/beta) | [Live demo](https://agent-ledger.pages.dev/demo) | [Documentation](https://agent-ledger.pages.dev/docs) | [Website](https://agent-ledger.pages.dev)
+
+> **Beta testers wanted:** run Agent Ledger on one small real task, inspect the record, and tell us whether it caught something useful or made the handoff clearer. [Start the 15-minute beta](https://agent-ledger.pages.dev/beta).
 
 Agent Ledger makes a coding agent declare scope before editing, capture what it changes, run verification, inspect its own findings, correct eligible issues, and leave a reviewable record for the human.
 
@@ -17,7 +24,7 @@ Requirements: Git, Node 20+, and Codex or Claude Code.
 Run this from the project where your coding agent works:
 
 ```bash
-npx --yes github:sprintagency-it/agent-ledger#v0.3.0 setup --project .
+npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .
 ```
 
 Then invoke the installed repository skill in Codex or Claude Code:
@@ -37,6 +44,16 @@ The setup command installs:
 - `.agent-ledger/runs/` - private run evidence created during tasks.
 
 Commit the skill if teammates should use the same workflow. Keep `.agent-ledger/` ignored.
+
+### Install From The Skills Directory
+
+The directory route installs a self-contained skill and bundled local runtime:
+
+```bash
+npx skills add sprintagency-it/agent-ledger
+```
+
+The official `skills` CLI collects anonymous installation telemetry by default; set `DISABLE_TELEMETRY=1` to opt out. Agent Ledger itself sends no run data anywhere.
 
 ## What Happens During A Task
 
@@ -79,6 +96,14 @@ Open `examples/pr-native-demo/index.html` to compare:
 - [WARN example](examples/reports/warn/replay.html) - inspect a specific risk before trust;
 - [BLOCK example](examples/reports/block/replay.html) - human review is required.
 
+## Run The 15-Minute Beta
+
+Use a small, reversible task in a repository you can safely edit. Install v0.3.1, invoke `$agent-ledger` or `/agent-ledger`, then inspect `executive-summary.md` and `replay.html` before submitting the short feedback form.
+
+[Open the beta protocol](docs/beta-test.md) | [Submit beta feedback](https://github.com/sprintagency-it/agent-ledger/issues/new?template=beta-feedback.yml)
+
+Agent Ledger has no hosted telemetry. Run evidence stays under the ignored `.agent-ledger/` directory; share only the files you deliberately choose after reviewing them.
+
 ## Lower-Level CLI
 
 The agent skills use the CLI automatically. You can also run it directly:
@@ -107,7 +132,7 @@ The Action captures changes produced by the command passed to it and publishes `
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.3.0
+  uses: sprintagency-it/agent-ledger@v0.3.1
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"
@@ -139,4 +164,11 @@ It improves execution discipline and makes the resulting evidence easier for bot
 - Risk rules are deterministic signals, not semantic proof. Findings must be classified against real context.
 - GitHub App, organization policy, signed reports, and hosted retention remain future team surfaces.
 
-License: Apache-2.0.
+## Community And Security
+
+- [Ask a question or share an idea](https://github.com/sprintagency-it/agent-ledger/discussions)
+- [Report a bug](https://github.com/sprintagency-it/agent-ledger/issues/new?template=bug-report.yml)
+- [Contribute](CONTRIBUTING.md)
+- [Report a vulnerability privately](SECURITY.md)
+
+License: [Apache-2.0](LICENSE).

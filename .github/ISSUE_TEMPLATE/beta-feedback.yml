@@ -1,0 +1,125 @@
+name: Beta feedback
+description: Report one completed 15-minute Agent Ledger test on a real task.
+title: "[Beta]: "
+labels:
+  - beta-feedback
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing Agent Ledger. A text-only report is enough. Do not paste secrets, client data, private source code, raw diffs, transcripts, or unreviewed run artifacts.
+
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent used
+      options:
+        - Codex
+        - Claude Code
+        - Another compatible agent
+    validations:
+      required: true
+
+  - type: dropdown
+    id: installation
+    attributes:
+      label: Installation path
+      options:
+        - Direct v0.3.1 setup command
+        - skills CLI / skills.sh
+        - Local source checkout
+    validations:
+      required: true
+
+  - type: textarea
+    id: task
+    attributes:
+      label: Task tested
+      description: Describe the task category and approximate scope without sharing private code or data.
+      placeholder: Small validation fix across two source files and one test.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: completion
+    attributes:
+      label: Run completion
+      options:
+        - Completed and reviewed the report
+        - Agent task completed but report review was incomplete
+        - Installation or execution failed
+    validations:
+      required: true
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: Final Agent Ledger status
+      options:
+        - PASS
+        - WARN
+        - BLOCK
+        - No status generated
+    validations:
+      required: true
+
+  - type: dropdown
+    id: usefulness
+    attributes:
+      label: How useful was the run?
+      description: 1 means no added value; 5 means it materially improved trust or the result.
+      options:
+        - 5 - Materially useful
+        - 4 - Clearly useful
+        - 3 - Some value
+        - 2 - Limited value
+        - 1 - No added value
+    validations:
+      required: true
+
+  - type: textarea
+    id: useful_catch
+    attributes:
+      label: What did it catch or clarify?
+      description: Say whether this was a real issue, a useful handoff improvement, a false positive, or nothing new.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: friction
+    attributes:
+      label: Added friction
+      options:
+        - Under 2 minutes
+        - 2-5 minutes
+        - More than 5 minutes
+        - Could not complete
+    validations:
+      required: true
+
+  - type: textarea
+    id: confusing
+    attributes:
+      label: Biggest point of friction or confusion
+      placeholder: Installation, invocation, report language, false positives, speed, or another issue.
+
+  - type: dropdown
+    id: reuse
+    attributes:
+      label: Would you use Agent Ledger again?
+      options:
+        - Yes, on most AI-generated changes
+        - Yes, only on higher-risk changes
+        - Maybe, after specific improvements
+        - No
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I reviewed this submission and removed secrets, private code, client data, and unreviewed run artifacts.
+          required: true

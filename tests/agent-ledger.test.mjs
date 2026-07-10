@@ -319,6 +319,42 @@ test('setup installs Codex and Claude Code skills plus the local runtime in one 
   assert.match(help, /Agent Ledger V0/);
 });
 
+test('the directory-installed skill contains a self-contained runtime', () => {
+  const bundledCli = path.join(ROOT, '.agents', 'skills', 'agent-ledger', 'runtime', 'src', 'cli.mjs');
+  assert.ok(existsSync(bundledCli));
+
+  const syncCheck = spawnSync(NODE, [
+    path.join(ROOT, 'scripts', 'sync-skill-runtime.mjs'),
+    '--check'
+  ], { cwd: ROOT, encoding: 'utf8' });
+  assert.equal(syncCheck.status, 0, syncCheck.stderr);
+
+  const help = execFileSync(NODE, [bundledCli, '--help'], { cwd: ROOT, encoding: 'utf8' });
+  assert.match(help, /Agent Ledger V0/);
+});
+
+test('beta release surfaces stay versioned and linked together', () => {
+  const packageMeta = JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+  const readme = readFileSync(path.join(ROOT, 'README.md'), 'utf8');
+  const skill = readFileSync(path.join(ROOT, '.agents', 'skills', 'agent-ledger', 'SKILL.md'), 'utf8');
+  const betaGuide = readFileSync(path.join(ROOT, 'docs', 'beta-test.md'), 'utf8');
+  const betaPage = readFileSync(path.join(ROOT, 'site', 'beta.html'), 'utf8');
+  const feedbackForm = readFileSync(path.join(ROOT, '.github', 'ISSUE_TEMPLATE', 'beta-feedback.yml'), 'utf8');
+  const ci = readFileSync(path.join(ROOT, '.github', 'workflows', 'ci.yml'), 'utf8');
+
+  assert.equal(packageMeta.version, '0.3.1');
+  for (const content of [readme, skill, betaGuide, betaPage]) assert.match(content, /v0\.3\.1/);
+  assert.match(readme, /15-minute beta/i);
+  assert.match(betaGuide, /no run data/i);
+  assert.match(feedbackForm, /useful/i);
+  assert.match(ci, /npm run verify/);
+
+  const siteCheck = execFileSync(NODE, [
+    path.join(ROOT, 'scripts', 'check-site-links.mjs')
+  ], { cwd: ROOT, encoding: 'utf8' });
+  assert.match(siteCheck, /no broken local references/i);
+});
+
 test('GitHub Action publishes the PR review artifact and can enforce status', () => {
   const action = readFileSync(path.join(ROOT, 'action.yml'), 'utf8');
   const workflow = readFileSync(path.join(ROOT, '.github', 'workflows', 'agent-ledger-pr-review.yml'), 'utf8');

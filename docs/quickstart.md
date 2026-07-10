@@ -9,10 +9,18 @@ Requirements: Git, Node 20+, and Codex or Claude Code.
 From the root of your project:
 
 ```bash
-npx --yes github:sprintagency-it/agent-ledger#v0.3.0 setup --project .
+npx --yes github:sprintagency-it/agent-ledger#v0.3.1 setup --project .
 ```
 
 The setup command installs repository-scoped skills for both agents and one shared local runtime. It also adds `.agent-ledger/` to `.gitignore`.
+
+Alternatively, install the self-contained skill and bundled runtime through the skills directory:
+
+```bash
+npx skills add sprintagency-it/agent-ledger
+```
+
+The `skills` CLI collects anonymous installation telemetry by default. Set `DISABLE_TELEMETRY=1` to opt out; Agent Ledger itself does not transmit run data.
 
 Invoke the skill with a concrete task:
 
@@ -78,7 +86,7 @@ Use the Action when the AI-agent command can run inside the same job:
 
 ```yaml
 - id: agent-ledger
-  uses: sprintagency-it/agent-ledger@v0.3.0
+  uses: sprintagency-it/agent-ledger@v0.3.1
   with:
     command: "node scripts/run-ai-agent-task.mjs"
     goal: "Review this AI-generated change before merge"

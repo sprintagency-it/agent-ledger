@@ -18,6 +18,11 @@
 - [x] GitHub Action uploads the redacted `share` bundle rather than the raw session root.
 - [x] No private vault paths appear in public README, examples or landing.
 - [x] No secrets, client data, billing data or personal data present.
+- [x] Apache-2.0 license is detected by GitHub from `LICENSE`.
+- [x] `SECURITY.md`, `CONTRIBUTING.md`, CI, Discussions and Issue Forms are public.
+- [x] The direct v0.3.1 install works in a clean temporary repository.
+- [x] The skills directory install includes the bundled runtime and works without a second bootstrap.
+- [x] The 15-minute beta page links to the structured feedback form.
 
 Browser QA evidence:
 
@@ -33,12 +38,11 @@ Fixture review:
 
 ## Suggested Launch Order
 
-1. Publish GitHub repo.
-2. Run the Action in a disposable repo with a real agent-generated change.
-3. Open the demo locally and capture one short GIF or screenshot.
-4. Publish a simple static landing page.
-5. Invite 10-20 AI-heavy builders to try it on one PR.
-6. Post Show HN only after at least one external user can run it.
+1. Publish GitHub release v0.3.1 and the beta page.
+2. Confirm the direct and skills directory installs from clean repositories.
+3. Recruit 5-10 AI-heavy builders for one small real task.
+4. Record activation, completed runs, useful catches, friction, and retained usage.
+5. Post more broadly only after at least three external completed runs.
 
 ## Launch Copy
 

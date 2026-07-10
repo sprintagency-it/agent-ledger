@@ -1,0 +1,65 @@
+name: Bug report
+description: Report a reproducible Agent Ledger defect.
+title: "[Bug]: "
+labels:
+  - bug
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include secrets, private source code, client data, or raw run artifacts. Use private vulnerability reporting for security issues.
+
+  - type: input
+    id: version
+    attributes:
+      label: Agent Ledger version
+      placeholder: v0.3.1
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: macOS 15, Node 20, Codex
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: List the smallest safe sequence that reproduces the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence
+      description: Optional. Paste only the minimum redacted output needed to diagnose the defect.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues for the same defect.
+          required: true
+        - label: I removed secrets, private code, client data, and unreviewed artifacts.
+          required: true
